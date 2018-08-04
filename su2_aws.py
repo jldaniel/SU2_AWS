@@ -39,7 +39,7 @@ parser.add_argument('-n', type=int, default=3, help='The number of nodes to use 
 parser.add_argument('case_file', type=argparse.FileType('r'), help='The SU2 CFD case file')
 parser.add_argument('mesh_file', type=argparse.FileType('r'), help='The SU2 CFD mesh file')
 parser.add_argument('--ec2_ami',  type=str, default='ami-4aa04129', help='The EC2 AMI code for compute node configuration')
-parser.add_argument('--instance', type=str, default='t2.small', help='The instance type for the ec2 nodes')
+parser.add_argument('--instance', type=str, default='t2.medium', help='The instance type for the ec2 nodes')
 
 
 # TODO Create an AWS CLI profile to use for this case

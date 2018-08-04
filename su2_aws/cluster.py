@@ -4,7 +4,7 @@ import os
 import time
 
 from su2_aws import Node
-from su2_aws.util import print_stdout
+from su2_aws.util import print_stdout, get_n_processors
 
 
 # TODO: Logging or verbose flag
@@ -28,6 +28,7 @@ class Cluster(object):
         self.nfs_share_dir = os.path.join('/home', self.username, 'share')
         self.nfs_exports_file = '/etc/exports'
         self.temp_dir = None
+        self.n_retries = 5
 
         self.ec2 = boto3.client('ec2')
 
@@ -137,13 +138,25 @@ class Cluster(object):
             public_ip = instance['PublicIpAddress']
             hostname = 'cfd' + str(idx)
 
-            node = Node(
-                instance_id,
-                public_ip,
-                private_ip,
-                hostname,
-                self.key_file,
-                self.username)
+            node = None
+            tries = 0
+            while tries < self.n_retries:
+                try:
+                    node = Node(
+                        instance_id,
+                        public_ip,
+                        private_ip,
+                        hostname,
+                        self.key_file,
+                        self.username)
+                    break
+                except Exception as ex:
+                    tries += 1
+                    print('Failed to connect, retrying ' + str(tries) + ' out of ' + str(self.n_retries))
+                    time.sleep(3)
+
+            if node is None:
+                raise Exception('Failed to connect after ' + str(self.n_retries) + ' attempts')
 
             nodes.append(node)
 
@@ -264,31 +277,41 @@ class Cluster(object):
         master_node = self.nodes[0]
 
         print('Installing pip')
-        stdout, stdin, stderr = master_node.ssh.run_remote_command('sudo apt-get -y install python-pip')
-        #print_stdout(stdout)
+        pip_cmd = 'sudo apt-get -y install python-pip'
+        master_node.ssh.run_remote_command(pip_cmd)
 
         print('Installing python-config')
-        stdout, stdin, stderr = master_node.ssh.run_remote_command('pip install python-config')
-        #print_stdout(stdout)
+        pycfg_cmd = 'pip install python-config'
+        master_node.ssh.run_remote_command(pycfg_cmd)
 
         print('Retrieving SU2 source code')
-        stdout, stdin, stderr = master_node.ssh.run_remote_command('git clone https://github.com/su2code/SU2.git')
-        #print_stdout(stdout)
+        git_cmd = 'git clone https://github.com/su2code/SU2.git'
+        print(git_cmd)
+        master_node.ssh.run_remote_command(git_cmd)
 
         configure_cmd = 'cd ~/SU2; sudo ./configure --prefix=/home/ubuntu/share/SU2 --enable-mpi ' \
                         '--with-cc=/usr/bin/mpicc --with-cxx=/usr/bin/mpicxx CXXFLAGS="-O3"'
 
         print('Configuring SU2 for build')
-        stdout, stdin, stderr = master_node.ssh.run_remote_command(configure_cmd)
-        #print_stdout(stdout)
+        print(configure_cmd)
+        master_node.ssh.run_remote_command(configure_cmd)
 
         print('Building SU2')
-        stdout, stdin, stderr = master_node.ssh.run_remote_command('cd ~/SU2; sudo make -j 2')
-        #print_stdout(stdout)
+        n_processors = get_n_processors(self.instance_type)
+
+        if n_processors == 1:
+            build_cmd = 'cd ~/SU2; sudo make'
+        else:
+            # Build in parallel if additional processors are available for the instance type
+            build_cmd = 'cd ~/SU2; sudo make -j ' + str(n_processors)
+
+        print(build_cmd)
+        master_node.ssh.run_long_running_command(build_cmd)
 
         print('Installing SU2')
-        stdout, stdin, stderr = master_node.ssh.run_remote_command('cd ~/SU2; sudo make install')
-        #print_stdout(stdout)
+        install_cmd = 'cd ~/SU2; sudo make install'
+        print(install_cmd)
+        master_node.ssh.run_remote_command(install_cmd)
 
         # Set the environmental variables for the node
         # TODO TEST THIS!
@@ -299,10 +322,10 @@ class Cluster(object):
         cmd = 'echo -e "export SU2_HOME="/home/ubuntu/SU2"" | sudo tee -a ~/.bashrc'
         master_node.ssh.run_remote_command(cmd)
 
-        cmd = 'echo -e export PATH=$PATH:$SU2_RUN | sudo tee -a ~/.bashrc'
+        cmd = 'echo -e "export PATH=$PATH:$SU2_RUN" | sudo tee -a ~/.bashrc'
         master_node.ssh.run_remote_command(cmd)
 
-        cmd = 'echo -e export PYTHONPATH=$PYTHONPATH:$SU2_RUN | sudo tee -a ~/.bashrc'
+        cmd = 'echo -e "export PYTHONPATH=$PYTHONPATH:$SU2_RUN" | sudo tee -a ~/.bashrc'
         master_node.ssh.run_remote_command(cmd)
 
     def run_case(self, case_file, mesh_file):
@@ -321,9 +344,12 @@ class Cluster(object):
         print('Executing SU2_CFD run command')
         hosts_list = ','.join([n.hostname for n in self.nodes])
 
-        cmd = 'cd ~/share; mpirun -np ' + str(len(self.nodes)) + ' --hosts ' + hosts_list + ' SU2_CFD ' + case_filename
+        # Get the number of processors to use
+        n_processes = str(int(get_n_processors(self.instance_type)*self.n_nodes))
+        su2_run = '/home/ubuntu/share/SU2/bin/SU2_CFD'
+        cmd = 'cd ~/share; mpirun -np ' + n_processes + ' --hosts ' + hosts_list + ' ' + su2_run + ' ' + case_filename
         print(cmd)
-        master_node.ssh.run_remote_command(cmd)
+        master_node.ssh.run_long_running_command(cmd)
 
         cwd = os.getcwd()
         results_dir = os.path.join(cwd, 'results')
@@ -337,7 +363,14 @@ class Cluster(object):
                                            os.path.join(results_dir, case_filename))
         master_node.ssh.copy_file_to_local(os.path.join(self.nfs_share_dir, mesh_filename),
                                            os.path.join(results_dir, mesh_filename))
-        # TODO Research and add in the different output solution /files from SU2
+        master_node.ssh.copy_file_to_local(os.path.join(self.nfs_share_dir, 'forces_breakdown.dat'),
+                                           os.path.join(results_dir, 'forces_breakdown.dat'))
+        master_node.ssh.copy_file_to_local(os.path.join(self.nfs_share_dir, 'restart_flow.dat'),
+                                           os.path.join(results_dir, 'restart_flow.dat'))
+        master_node.ssh.copy_file_to_local(os.path.join(self.nfs_share_dir, 'surface_flow.dat'),
+                                           os.path.join(results_dir, 'surface_flow.dat'))
+        master_node.ssh.copy_file_to_local(os.path.join(self.nfs_share_dir, 'history.dat'),
+                                           os.path.join(results_dir, 'history.dat'))
 
     def clean_up(self):
         """

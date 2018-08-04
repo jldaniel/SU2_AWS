@@ -14,40 +14,96 @@ if __name__ == '__main__':
 
     key_file = '/Users/jdaniel/Desktop/SU2_AWS/tmp/cluster.pem'
     username = 'ubuntu'
+    instance_type = 't2.small'
 
-    ssh = SSHClient('54.67.82.193', username, key_file)
+    cfd0 = Node('i-00f0aeabab3219100', '54.215.250.86', '172.31.13.183', 'cfd0', key_file, username)
+    cfd1 = Node('i-028a6fa168ab18033', '13.57.212.70', '172.31.14.36', 'cfd1', key_file, username)
+    cfd2 = Node('i-0d9d136336f03c1ce', '13.57.3.239', '172.31.4.187', 'cfd2', key_file, username)
+    nodes = [cfd0, cfd1, cfd2]
+    n_nodes = 3
+    case_filename = 'inv_NACA0012.cfg'
 
-    stdout, stdin, stderr = ssh.run_remote_command('sudo apt-get -y install python-pip')
-    print(stdout.readlines())
-    print(stdin.readlines())
-    print(stderr.readlines())
+    #cluster = Cluster()
+    #cluster.nodes = nodes
+    #cluster.n_nodes = 3
+    #cluster.instance_type = 't2.small'
 
-    stdout, stdin, stderr = ssh.run_remote_command('pip install python-config')
-    print(stdout.readlines())
-    print(stdin.readlines())
-    print(stderr.readlines())
 
-    stdout, stdin, stderr = ssh.run_remote_command('git clone https://github.com/su2code/SU2.git')
-    print(stdout.readlines())
-    print(stdin.readlines())
-    print(stderr.readlines())
 
-    configure_cmd = 'cd ~/SU2; sudo ./configure --prefix=/home/ubuntu/share/SU2 --enable-mpi ' \
-                    '--with-cc=/usr/bin/mpicc --with-cxx=/usr/bin/mpicxx CXXFLAGS="-O3"'
-    stdout, stdin, stderr = ssh.run_remote_command(configure_cmd)
-    print(stdout.readlines())
-    print(stdin.readlines())
-    print(stderr.readlines())
+    #cfd0.ssh.copy_file_to_remote('example/inv_NACA0012.cfg', '/home/ubuntu/share/inv_NACA0012.cfg')
+    #cfd0.ssh.copy_file_to_remote('example/mesh_NACA0012_inv.su2', '/home/ubuntu/share/mesh_NACA0012_inv.su2')
 
-    stdout, stdin, stderr = ssh.run_remote_command('cd ~/SU2; sudo make -j 2')
-    print(stdout.readlines())
-    print(stdin.readlines())
-    print(stderr.readlines())
+    #cluster.run_case('example/inv_NACA0012.cfg', 'example/mesh_NACA0012_inv.su2')
 
-    stdout, stdin, stderr = ssh.run_remote_command('cd ~/SU2; sudo make install')
-    print(stdout.readlines())
-    print(stdin.readlines())
-    print(stderr.readlines())
+
+    print('Executing SU2_CFD run command')
+    hosts_list = ','.join([n.hostname for n in nodes])
+
+    # Get the number of processors to use
+    n_processes = None
+    if instance_type in ['t2.nano', 't2.micro', 't2.small']:
+        n_processes = str(int(1 * n_nodes))
+    elif instance_type in ['t2.medium', 't2.large']:
+        n_processes = str(int(2 * n_nodes))
+    elif instance_type in ['t2.xlarge']:
+        n_processes = str(int(4 * n_nodes))
+    elif instance_type in ['t2.2xlarge']:
+        n_processes = str(int(8 * n_nodes))
+    else:
+        raise Exception('Unrecognized instance type ' + instance_type)
+
+    cmd = 'cd ~/share; mpirun -np ' + n_processes + ' --hosts ' + hosts_list + ' /home/ubuntu/share/SU2/bin/SU2_CFD ' + case_filename
+    print(cmd)
+    cfd0.ssh.run_long_running_command(cmd)
+
+    #ssh = SSHClient('54.215.250.86', username, key_file)
+
+    #print('Retrieving SU2 source code')
+    #ssh.run_long_running_command('git clone https://github.com/su2code/SU2.git')
+
+    #configure_cmd = 'cd ~/SU2; sudo ./configure --prefix=/home/ubuntu/share/SU2 --enable-mpi ' \
+    #                '--with-cc=/usr/bin/mpicc --with-cxx=/usr/bin/mpicxx CXXFLAGS="-O3"'
+
+    #print('Configuring SU2 for build')
+    #ssh.run_long_running_command(configure_cmd)
+
+    #print('Building SU2')
+    #ssh.run_long_running_command('cd ~/SU2; sudo make -j 2')
+
+    #print('Installing SU2')
+    #ssh.run_long_running_command('cd ~/SU2; sudo make install')
+
+    #stdout, stdin, stderr = ssh.run_remote_command('sudo apt-get -y install python-pip')
+    #print(stdout.readlines())
+    #print(stdin.readlines())
+    #print(stderr.readlines())
+
+    #stdout, stdin, stderr = ssh.run_remote_command('pip install python-config')
+    #print(stdout.readlines())
+    #print(stdin.readlines())
+    #print(stderr.readlines())
+
+    #stdout, stdin, stderr = ssh.run_remote_command('git clone https://github.com/su2code/SU2.git')
+    #print(stdout.readlines())
+    #print(stdin.readlines())
+    #print(stderr.readlines())
+
+    #configure_cmd = 'cd ~/SU2; sudo ./configure --prefix=/home/ubuntu/share/SU2 --enable-mpi ' \
+    #                '--with-cc=/usr/bin/mpicc --with-cxx=/usr/bin/mpicxx CXXFLAGS="-O3"'
+    #stdout, stdin, stderr = ssh.run_remote_command(configure_cmd)
+    #print(stdout.readlines())
+    #print(stdin.readlines())
+    #print(stderr.readlines())
+
+    #stdout, stdin, stderr = ssh.run_remote_command('cd ~/SU2; sudo make -j 2')
+    #print(stdout.readlines())
+    #print(stdin.readlines())
+    #print(stderr.readlines())
+
+    #stdout, stdin, stderr = ssh.run_remote_command('cd ~/SU2; sudo make install')
+    #print(stdout.readlines())
+    #print(stdin.readlines())
+    #print(stderr.readlines())
 
 
     # Test Copy keys
@@ -95,8 +151,5 @@ if __name__ == '__main__':
     #ssh = SSHClient(master_ip, 'ubuntu', 'tmp/cluster.pem')
     #ssh.copy_file_to_local('/home/ubuntu/.ssh/id_rsa.pub', local_public_key_location)
 
-
-
-
-
     print('Finished')
+

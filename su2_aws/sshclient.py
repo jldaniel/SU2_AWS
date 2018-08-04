@@ -2,7 +2,7 @@ import paramiko
 import os
 import socket
 import scp
-
+import select
 
 class SSHClient(object):
     """
@@ -143,6 +143,27 @@ class SSHClient(object):
         (stdin, stdout, stderr) = self._client.exec_command(command)
 
         return stdin, stdout, stderr
+
+    def run_long_running_command(self, command):
+        # Send the command (non-blocking)
+        self._client.load_host_keys(os.path.expanduser('~/.ssh/known_hosts'))
+        try:
+            self._client.connect(hostname=self._host, username=self._user, pkey=self._key)
+        except Exception as ex:
+            print('Error connecting to host ' + str(self._host) + ' as user '
+                  + str(self._user) + ' with key ' + str(self._key_file))
+            raise ex
+
+        stdin, stdout, stderr = self._client.exec_command(command)
+
+        # Wait for the command to terminate
+        while not stdout.channel.exit_status_ready():
+            # Only print data if there is data to read in the channel
+            if stdout.channel.recv_ready():
+                rl, wl, xl = select.select([stdout.channel], [], [], 0.0)
+                if len(rl) > 0:
+                    # Print data from stdout
+                    print(stdout.channel.recv(1024))
 
     def mkdir(self, path, mode=0o755):
         try:

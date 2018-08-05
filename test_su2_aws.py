@@ -1,7 +1,8 @@
 
-from su2_aws import Cluster, Node, SSHClient
+from su2_aws import Cluster, Node, SSHClient, print_stderr, print_stdout, get_n_processors
 import os
 import boto3
+import time
 
 
 N_NODES = 2
@@ -14,12 +15,12 @@ if __name__ == '__main__':
 
     key_file = '/Users/jdaniel/Desktop/SU2_AWS/tmp/cluster.pem'
     username = 'ubuntu'
-    instance_type = 't2.small'
+    instance_type = 't2.medium'
 
-    cfd0 = Node('i-00f0aeabab3219100', '54.215.250.86', '172.31.13.183', 'cfd0', key_file, username)
-    cfd1 = Node('i-028a6fa168ab18033', '13.57.212.70', '172.31.14.36', 'cfd1', key_file, username)
-    cfd2 = Node('i-0d9d136336f03c1ce', '13.57.3.239', '172.31.4.187', 'cfd2', key_file, username)
-    nodes = [cfd0, cfd1, cfd2]
+    cfd0 = Node('i-01b85e640a1e92f34', '52.53.252.0', '172.31.29.119', 'cfd0', key_file, username)
+    #cfd1 = Node('i-028a6fa168ab18033', '13.57.212.70', '172.31.14.36', 'cfd1', key_file, username)
+    #cfd2 = Node('i-0d9d136336f03c1ce', '13.57.3.239', '172.31.4.187', 'cfd2', key_file, username)
+    #nodes = [cfd0, cfd1, cfd2]
     n_nodes = 3
     case_filename = 'inv_NACA0012.cfg'
 
@@ -34,27 +35,40 @@ if __name__ == '__main__':
     #cfd0.ssh.copy_file_to_remote('example/mesh_NACA0012_inv.su2', '/home/ubuntu/share/mesh_NACA0012_inv.su2')
 
     #cluster.run_case('example/inv_NACA0012.cfg', 'example/mesh_NACA0012_inv.su2')
+    print('\nRetrieving SU2 source code')
+    git_cmd = 'git clone https://github.com/su2code/SU2.git -q'
+    print(git_cmd)
+    cfd0.ssh.run_long_running_command(git_cmd)
 
+    #time.sleep(10)  # Wait for everything to chill out before running the configuration
+    configure_cmd = 'sudo sh /home/ubuntu/SU2/configure --prefix=/home/ubuntu/share/SU2 --enable-mpi ' \
+                    '--with-cc=/usr/bin/mpicc --with-cxx=/usr/bin/mpicxx CXXFLAGS="-O3"'
 
-    print('Executing SU2_CFD run command')
-    hosts_list = ','.join([n.hostname for n in nodes])
+    print('\nConfiguring SU2 for build')
+    print(configure_cmd)
+    cfd0.ssh.run_long_running_command(configure_cmd)
 
-    # Get the number of processors to use
-    n_processes = None
-    if instance_type in ['t2.nano', 't2.micro', 't2.small']:
-        n_processes = str(int(1 * n_nodes))
-    elif instance_type in ['t2.medium', 't2.large']:
-        n_processes = str(int(2 * n_nodes))
-    elif instance_type in ['t2.xlarge']:
-        n_processes = str(int(4 * n_nodes))
-    elif instance_type in ['t2.2xlarge']:
-        n_processes = str(int(8 * n_nodes))
+    #time.sleep(2)
+    print('\nBuilding SU2')
+    n_processors = get_n_processors(instance_type)
+
+    if n_processors == 1:
+        build_cmd = 'sudo make'
     else:
-        raise Exception('Unrecognized instance type ' + instance_type)
+        # Build in parallel if additional processors are available for the instance type
+        build_cmd = 'sudo make -j ' + str(n_processors)
 
-    cmd = 'cd ~/share; mpirun -np ' + n_processes + ' --hosts ' + hosts_list + ' /home/ubuntu/share/SU2/bin/SU2_CFD ' + case_filename
-    print(cmd)
-    cfd0.ssh.run_long_running_command(cmd)
+    print(build_cmd)
+    cfd0.ssh.run_long_running_command(build_cmd)
+
+    #print('Executing SU2_CFD run command')
+    #hosts_list = ','.join([n.hostname for n in nodes])
+
+
+
+    #cmd = 'cd ~/share; mpirun -np ' + n_processes + ' --hosts ' + hosts_list + ' /home/ubuntu/share/SU2/bin/SU2_CFD ' + case_filename
+    #print(cmd)
+    #cfd0.ssh.run_long_running_command(cmd)
 
     #ssh = SSHClient('54.215.250.86', username, key_file)
 

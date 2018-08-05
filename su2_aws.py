@@ -23,17 +23,7 @@ def get_header():
 
     return header
 
-
-
-
-
-
-
-# Parse the command line options
-# Options
-# -n number of nodes, default 3
-# -ami amazon ami code, default 'ami-4aa04129' us-west
-
+# Configure the CLI options parser
 parser = argparse.ArgumentParser(description='Utility for setting up and running SU2 CFD cases on AWS')
 parser.add_argument('-n', type=int, default=3, help='The number of nodes to use for computation')
 parser.add_argument('case_file', type=argparse.FileType('r'), help='The SU2 CFD case file')
@@ -43,47 +33,6 @@ parser.add_argument('--instance', type=str, default='t2.medium', help='The insta
 
 
 # TODO Create an AWS CLI profile to use for this case
-
-
-
-
-
-# MAIN
-
-# Create an ec2 client
-
-# Generate a security group to open port 22 for ssh
-
-# TODO Test if we can update the secuirty group for internal MPI communication instead of creating a new one
-
-
-# Generate a key pair for connecting to the EC2 cluster
-
-
-# Spin up the EC2 instances
-
-# Obtain the public and private IP addresses of the instances
-
-
-# Setup MPI
-
-
-# Setup NFS
-
-
-# Setup SU2
-
-# Copy the case and mesh file
-
-# Run the SU2 case
-
-
-# Retrieve the solution files
-
-
-# Shutdown the cluster
-
-# Remove generated artifacts
 
 
 if __name__ == '__main__':
@@ -147,7 +96,3 @@ if __name__ == '__main__':
     # Print where the results are
     print('Finished')
 
-
-
-
-    # Clean Up

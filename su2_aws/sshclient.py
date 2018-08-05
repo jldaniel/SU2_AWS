@@ -4,6 +4,8 @@ import socket
 import scp
 import select
 
+from .util import bcolors
+
 class SSHClient(object):
     """
     Client for interacting with remote systems.
@@ -163,7 +165,10 @@ class SSHClient(object):
                 rl, wl, xl = select.select([stdout.channel], [], [], 0.0)
                 if len(rl) > 0:
                     # Print data from stdout
-                    print(stdout.channel.recv(1024))
+                    print(bcolors.OKGREEN + stdout.channel.recv(1024).decode("utf-8") + bcolors.ENDC)
+
+        for line in stderr:
+            print(line.rstrip())
 
     def mkdir(self, path, mode=0o755):
         try:

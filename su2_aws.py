@@ -86,13 +86,9 @@ if __name__ == '__main__':
     print('\nRunning SU2 Case')
     cluster.run_case(case_file.name, mesh_file.name)
 
-    # TODO Shutdown and cleanup cluster
-    # Terminate the instances
-    # Wait for instances to be terminated
-    # Remove the security groups
-    # Remove the key-pair
-    # Remove the tmp dir
+    print('\nCleaning Up')
+    cluster.clean_up()
 
-    # Print where the results are
+    print('Results saved to ' + cluster.results_dir)
     print('Finished')
 

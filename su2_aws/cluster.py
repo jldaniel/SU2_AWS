@@ -402,10 +402,10 @@ class Cluster(object):
         # Terminate the instances
         print('Terminating instances')
         instance_ids = [n.id for n in self.nodes]
-        waiter = self.ec2.get_waiter('instance_terminated')
-        waiter.wait(InstanceIds=instance_ids)
 
         self.ec2.terminate_instances(InstanceIds=instance_ids)
+        waiter = self.ec2.get_waiter('instance_terminated')
+        waiter.wait(InstanceIds=instance_ids)
 
         # Remove the security groups
         sg_ssh_id = self.sg_ssh['GroupId']

@@ -1,50 +1,13 @@
 
-##### Goals:
-  1. Script to spin up n number of AWS instances.
-  Install and configure SU2.
-  2. Script to run SU2 analysis, and retrieve results.
-
-##### Links Used for Reference
-Configuring MPI
-<http://mpitutorial.com/tutorials/running-an-mpi-cluster-within-a-lan/>
-
-Example MPI Program
-<https://hpcc.usc.edu/support/documentation/examples-of-mpi-programs/>
-
-__connecting to nodes__
-
-```bash
-ssh -i ssh-test-key.pem ubuntu@54.193.92.46
-```
-
-
-##### Manual Configuration of 2 Nodes
-
-Spin up 2 AWS linux instances
-
-Using AWS AMI: Ubuntu Server 16.04 LTS (HVM), SSD Volume Type
-`ami-4aa04129`
-
-__NOTE__: Make sure that the correct region for the IAM user that is going to be used and is selected in the AWS console (top right) in order to get the correct AMI ID for the instance.
+### Manual Setup Steps
 
 **Setup the environment**
 
 Setup roles on AWS
 
-Create new group called "Rescale" with the Administrator policy.
+Create new group called "Test_Group" with the Administrator policy.
 
-Create a new user called "rescale-admin" and select "Programmatic access" as the Access type. Attach the user to the Rescale group
-
-**Region Info**
-```
-Region Name: US West(N. California)
-Region: us-west-1
-Endpoint: rds.us-west-1.amazonaws.com
-Protocol: HTTPS
-```
-
-Region Reference: <https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html>
-
+Create a new user called "tester" and select "Programmatic access" as the Access type. Attach the user to the Test_Group group.
 
 
 **Install AWS CLI**
@@ -98,8 +61,6 @@ or environmental variables.
 
 **Create a security group and key pair for connecting**
 
-_TODO_: See if the same security group can be used for both rules
-
 Create a security group
 
 ```bash
@@ -112,7 +73,7 @@ Authorize the security group
 aws ec2 authorize-security-group-ingress --group-name rescale-dev --protocol tcp --port 22 --cidr 0.0.0.0/0
 ```
 
-_NOTE:_
+_response:_
 ``"GroupId": "sg-7fd28207"``
 
 
@@ -130,42 +91,24 @@ chmod 400 rescale-key.pem
 
 **Run the instance**
 
-```bash
-aws ec2 run-instances --image-id ami-4aa04129 --security-group-ids sg-7fd28207 --count 1 --instance-type t2.medium --key-name rescale-key --query 'Instances[0].InstanceId'
+First select the AMI code that will be used to configure the instance. For this process Ubuntu 16.04 instances were used. Make sure the correct region is selected in order to obtain the correct AMI code for the instances.
+
+[Region Reference](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html)
+
+In this example the US West(N. California) region and AMI were used
+
+**Region Info**
+```
+Region Name: US West(N. California)
+Region: us-west-1
+Endpoint: rds.us-west-1.amazonaws.com
+Protocol: HTTPS
 ```
 
-The instance will spin up and return the ID from the query
+AWS AMI: Ubuntu Server 16.04 LTS (HVM), SSD Volume Type
+`ami-4aa04129`
 
-`"i-055f86cc94128b4fd"`
-
-Use the ID to obtain the public IP address for the instance
-
-```bash
-aws ec2 describe-instances --instance-ids i-055f86cc94128b4fd --query 'Reservations[0].Instances[0].PublicIpAddress'
-```
-
-The command will return with the instance public IP
-`"54.183.139.116"`
-
-To connect to the instance, use the public IP address and the private key
-
-```bash
-ssh -i rescale-key.pem ubuntu@54.183.139.116
-```
-
-To start the instance, use the `start-instances` command
-
-```bash
-aws ec2 start-instances --instance-ids i-055f86cc94128b4fd
-```
-
-and to stop it, use the `stop-instances` command
-
-```bash
-aws ec2 stop-instances --instance-ids i-055f86cc94128b4fd
-```
-
-**Spinning up multiple instances**
+With the region and AMI selected, the instances are created using the `run-instances` API command
 
 ```bash
 aws ec2 run-instances --image-id ami-4aa04129 --security-group-ids sg-7fd28207 --count 2 --instance-type t2.medium --key-name rescale-key --query 'Instances[*].InstanceId'
@@ -205,11 +148,15 @@ _response_
 
 ssh into the instances
 
-Dedicating `13.56.12.225` as the head node and `13.56.11.155` as the slave
+```bash
+ssh -i ssh-test-key.pem ubuntu@54.193.92.46
+```
 
-##### Setting up ssh keys
+Select one of the instances to act as the _head_ or _master_ node while the other instances will be the _workers_.
 
-**Head to Slave**
+##### Setting up passwordless SSH between instances
+
+**Head to Worker**
 
 On the head node run
 
@@ -233,7 +180,7 @@ cat >> ~/.ssh/authorized_keys
 
 Paste in the contents then press `Ctrl-d` to exit.
 
-Follow the same process from the slave node.
+Follow the same process from each of the worker nodes to the head node.
 
 #### Install and configure MPI
 
@@ -258,11 +205,14 @@ _response_
 
 Update the security group to open ports for each machine
 
+
 ```bash
 aws ec2 authorize-security-group-ingress --group-id sg-d77a29af --protocol tcp --port 0-65535 --cidr 172.31.28.11/32
 
 aws ec2 authorize-security-group-ingress --group-id sg-d77a29af --protocol tcp --port 0-65535 --cidr 172.31.28.198/32
 ```
+
+Note that the `--cidr` option values are set to the private IP address of each of the nodes and need to include the `/32` at the end for proper functionality.
 
 Modify the instances to add the new security group
 
@@ -273,8 +223,6 @@ aws ec2 modify-instance-attribute --instance-id i-0f60ff51d36a4c199 --groups sg-
 
 ```
 
-_TODO_: For script check if security group already exists or use a GUID to make it unique each time the cluster is spun up and remove the group afterwords.
-
 Test that MPICH install
 
 ```bash
@@ -283,7 +231,7 @@ mpirun
 
 Set up the hosts file
 
-On each machine add the other hosts and name them, starting with the master node
+On each machine add the other hosts and name them, starting with the master node starting with `cfd0` as the hostname for the master node.
 
 ```bash
 sudo vim /etc/hosts
@@ -295,26 +243,26 @@ And add in the lines
 127.0.0.1 localhost
 
 # Cluster Hosts
-172.31.28.198 master
+172.31.28.198 cfd0
 172.31.28.11 cfd1
 
 ```
 
-then on the slave node
+then on the worker node
 
 ```
 127.0.0.1 localhost
 
 # Cluster Hosts
-172.31.28.198 master
+172.31.28.198 cfd0
 172.31.28.11 cfd1
 ```
 
-_NOTE_: For the master file add all of the slave nodes, for each of the slave nodes just add the master and itself
+SSH from the master node to the worker nodes and visa-versa to add them to each nodes `known_hosts` file.
+
 
 **Setup NSF**
 
-Because we are on AWS, a separate EFS instance will need to be created to host the NSF filesystem.
 
 Install NSF on the master node
 
@@ -352,7 +300,7 @@ Restart the NFS server for the changes to take effect
 sudo service nfs-kernel-server restart
 ```
 
-Setup NFS on the client machine
+Install NFS on each worker node
 
 ```bash
 sudo apt-get install nfs-common
@@ -370,9 +318,17 @@ Mount the shared directory
 sudo mount -t nfs master:/home/ubuntu/share ~/share
 ```
 
+To test that NFS is working, a file can be created in the NFS `share` directory e.g.
+
+```bash
+touch ~/share/test.txt
+```
+
+that file should then be available in the mounted NFS share directory on each of the worker nodes
+
 **Testing MPI**
 
-Simple MPI Hello World Test Program
+Simple MPI Hello World Test Program from <https://hpcc.usc.edu/support/documentation/examples-of-mpi-programs/>
 
 `mpitest.c`
 
@@ -401,29 +357,24 @@ int main(int argc, char **argv)
 }
 ```
 
+Create a new file in the NFS share directory called `mpitest.c`
+
+```bash
+touch ~/share/mpitest.c
+```
+
+and copy the test program into the file and save it.
+
 Compile the program using
 
 ```bash
 mpicc -o mpitest mpitest.c
 ```
 
-Create a hosts file for MPI
-
-```bash
-touch mpi_hosts
-```
-
-Then add the following lines to the hosts file
-
-```
-master:2
-cfd1:2
-```
-
 Run the program with
 
 ```bash
-mpirun -np 4 --hosts master,cfd1 ./mpitest
+mpirun -np 4 --hosts cfd0,cfd1 ./mpitest
 ```
 
 _output_
@@ -480,13 +431,12 @@ This will create the directory `SU2` where the command was run
 
 Run the configuration for make
 
-_note_: SU2 needs to be installed on the NFS share in order to work with MPI on multiple clients
+_note_: SU2 needs to be installed on the NFS share in order to work with MPI on multiple clients as indicated by the `--prefix` option
 
 ```bash
 sudo ./configure --prefix=/home/ubuntu/share/SU2 --enable-mpi --with-cc=/usr/bin/mpicc --with-cxx=/usr/bin/mpicxx CXXFLAGS="-O3"
 ```
 
-_NOTE_: For automation can use the `-q` option to suppress output
 
 After the configuration is complete, compile the code
 
@@ -523,14 +473,10 @@ cd ~/SU2/Quickstart
 SU2_CFD inv_NACA0012.cfg
 ```
 
-Test that the solver runs in parallel on a single node
-
-```bash
-mpirun -n 2 SU2_CFD inv_NACA0012.cfg
-```
-
 Test that the solver runs in parallel on multiple clients
 
 ```bash
 mpirun -n 4 --hosts master,cfd1 SU2_CFD inv_NACA0012.cfg
 ```
+
+

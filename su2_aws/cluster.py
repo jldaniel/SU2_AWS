@@ -4,11 +4,11 @@ import os
 import time
 import shutil
 
-from su2_aws import Node, SSHClient
+from su2_aws import Node
 from su2_aws.util import print_stdout, print_stderr, get_n_processors, get_timestamp
 
 
-# TODO: Logging or verbose flag
+# TODO: Move print statements to a logger
 
 class Cluster(object):
     """
@@ -51,6 +51,10 @@ class Cluster(object):
         print('Key file generated ' + key_location)
 
     def generate_ssh_security_group(self):
+        """
+        Generate a new security group to open port 22 for connecting to the instances via SSH
+        :return: None
+        """
         security_group_name = 'cfd-ssh'
         sg_ssh = self.ec2.create_security_group(GroupName=security_group_name,
                                                 Description='Security group for SSH to cluster')
@@ -69,6 +73,10 @@ class Cluster(object):
         print('Security group ' + security_group_name + ' generated with ID: ' + sg_ssh_id)
 
     def generate_mpi_security_group(self):
+        """
+        Generate a new security group to open ports for inter-instance communication needed for MPI
+        :return: None
+        """
         print('Creating MPI Security group')
         sg_mpi = self.ec2.create_security_group(
             GroupName='cfd-mpi',
@@ -100,6 +108,13 @@ class Cluster(object):
             self.ec2.modify_instance_attribute(InstanceId=n.id, Groups=[sg_ssh_id, sg_mpi_id])
 
     def create_nodes(self, n_nodes, ec2_ami, instance_type):
+        """
+        Create the nodes
+        :param n_nodes: Number of nodes to create
+        :param ec2_ami: The EC2 AMI code to use for base instance configuration
+        :param instance_type: The type of instance to create, t2.small, t2.medium, etc.
+        :return:
+        """
         self.n_nodes = n_nodes
         self.ec2_ami = ec2_ami
         self.instance_type = instance_type
@@ -123,6 +138,7 @@ class Cluster(object):
         print('Waiting for nodes to be in a running state')
         waiter = self.ec2.get_waiter('instance_running')
         waiter.wait(InstanceIds=instance_ids)
+        # TODO: See if the sleep is still necessary now that there are multiple attempts to connect
         # Sometimes the nodes still aren't ready to ssh into even though they should be running
         time.sleep(10)
 
@@ -164,6 +180,10 @@ class Cluster(object):
         self.nodes = nodes
 
     def update_packages(self):
+        """
+        Update apt-get packages on each of the nodes, required to install some of the used packages
+        :return: None
+        """
         # Update the packages on each of the nodes
         for n in self.nodes:
             print('Updating packages on node: ' + repr(n.id))
@@ -172,7 +192,7 @@ class Cluster(object):
     def install_mpi(self):
         """
         Install MPI on all of the nodes
-        :return:
+        :return: None
         """
         # Configure networking for MPI
         print('Update /etc/hosts')
@@ -202,7 +222,6 @@ class Cluster(object):
             n.ssh.run_remote_command('echo -e "' + master_key_string + '" >> /home/ubuntu/.ssh/authorized_keys')
 
         # Generate a key-pair on each of the workers
-
         worker_key_strings = []
         for n in workers:
             print('Generating key-pair for worker ' + n.hostname)
@@ -242,7 +261,7 @@ class Cluster(object):
     def install_nfs(self):
         """
         Install NFS on the master node and then configure the worker nodes to use the shared directory
-        :return:
+        :return: None
         """
         master_node = self.nodes[0]
         worker_nodes = self.nodes[1:]
@@ -278,6 +297,10 @@ class Cluster(object):
             n.ssh.run_remote_command(mount_cmd)
 
     def install_su2(self):
+        """
+        Configure and install the SU2 software
+        :return: None
+        """
         master_node = self.nodes[0]
 
         print('\nInstalling pip')
@@ -323,9 +346,7 @@ class Cluster(object):
         print(install_cmd)
         master_node.ssh.run_long_running_command(install_cmd)
 
-
         # Set the environmental variables for the node
-        # TODO TEST THIS!
         print('Adding SU2 commands to bash profile')
         cmd = 'echo -e "export SU2_RUN="/home/ubuntu/share/SU2/bin"" | sudo tee -a ~/.bashrc'
         print(cmd)
@@ -344,6 +365,12 @@ class Cluster(object):
         master_node.ssh.run_remote_command(cmd)
 
     def run_case(self, case_file, mesh_file):
+        """
+        Run the SU2 CFD case on the cluster and retrieve the results
+        :param case_file: The SU2 .cfg file that defines the case to the run
+        :param mesh_file: THe .su2 mesh file the defines the computational domain
+        :return: None
+        """
         print('Preparing to run SU2 case with')
         print('Configuration File: ' + case_file)
         print('Mesh File: ' + mesh_file)
@@ -396,7 +423,7 @@ class Cluster(object):
 
     def clean_up(self):
         """
-        Clean up the artifacts that were created by the cluster
+        Clean up the artifacts that were created and shut down the cluster
         :return: None
         """
         # Terminate the instances

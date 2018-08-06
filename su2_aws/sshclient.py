@@ -6,6 +6,7 @@ import select
 
 from .util import bcolors
 
+
 class SSHClient(object):
     """
     Client for interacting with remote systems.
@@ -44,6 +45,10 @@ class SSHClient(object):
         self._client.close()
 
     def connect(self):
+        """
+        Create a transport for connecting to a remote system
+        :return: None
+        """
         # Find the correct address family to use for the transport
         address_info = socket.getaddrinfo(self._host, self._port)
         address_family = None
@@ -79,6 +84,10 @@ class SSHClient(object):
 
     @property
     def sftp(self):
+        """
+        Interact with a remote system over sftp
+        :return: A connected SFTPClient
+        """
         if not self._sftp or self._sftp.sock.closed:
             print('connecting to sftp')
             self._sftp = paramiko.SFTPClient.from_transport(self.transport)
@@ -87,6 +96,10 @@ class SSHClient(object):
 
     @property
     def transport(self):
+        """
+        The transport for interacting with a remote system
+        :return: The transport
+        """
         if not self._transport or not self._transport.is_active():
             self.connect()
 
@@ -94,12 +107,20 @@ class SSHClient(object):
 
     @property
     def scp(self):
+        """
+        Interact with a remote system using SCP
+        :return: a connected SCPClient
+        """
         if not self._scp or not self._scp.transport.is_active():
             self._scp = scp.SCPClient(self.transport, socket_timeout=self._timeout)
 
         return self._scp
 
     def close(self):
+        """
+        Close the connection to the remote system
+        :return: None
+        """
         if self._sftp:
             self._sftp.close()
 
@@ -119,7 +140,6 @@ class SSHClient(object):
         remote_file.name = file
         return remote_file
 
-    # TODO: Should this method actually return something?
     def get_file(self, target_path, local_path):
         """
         Retrieve a file from the remote machine
@@ -134,6 +154,11 @@ class SSHClient(object):
             raise ex
 
     def run_remote_command(self, command):
+        """
+        Execute a command on the remote machine over SSH
+        :param command: The command to run
+        :return: The standard IO streams, stdin, stdout, and stderr
+        """
         self._client.load_host_keys(os.path.expanduser('~/.ssh/known_hosts'))
         try:
             self._client.connect(hostname=self._host,username=self._user,pkey=self._key)
@@ -147,6 +172,11 @@ class SSHClient(object):
         return stdin, stdout, stderr
 
     def run_long_running_command(self, command):
+        """
+        Execute a long running command and print the output as it is generated on the remote machine
+        :param command: The command to run
+        :return: None
+        """
         # Send the command (non-blocking)
         self._client.load_host_keys(os.path.expanduser('~/.ssh/known_hosts'))
         try:
@@ -171,6 +201,12 @@ class SSHClient(object):
             print(line.rstrip())
 
     def mkdir(self, path, mode=0o755):
+        """
+        Create a directory on the remote machine
+        :param path: The path to the directory to create
+        :param mode: The access model octal code
+        :return: None
+        """
         try:
             return self.sftp.mkdir(path, mode)
         except Exception as ex:
@@ -178,9 +214,21 @@ class SSHClient(object):
             raise ex
 
     def copy_file_to_local(self, remote_file, local_file):
+        """
+        Copy a file on the remote machine to the local machine
+        :param remote_file: The path to the remote file to retrieve
+        :param local_file: The local path to copy the file to
+        :return: None
+        """
         self.sftp.get(remote_file, local_file)
 
     def copy_file_to_remote(self, local_file, remote_file):
+        """
+        Copy a local file to the remote machine
+        :param local_file: The path to the local file to copy
+        :param remote_file: The remote path to copy the file to
+        :return: None
+        """
         self.sftp.put(local_file, remote_file)
 
 

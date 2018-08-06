@@ -6,7 +6,6 @@ class Node(object):
     """
     Represents a resource on the AWS cluster
     """
-
     def __init__(self, id, public_ip, private_ip, hostname, key_file, username):
         self.id = id
         self.public_ip = public_ip

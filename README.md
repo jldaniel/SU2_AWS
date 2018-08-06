@@ -34,4 +34,7 @@ The golden rule of automation is to first be able to go through the process manu
  1. The [SSHClient](su2_aws/sshclient.py) which wraps the [paramiko](http://www.paramiko.org/) SSH package for connecting to the EC2 instances, executing remote commands, and transfering files.
  2. The [Node](su2_aws/node.py) which represents a single instance in the cluster and contains an [SSHClient](su2_aws/sshclient.py) and instance metadata.
  3. The [Cluster](su2_aws/cluster.py) that interacts with the cluster as a whole and contains the implementation to setup the cluster, run the CFD case, and then cleanup.
-   
+ 
+ ##### Running the code
+ 
+ Instruction to setup and run the solution are given in [setup.md](setup.md).  

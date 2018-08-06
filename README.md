@@ -37,4 +37,4 @@ The golden rule of automation is to first be able to go through the process manu
  
  ##### Running the code
  
- Instruction to setup and run the solution are given in [setup.md](setup.md).  
+ Instruction to setup and run the solution are given in [setup.md](setup.md). An example of the program output for a successful run is given in [example_output.txt](docs/example_output.txt).  

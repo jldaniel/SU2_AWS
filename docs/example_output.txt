@@ -1,0 +1,4523 @@
+python su2_aws.py -n 3 example/inv_NACA0012.cfg example/mesh_NACA0012_inv.su2
+
+ $$$$$$\  $$\   $$\  $$$$$$\         $$$$$$\  $$\      $$\  $$$$$$\
+$$  __$$\ $$ |  $$ |$$  __$$\       $$  __$$\ $$ | $\  $$ |$$  __$$\
+$$ /  \__|$$ |  $$ |\__/  $$ |      $$ /  $$ |$$ |$$$\ $$ |$$ /  \__|
+\$$$$$$\  $$ |  $$ | $$$$$$  |      $$$$$$$$ |$$ $$ $$\$$ |\$$$$$$\
+ \____$$\ $$ |  $$ |$$  ____/       $$  __$$ |$$$$  _$$$$ | \____$$\
+$$\   $$ |$$ |  $$ |$$ |            $$ |  $$ |$$$  / \$$$ |$$\   $$ |
+\$$$$$$  |\$$$$$$  |$$$$$$$$\       $$ |  $$ |$$  /   \$$ |\$$$$$$  |
+ \______/  \______/ \________|      \__|  \__|\__/     \__| \______/
+
+
+
+
+Preparing to configure cluster with 3 nodes
+to run SU2 with case file example/inv_NACA0012.cfg
+and mesh file example/mesh_NACA0012_inv.su2
+
+Generating EC2 Key Pair
+Key file generated /Users/jdaniel/Desktop/SU2_AWS/tmp/cluster.pem
+
+Setting up security group for SSH to the cluster
+Security group cfd-ssh generated with ID: sg-1e062466
+
+Creating cluster nodes on EC2
+Spinning up EC2 Nodes...
+Created instance with ID: i-0ade8e1b52270ef9d
+Created instance with ID: i-018e6a62d15e6147a
+Created instance with ID: i-023d19879437a75bd
+Waiting for nodes to be in a running state
+Collecting node info
+
+Updating security policy for MPI
+Creating MPI Security group
+Security group cfd-mpi created with ID: sg-d9082aa1
+Modifying instance cfd0 to include new security group
+Modifying instance cfd1 to include new security group
+Modifying instance cfd2 to include new security group
+
+Updating packages on nodes
+Updating packages on node: 'i-0ade8e1b52270ef9d'
+Updating packages on node: 'i-018e6a62d15e6147a'
+Updating packages on node: 'i-023d19879437a75bd'
+
+Installing MPI on each of the nodes
+Update /etc/hosts
+Generating key-pair for master node
+Generating key-pair for worker cfd1
+Generating key-pair for worker cfd2
+Adding hosts to known_hosts file
+
+Installing MPI on cfd0
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  binutils cpp cpp-5 g++ g++-5 gcc gcc-5 gcc-5-base gfortran gfortran-5
+  hwloc-nox libasan2 libatomic1 libc-dev-bin libc6-dev libcc1-0 libcilkrts5
+  libcr-dev libcr0 libgcc-5-dev libgfortran-5-dev libgfortran3 libgomp1
+  libhwloc-plugins libhwloc5 libisl15 libitm1 liblsan0 libltdl7 libmpc3
+  libmpich-dev libmpich12 libmpx0 libpciaccess0 libquadmath0 libstdc++-5-dev
+  libstdc++6 libtsan0 libubsan0 linux-libc-dev manpages-dev ocl-icd-libopencl1
+Suggested packages:
+  binutils-doc cpp-doc gcc-5-locales g++-multilib g++-5-multilib gcc-5-doc
+  libstdc++6-5-dbg gcc-multilib make autoconf automake libtool flex bison gdb
+  gcc-doc gcc-5-multilib libgcc1-dbg libgomp1-dbg libitm1-dbg libatomic1-dbg
+  libasan2-dbg liblsan0-dbg libtsan0-dbg libubsan0-dbg libcilkrts5-dbg
+  libmpx0-dbg libquadmath0-dbg gfortran-multilib gfortran-doc
+  gfortran-5-multilib gfortran-5-doc libgfortran3-dbg glibc-doc blcr-dkms
+  libhwloc-contrib-plugins libstdc++-5-doc blcr-util mpich-doc opencl-icd
+The following NEW packages will be installed:
+  binutils cpp cpp-5 g++ g++-5 gcc gcc-5 gfortran gfortran-5 hwloc-nox
+  libasan2 libatomic1 libc-dev-bin libc6-dev libcc1-0 libcilkrts5 libcr-dev
+  libcr0 libgcc-5-dev libgfortran-5-dev libgfortran3 libgomp1 libhwloc-plugins
+  libhwloc5 libisl15 libitm1 liblsan0 libltdl7 libmpc3 libmpich-dev libmpich12
+  libmpx0 libpciaccess0 libquadmath0 libstdc++-5-dev libtsan0 libubsan0
+  linux-libc-dev manpages-dev mpich ocl-icd-libopencl1
+The following packages will be upgraded:
+  gcc-5-base libstdc++6
+2 upgraded, 41 newly installed, 0 to remove and 44 not upgraded.
+Need to get 48.7 MB of archives.
+After this operation, 179 MB of additional disk space will be used.
+Get:1 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 libmpc3 amd64 1.0.3-1 [39.7 kB]
+Get:2 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 gcc-5-base amd64 5.4.0-6ubuntu1~16.04.10 [17.3 kB]
+Get:3 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libstdc++6 amd64 5.4.0-6ubuntu1~16.04.10 [393 kB]
+Get:4 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 binutils amd64 2.26.1-1ubuntu1~16.04.6 [2,311 kB]
+Get:5 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 libisl15 amd64 0.16.1-1 [524 kB]
+Get:6 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 cpp-5 amd64 5.4.0-6ubuntu1~16.04.10 [7,671 kB]
+Get:7 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 cpp amd64 4:5.3.1-1ubuntu1 [27.7 kB]
+Get:8 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libcc1-0 amd64 5.4.0-6ubuntu1~16.04.10 [38.8 kB]
+Get:9 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libgomp1 amd64 5.4.0-6ubuntu1~16.04.10 [55.1 kB]
+Get:10 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libitm1 amd64 5.4.0-6ubuntu1~16.04.10 [27.4 kB]
+Get:11 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libatomic1 amd64 5.4.0-6ubuntu1~16.04.10 [8,888 B]
+Get:12 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libasan2 amd64 5.4.0-6ubuntu1~16.04.10 [264 kB]
+Get:13 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 liblsan0 amd64 5.4.0-6ubuntu1~16.04.10 [105 kB]
+Get:14 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libtsan0 amd64 5.4.0-6ubuntu1~16.04.10 [244 kB]
+Get:15 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libubsan0 amd64 5.4.0-6ubuntu1~16.04.10 [95.3 kB]
+Get:16 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libcilkrts5 amd64 5.4.0-6ubuntu1~16.04.10 [40.1 kB]
+Get:17 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libmpx0 amd64 5.4.0-6ubuntu1~16.04.10 [9,764 B]
+Get:18 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libquadmath0 amd64 5.4.0-6ubuntu1~16.04.10 [131 kB]
+Get:19 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libgcc-5-dev amd64 5.4.0-6ubuntu1~16.04.10 [2,228 kB]
+Get:20 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 gcc-5 amd64 5.4.0-6ubuntu1~16.04.10 [8,426 kB]
+Get:21 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 gcc amd64 4:5.3.1-1ubuntu1 [5,244 B]
+Get:22 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libc-dev-bin amd64 2.23-0ubuntu10 [68.7 kB]
+Get:23 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 linux-libc-dev amd64 4.4.0-131.157 [866 kB]
+Get:24 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libc6-dev amd64 2.23-0ubuntu10 [2,079 kB]
+Get:25 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libstdc++-5-dev amd64 5.4.0-6ubuntu1~16.04.10 [1,426 kB]
+Get:26 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 g++-5 amd64 5.4.0-6ubuntu1~16.04.10 [8,319 kB]
+Get:27 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 g++ amd64 4:5.3.1-1ubuntu1 [1,504 B]
+Get:28 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libgfortran3 amd64 5.4.0-6ubuntu1~16.04.10 [260 kB]
+Get:29 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libgfortran-5-dev amd64 5.4.0-6ubuntu1~16.04.10 [291 kB]
+Get:30 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 gfortran-5 amd64 5.4.0-6ubuntu1~16.04.10 [8,043 kB]
+Get:31 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 gfortran amd64 4:5.3.1-1ubuntu1 [1,288 B]
+Get:32 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 libcr0 amd64 0.8.5-2.2 [18.8 kB]
+Get:33 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 libcr-dev amd64 0.8.5-2.2 [24.5 kB]
+Get:34 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 libltdl7 amd64 2.4.6-0.1 [38.3 kB]
+Get:35 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 libpciaccess0 amd64 0.13.4-1 [18.1 kB]
+Get:36 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 manpages-dev all 4.04-2 [2,048 kB]
+Get:37 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 libhwloc5 amd64 1.11.2-3 [99.5 kB]
+Get:38 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 hwloc-nox amd64 1.11.2-3 [151 kB]
+Get:39 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 ocl-icd-libopencl1 amd64 2.2.8-1 [29.7 kB]
+Get:40 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 libhwloc-plugins amd64 1.11.2-3 [13.2 kB]
+Get:41 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 libmpich12 amd64 3.2-6build1 [886 kB]
+Get:42 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 libmpich-dev amd64 3.2-6build1 [1,193 kB]
+Get:43 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 mpich amd64 3.2-6build1 [197 kB]
+Fetched 48.7 MB in 0s (48.9 MB/s)
+Selecting previously unselected package libmpc3:amd64.
+(Reading database ... 51263 files and directories currently installed.)
+Preparing to unpack .../libmpc3_1.0.3-1_amd64.deb ...
+Unpacking libmpc3:amd64 (1.0.3-1) ...
+Preparing to unpack .../gcc-5-base_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking gcc-5-base:amd64 (5.4.0-6ubuntu1~16.04.10) over (5.4.0-6ubuntu1~16.04.9) ...
+Setting up gcc-5-base:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+(Reading database ... 51268 files and directories currently installed.)
+Preparing to unpack .../libstdc++6_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libstdc++6:amd64 (5.4.0-6ubuntu1~16.04.10) over (5.4.0-6ubuntu1~16.04.9) ...
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+Setting up libstdc++6:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+Selecting previously unselected package binutils.
+(Reading database ... 51268 files and directories currently installed.)
+Preparing to unpack .../binutils_2.26.1-1ubuntu1~16.04.6_amd64.deb ...
+Unpacking binutils (2.26.1-1ubuntu1~16.04.6) ...
+Selecting previously unselected package libisl15:amd64.
+Preparing to unpack .../libisl15_0.16.1-1_amd64.deb ...
+Unpacking libisl15:amd64 (0.16.1-1) ...
+Selecting previously unselected package cpp-5.
+Preparing to unpack .../cpp-5_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking cpp-5 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package cpp.
+Preparing to unpack .../cpp_4%3a5.3.1-1ubuntu1_amd64.deb ...
+Unpacking cpp (4:5.3.1-1ubuntu1) ...
+Selecting previously unselected package libcc1-0:amd64.
+Preparing to unpack .../libcc1-0_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libcc1-0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libgomp1:amd64.
+Preparing to unpack .../libgomp1_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libgomp1:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libitm1:amd64.
+Preparing to unpack .../libitm1_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libitm1:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libatomic1:amd64.
+Preparing to unpack .../libatomic1_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libatomic1:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libasan2:amd64.
+Preparing to unpack .../libasan2_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libasan2:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package liblsan0:amd64.
+Preparing to unpack .../liblsan0_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking liblsan0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libtsan0:amd64.
+Preparing to unpack .../libtsan0_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libtsan0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libubsan0:amd64.
+Preparing to unpack .../libubsan0_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libubsan0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libcilkrts5:amd64.
+Preparing to unpack .../libcilkrts5_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libcilkrts5:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libmpx0:amd64.
+Preparing to unpack .../libmpx0_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libmpx0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libquadmath0:amd64.
+Preparing to unpack .../libquadmath0_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libquadmath0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libgcc-5-dev:amd64.
+Preparing to unpack .../libgcc-5-dev_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libgcc-5-dev:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package gcc-5.
+Preparing to unpack .../gcc-5_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking gcc-5 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package gcc.
+Preparing to unpack .../gcc_4%3a5.3.1-1ubuntu1_amd64.deb ...
+Unpacking gcc (4:5.3.1-1ubuntu1) ...
+Selecting previously unselected package libc-dev-bin.
+Preparing to unpack .../libc-dev-bin_2.23-0ubuntu10_amd64.deb ...
+Unpacking libc-dev-bin (2.23-0ubuntu10) ...
+Selecting previously unselected package linux-libc-dev:amd64.
+Preparing to unpack .../linux-libc-dev_4.4.0-131.157_amd64.deb ...
+Unpacking linux-libc-dev:amd64 (4.4.0-131.157) ...
+Selecting previously unselected package libc6-dev:amd64.
+Preparing to unpack .../libc6-dev_2.23-0ubuntu10_amd64.deb ...
+Unpacking libc6-dev:amd64 (2.23-0ubuntu10) ...
+Selecting previously unselected package libstdc++-5-dev:amd64.
+Preparing to unpack .../libstdc++-5-dev_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libstdc++-5-dev:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package g++-5.
+Preparing to unpack .../g++-5_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking g++-5 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package g++.
+Preparing to unpack .../g++_4%3a5.3.1-1ubuntu1_amd64.deb ...
+Unpacking g++ (4:5.3.1-1ubuntu1) ...
+Selecting previously unselected package libgfortran3:amd64.
+Preparing to unpack .../libgfortran3_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libgfortran3:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libgfortran-5-dev:amd64.
+Preparing to unpack .../libgfortran-5-dev_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libgfortran-5-dev:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package gfortran-5.
+Preparing to unpack .../gfortran-5_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking gfortran-5 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package gfortran.
+Preparing to unpack .../gfortran_4%3a5.3.1-1ubuntu1_amd64.deb ...
+Unpacking gfortran (4:5.3.1-1ubuntu1) ...
+Selecting previously unselected package libcr0.
+Preparing to unpack .../libcr0_0.8.5-2.2_amd64.deb ...
+Unpacking libcr0 (0.8.5-2.2) ...
+Selecting previously unselected package libcr-dev.
+Preparing to unpack .../libcr-dev_0.8.5-2.2_amd64.deb ...
+Unpacking libcr-dev (0.8.5-2.2) ...
+Selecting previously unselected package libltdl7:amd64.
+Preparing to unpack .../libltdl7_2.4.6-0.1_amd64.deb ...
+Unpacking libltdl7:amd64 (2.4.6-0.1) ...
+Selecting previously unselected package libpciaccess0:amd64.
+Preparing to unpack .../libpciaccess0_0.13.4-1_amd64.deb ...
+Unpacking libpciaccess0:amd64 (0.13.4-1) ...
+Selecting previously unselected package manpages-dev.
+Preparing to unpack .../manpages-dev_4.04-2_all.deb ...
+Unpacking manpages-dev (4.04-2) ...
+Selecting previously unselected package libhwloc5:amd64.
+Preparing to unpack .../libhwloc5_1.11.2-3_amd64.deb ...
+Unpacking libhwloc5:amd64 (1.11.2-3) ...
+Selecting previously unselected package hwloc-nox.
+Preparing to unpack .../hwloc-nox_1.11.2-3_amd64.deb ...
+Unpacking hwloc-nox (1.11.2-3) ...
+Selecting previously unselected package ocl-icd-libopencl1:amd64.
+Preparing to unpack .../ocl-icd-libopencl1_2.2.8-1_amd64.deb ...
+Unpacking ocl-icd-libopencl1:amd64 (2.2.8-1) ...
+Selecting previously unselected package libhwloc-plugins.
+Preparing to unpack .../libhwloc-plugins_1.11.2-3_amd64.deb ...
+Unpacking libhwloc-plugins (1.11.2-3) ...
+Selecting previously unselected package libmpich12:amd64.
+Preparing to unpack .../libmpich12_3.2-6build1_amd64.deb ...
+Unpacking libmpich12:amd64 (3.2-6build1) ...
+Selecting previously unselected package libmpich-dev.
+Preparing to unpack .../libmpich-dev_3.2-6build1_amd64.deb ...
+Unpacking libmpich-dev (3.2-6build1) ...
+Selecting previously unselected package mpich.
+Preparing to unpack .../mpich_3.2-6build1_amd64.deb ...
+Unpacking mpich (3.2-6build1) ...
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+Processing triggers for man-db (2.7.5-1) ...
+Setting up libmpc3:amd64 (1.0.3-1) ...
+Setting up binutils (2.26.1-1ubuntu1~16.04.6) ...
+Setting up libisl15:amd64 (0.16.1-1) ...
+Setting up cpp-5 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up cpp (4:5.3.1-1ubuntu1) ...
+Setting up libcc1-0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libgomp1:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libitm1:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libatomic1:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libasan2:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up liblsan0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libtsan0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libubsan0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libcilkrts5:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libmpx0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libquadmath0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libgcc-5-dev:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up gcc-5 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up gcc (4:5.3.1-1ubuntu1) ...
+Setting up libc-dev-bin (2.23-0ubuntu10) ...
+Setting up linux-libc-dev:amd64 (4.4.0-131.157) ...
+Setting up libc6-dev:amd64 (2.23-0ubuntu10) ...
+Setting up libstdc++-5-dev:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up g++-5 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up g++ (4:5.3.1-1ubuntu1) ...
+update-alternatives: using /usr/bin/g++ to provide /usr/bin/c++ (c++) in auto mode
+Setting up libgfortran3:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libgfortran-5-dev:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up gfortran-5 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up gfortran (4:5.3.1-1ubuntu1) ...
+update-alternatives: using /usr/bin/gfortran to provide /usr/bin/f95 (f95) in auto mode
+update-alternatives: using /usr/bin/gfortran to provide /usr/bin/f77 (f77) in auto mode
+Setting up libcr0 (0.8.5-2.2) ...
+Setting up libcr-dev (0.8.5-2.2) ...
+Setting up libltdl7:amd64 (2.4.6-0.1) ...
+Setting up libpciaccess0:amd64 (0.13.4-1) ...
+Setting up manpages-dev (4.04-2) ...
+Setting up libhwloc5:amd64 (1.11.2-3) ...
+Setting up hwloc-nox (1.11.2-3) ...
+Setting up ocl-icd-libopencl1:amd64 (2.2.8-1) ...
+Setting up libhwloc-plugins (1.11.2-3) ...
+Setting up libmpich12:amd64 (3.2-6build1) ...
+Setting up libmpich-dev (3.2-6build1) ...
+update-alternatives: using /usr/include/mpich to provide /usr/include/mpi (mpi) in auto mode
+Setting up mpich (3.2-6build1) ...
+update-alternatives: using /usr/bin/mpirun.mpich to provide /usr/bin/mpirun (mpirun) in auto mode
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Teletype
+dpkg-preconfigure: unable to re-open stdin:
+
+Installing MPI on cfd1
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  binutils cpp cpp-5 g++ g++-5 gcc gcc-5 gcc-5-base gfortran gfortran-5
+  hwloc-nox libasan2 libatomic1 libc-dev-bin libc6-dev libcc1-0 libcilkrts5
+  libcr-dev libcr0 libgcc-5-dev libgfortran-5-dev libgfortran3 libgomp1
+  libhwloc-plugins libhwloc5 libisl15 libitm1 liblsan0 libltdl7 libmpc3
+  libmpich-dev libmpich12 libmpx0 libpciaccess0 libquadmath0 libstdc++-5-dev
+  libstdc++6 libtsan0 libubsan0 linux-libc-dev manpages-dev ocl-icd-libopencl1
+Suggested packages:
+  binutils-doc cpp-doc gcc-5-locales g++-multilib g++-5-multilib gcc-5-doc
+  libstdc++6-5-dbg gcc-multilib make autoconf automake libtool flex bison gdb
+  gcc-doc gcc-5-multilib libgcc1-dbg libgomp1-dbg libitm1-dbg libatomic1-dbg
+  libasan2-dbg liblsan0-dbg libtsan0-dbg libubsan0-dbg libcilkrts5-dbg
+  libmpx0-dbg libquadmath0-dbg gfortran-multilib gfortran-doc
+  gfortran-5-multilib gfortran-5-doc libgfortran3-dbg glibc-doc blcr-dkms
+  libhwloc-contrib-plugins libstdc++-5-doc blcr-util mpich-doc opencl-icd
+The following NEW packages will be installed:
+  binutils cpp cpp-5 g++ g++-5 gcc gcc-5 gfortran gfortran-5 hwloc-nox
+  libasan2 libatomic1 libc-dev-bin libc6-dev libcc1-0 libcilkrts5 libcr-dev
+  libcr0 libgcc-5-dev libgfortran-5-dev libgfortran3 libgomp1 libhwloc-plugins
+  libhwloc5 libisl15 libitm1 liblsan0 libltdl7 libmpc3 libmpich-dev libmpich12
+  libmpx0 libpciaccess0 libquadmath0 libstdc++-5-dev libtsan0 libubsan0
+  linux-libc-dev manpages-dev mpich ocl-icd-libopencl1
+The following packages will be upgraded:
+  gcc-5-base libstdc++6
+2 upgraded, 41 newly installed, 0 to remove and 44 not upgraded.
+Need to get 48.7 MB of archives.
+After this operation, 179 MB of additional disk space will be used.
+Get:1 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 libmpc3 amd64 1.0.3-1 [39.7 kB]
+Get:2 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 gcc-5-base amd64 5.4.0-6ubuntu1~16.04.10 [17.3 kB]
+Get:3 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libstdc++6 amd64 5.4.0-6ubuntu1~16.04.10 [393 kB]
+Get:4 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 binutils amd64 2.26.1-1ubuntu1~16.04.6 [2,311 kB]
+Get:5 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 libisl15 amd64 0.16.1-1 [524 kB]
+Get:6 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 cpp-5 amd64 5.4.0-6ubuntu1~16.04.10 [7,671 kB]
+Get:7 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 cpp amd64 4:5.3.1-1ubuntu1 [27.7 kB]
+Get:8 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libcc1-0 amd64 5.4.0-6ubuntu1~16.04.10 [38.8 kB]
+Get:9 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libgomp1 amd64 5.4.0-6ubuntu1~16.04.10 [55.1 kB]
+Get:10 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libitm1 amd64 5.4.0-6ubuntu1~16.04.10 [27.4 kB]
+Get:11 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libatomic1 amd64 5.4.0-6ubuntu1~16.04.10 [8,888 B]
+Get:12 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libasan2 amd64 5.4.0-6ubuntu1~16.04.10 [264 kB]
+Get:13 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 liblsan0 amd64 5.4.0-6ubuntu1~16.04.10 [105 kB]
+Get:14 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libtsan0 amd64 5.4.0-6ubuntu1~16.04.10 [244 kB]
+Get:15 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libubsan0 amd64 5.4.0-6ubuntu1~16.04.10 [95.3 kB]
+Get:16 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libcilkrts5 amd64 5.4.0-6ubuntu1~16.04.10 [40.1 kB]
+Get:17 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libmpx0 amd64 5.4.0-6ubuntu1~16.04.10 [9,764 B]
+Get:18 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libquadmath0 amd64 5.4.0-6ubuntu1~16.04.10 [131 kB]
+Get:19 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libgcc-5-dev amd64 5.4.0-6ubuntu1~16.04.10 [2,228 kB]
+Get:20 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 gcc-5 amd64 5.4.0-6ubuntu1~16.04.10 [8,426 kB]
+Get:21 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 gcc amd64 4:5.3.1-1ubuntu1 [5,244 B]
+Get:22 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libc-dev-bin amd64 2.23-0ubuntu10 [68.7 kB]
+Get:23 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 linux-libc-dev amd64 4.4.0-131.157 [866 kB]
+Get:24 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libc6-dev amd64 2.23-0ubuntu10 [2,079 kB]
+Get:25 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libstdc++-5-dev amd64 5.4.0-6ubuntu1~16.04.10 [1,426 kB]
+Get:26 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 g++-5 amd64 5.4.0-6ubuntu1~16.04.10 [8,319 kB]
+Get:27 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 g++ amd64 4:5.3.1-1ubuntu1 [1,504 B]
+Get:28 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libgfortran3 amd64 5.4.0-6ubuntu1~16.04.10 [260 kB]
+Get:29 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libgfortran-5-dev amd64 5.4.0-6ubuntu1~16.04.10 [291 kB]
+Get:30 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 gfortran-5 amd64 5.4.0-6ubuntu1~16.04.10 [8,043 kB]
+Get:31 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 gfortran amd64 4:5.3.1-1ubuntu1 [1,288 B]
+Get:32 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 libcr0 amd64 0.8.5-2.2 [18.8 kB]
+Get:33 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 libcr-dev amd64 0.8.5-2.2 [24.5 kB]
+Get:34 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 libltdl7 amd64 2.4.6-0.1 [38.3 kB]
+Get:35 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 libpciaccess0 amd64 0.13.4-1 [18.1 kB]
+Get:36 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 manpages-dev all 4.04-2 [2,048 kB]
+Get:37 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 libhwloc5 amd64 1.11.2-3 [99.5 kB]
+Get:38 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 hwloc-nox amd64 1.11.2-3 [151 kB]
+Get:39 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 ocl-icd-libopencl1 amd64 2.2.8-1 [29.7 kB]
+Get:40 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 libhwloc-plugins amd64 1.11.2-3 [13.2 kB]
+Get:41 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 libmpich12 amd64 3.2-6build1 [886 kB]
+Get:42 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 libmpich-dev amd64 3.2-6build1 [1,193 kB]
+Get:43 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 mpich amd64 3.2-6build1 [197 kB]
+Fetched 48.7 MB in 0s (56.9 MB/s)
+Selecting previously unselected package libmpc3:amd64.
+(Reading database ... 51263 files and directories currently installed.)
+Preparing to unpack .../libmpc3_1.0.3-1_amd64.deb ...
+Unpacking libmpc3:amd64 (1.0.3-1) ...
+Preparing to unpack .../gcc-5-base_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking gcc-5-base:amd64 (5.4.0-6ubuntu1~16.04.10) over (5.4.0-6ubuntu1~16.04.9) ...
+Setting up gcc-5-base:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+(Reading database ... 51268 files and directories currently installed.)
+Preparing to unpack .../libstdc++6_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libstdc++6:amd64 (5.4.0-6ubuntu1~16.04.10) over (5.4.0-6ubuntu1~16.04.9) ...
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+Setting up libstdc++6:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+Selecting previously unselected package binutils.
+(Reading database ... 51268 files and directories currently installed.)
+Preparing to unpack .../binutils_2.26.1-1ubuntu1~16.04.6_amd64.deb ...
+Unpacking binutils (2.26.1-1ubuntu1~16.04.6) ...
+Selecting previously unselected package libisl15:amd64.
+Preparing to unpack .../libisl15_0.16.1-1_amd64.deb ...
+Unpacking libisl15:amd64 (0.16.1-1) ...
+Selecting previously unselected package cpp-5.
+Preparing to unpack .../cpp-5_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking cpp-5 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package cpp.
+Preparing to unpack .../cpp_4%3a5.3.1-1ubuntu1_amd64.deb ...
+Unpacking cpp (4:5.3.1-1ubuntu1) ...
+Selecting previously unselected package libcc1-0:amd64.
+Preparing to unpack .../libcc1-0_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libcc1-0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libgomp1:amd64.
+Preparing to unpack .../libgomp1_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libgomp1:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libitm1:amd64.
+Preparing to unpack .../libitm1_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libitm1:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libatomic1:amd64.
+Preparing to unpack .../libatomic1_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libatomic1:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libasan2:amd64.
+Preparing to unpack .../libasan2_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libasan2:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package liblsan0:amd64.
+Preparing to unpack .../liblsan0_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking liblsan0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libtsan0:amd64.
+Preparing to unpack .../libtsan0_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libtsan0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libubsan0:amd64.
+Preparing to unpack .../libubsan0_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libubsan0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libcilkrts5:amd64.
+Preparing to unpack .../libcilkrts5_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libcilkrts5:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libmpx0:amd64.
+Preparing to unpack .../libmpx0_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libmpx0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libquadmath0:amd64.
+Preparing to unpack .../libquadmath0_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libquadmath0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libgcc-5-dev:amd64.
+Preparing to unpack .../libgcc-5-dev_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libgcc-5-dev:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package gcc-5.
+Preparing to unpack .../gcc-5_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking gcc-5 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package gcc.
+Preparing to unpack .../gcc_4%3a5.3.1-1ubuntu1_amd64.deb ...
+Unpacking gcc (4:5.3.1-1ubuntu1) ...
+Selecting previously unselected package libc-dev-bin.
+Preparing to unpack .../libc-dev-bin_2.23-0ubuntu10_amd64.deb ...
+Unpacking libc-dev-bin (2.23-0ubuntu10) ...
+Selecting previously unselected package linux-libc-dev:amd64.
+Preparing to unpack .../linux-libc-dev_4.4.0-131.157_amd64.deb ...
+Unpacking linux-libc-dev:amd64 (4.4.0-131.157) ...
+Selecting previously unselected package libc6-dev:amd64.
+Preparing to unpack .../libc6-dev_2.23-0ubuntu10_amd64.deb ...
+Unpacking libc6-dev:amd64 (2.23-0ubuntu10) ...
+Selecting previously unselected package libstdc++-5-dev:amd64.
+Preparing to unpack .../libstdc++-5-dev_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libstdc++-5-dev:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package g++-5.
+Preparing to unpack .../g++-5_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking g++-5 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package g++.
+Preparing to unpack .../g++_4%3a5.3.1-1ubuntu1_amd64.deb ...
+Unpacking g++ (4:5.3.1-1ubuntu1) ...
+Selecting previously unselected package libgfortran3:amd64.
+Preparing to unpack .../libgfortran3_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libgfortran3:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libgfortran-5-dev:amd64.
+Preparing to unpack .../libgfortran-5-dev_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libgfortran-5-dev:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package gfortran-5.
+Preparing to unpack .../gfortran-5_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking gfortran-5 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package gfortran.
+Preparing to unpack .../gfortran_4%3a5.3.1-1ubuntu1_amd64.deb ...
+Unpacking gfortran (4:5.3.1-1ubuntu1) ...
+Selecting previously unselected package libcr0.
+Preparing to unpack .../libcr0_0.8.5-2.2_amd64.deb ...
+Unpacking libcr0 (0.8.5-2.2) ...
+Selecting previously unselected package libcr-dev.
+Preparing to unpack .../libcr-dev_0.8.5-2.2_amd64.deb ...
+Unpacking libcr-dev (0.8.5-2.2) ...
+Selecting previously unselected package libltdl7:amd64.
+Preparing to unpack .../libltdl7_2.4.6-0.1_amd64.deb ...
+Unpacking libltdl7:amd64 (2.4.6-0.1) ...
+Selecting previously unselected package libpciaccess0:amd64.
+Preparing to unpack .../libpciaccess0_0.13.4-1_amd64.deb ...
+Unpacking libpciaccess0:amd64 (0.13.4-1) ...
+Selecting previously unselected package manpages-dev.
+Preparing to unpack .../manpages-dev_4.04-2_all.deb ...
+Unpacking manpages-dev (4.04-2) ...
+Selecting previously unselected package libhwloc5:amd64.
+Preparing to unpack .../libhwloc5_1.11.2-3_amd64.deb ...
+Unpacking libhwloc5:amd64 (1.11.2-3) ...
+Selecting previously unselected package hwloc-nox.
+Preparing to unpack .../hwloc-nox_1.11.2-3_amd64.deb ...
+Unpacking hwloc-nox (1.11.2-3) ...
+Selecting previously unselected package ocl-icd-libopencl1:amd64.
+Preparing to unpack .../ocl-icd-libopencl1_2.2.8-1_amd64.deb ...
+Unpacking ocl-icd-libopencl1:amd64 (2.2.8-1) ...
+Selecting previously unselected package libhwloc-plugins.
+Preparing to unpack .../libhwloc-plugins_1.11.2-3_amd64.deb ...
+Unpacking libhwloc-plugins (1.11.2-3) ...
+Selecting previously unselected package libmpich12:amd64.
+Preparing to unpack .../libmpich12_3.2-6build1_amd64.deb ...
+Unpacking libmpich12:amd64 (3.2-6build1) ...
+Selecting previously unselected package libmpich-dev.
+Preparing to unpack .../libmpich-dev_3.2-6build1_amd64.deb ...
+Unpacking libmpich-dev (3.2-6build1) ...
+Selecting previously unselected package mpich.
+Preparing to unpack .../mpich_3.2-6build1_amd64.deb ...
+Unpacking mpich (3.2-6build1) ...
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+Processing triggers for man-db (2.7.5-1) ...
+Setting up libmpc3:amd64 (1.0.3-1) ...
+Setting up binutils (2.26.1-1ubuntu1~16.04.6) ...
+Setting up libisl15:amd64 (0.16.1-1) ...
+Setting up cpp-5 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up cpp (4:5.3.1-1ubuntu1) ...
+Setting up libcc1-0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libgomp1:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libitm1:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libatomic1:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libasan2:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up liblsan0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libtsan0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libubsan0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libcilkrts5:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libmpx0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libquadmath0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libgcc-5-dev:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up gcc-5 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up gcc (4:5.3.1-1ubuntu1) ...
+Setting up libc-dev-bin (2.23-0ubuntu10) ...
+Setting up linux-libc-dev:amd64 (4.4.0-131.157) ...
+Setting up libc6-dev:amd64 (2.23-0ubuntu10) ...
+Setting up libstdc++-5-dev:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up g++-5 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up g++ (4:5.3.1-1ubuntu1) ...
+update-alternatives: using /usr/bin/g++ to provide /usr/bin/c++ (c++) in auto mode
+Setting up libgfortran3:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libgfortran-5-dev:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up gfortran-5 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up gfortran (4:5.3.1-1ubuntu1) ...
+update-alternatives: using /usr/bin/gfortran to provide /usr/bin/f95 (f95) in auto mode
+update-alternatives: using /usr/bin/gfortran to provide /usr/bin/f77 (f77) in auto mode
+Setting up libcr0 (0.8.5-2.2) ...
+Setting up libcr-dev (0.8.5-2.2) ...
+Setting up libltdl7:amd64 (2.4.6-0.1) ...
+Setting up libpciaccess0:amd64 (0.13.4-1) ...
+Setting up manpages-dev (4.04-2) ...
+Setting up libhwloc5:amd64 (1.11.2-3) ...
+Setting up hwloc-nox (1.11.2-3) ...
+Setting up ocl-icd-libopencl1:amd64 (2.2.8-1) ...
+Setting up libhwloc-plugins (1.11.2-3) ...
+Setting up libmpich12:amd64 (3.2-6build1) ...
+Setting up libmpich-dev (3.2-6build1) ...
+update-alternatives: using /usr/include/mpich to provide /usr/include/mpi (mpi) in auto mode
+Setting up mpich (3.2-6build1) ...
+update-alternatives: using /usr/bin/mpirun.mpich to provide /usr/bin/mpirun (mpirun) in auto mode
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Teletype
+dpkg-preconfigure: unable to re-open stdin:
+
+Installing MPI on cfd2
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  binutils cpp cpp-5 g++ g++-5 gcc gcc-5 gcc-5-base gfortran gfortran-5
+  hwloc-nox libasan2 libatomic1 libc-dev-bin libc6-dev libcc1-0 libcilkrts5
+  libcr-dev libcr0 libgcc-5-dev libgfortran-5-dev libgfortran3 libgomp1
+  libhwloc-plugins libhwloc5 libisl15 libitm1 liblsan0 libltdl7 libmpc3
+  libmpich-dev libmpich12 libmpx0 libpciaccess0 libquadmath0 libstdc++-5-dev
+  libstdc++6 libtsan0 libubsan0 linux-libc-dev manpages-dev ocl-icd-libopencl1
+Suggested packages:
+  binutils-doc cpp-doc gcc-5-locales g++-multilib g++-5-multilib gcc-5-doc
+  libstdc++6-5-dbg gcc-multilib make autoconf automake libtool flex bison gdb
+  gcc-doc gcc-5-multilib libgcc1-dbg libgomp1-dbg libitm1-dbg libatomic1-dbg
+  libasan2-dbg liblsan0-dbg libtsan0-dbg libubsan0-dbg libcilkrts5-dbg
+  libmpx0-dbg libquadmath0-dbg gfortran-multilib gfortran-doc
+  gfortran-5-multilib gfortran-5-doc libgfortran3-dbg glibc-doc blcr-dkms
+  libhwloc-contrib-plugins libstdc++-5-doc blcr-util mpich-doc opencl-icd
+The following NEW packages will be installed:
+  binutils cpp cpp-5 g++ g++-5 gcc gcc-5 gfortran gfortran-5 hwloc-nox
+  libasan2 libatomic1 libc-dev-bin libc6-dev libcc1-0 libcilkrts5 libcr-dev
+  libcr0 libgcc-5-dev libgfortran-5-dev libgfortran3 libgomp1 libhwloc-plugins
+  libhwloc5 libisl15 libitm1 liblsan0 libltdl7 libmpc3 libmpich-dev libmpich12
+  libmpx0 libpciaccess0 libquadmath0 libstdc++-5-dev libtsan0 libubsan0
+  linux-libc-dev manpages-dev mpich ocl-icd-libopencl1
+The following packages will be upgraded:
+  gcc-5-base libstdc++6
+2 upgraded, 41 newly installed, 0 to remove and 44 not upgraded.
+Need to get 48.7 MB of archives.
+After this operation, 179 MB of additional disk space will be used.
+Get:1 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 libmpc3 amd64 1.0.3-1 [39.7 kB]
+Get:2 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 gcc-5-base amd64 5.4.0-6ubuntu1~16.04.10 [17.3 kB]
+Get:3 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libstdc++6 amd64 5.4.0-6ubuntu1~16.04.10 [393 kB]
+Get:4 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 binutils amd64 2.26.1-1ubuntu1~16.04.6 [2,311 kB]
+Get:5 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 libisl15 amd64 0.16.1-1 [524 kB]
+Get:6 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 cpp-5 amd64 5.4.0-6ubuntu1~16.04.10 [7,671 kB]
+Get:7 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 cpp amd64 4:5.3.1-1ubuntu1 [27.7 kB]
+Get:8 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libcc1-0 amd64 5.4.0-6ubuntu1~16.04.10 [38.8 kB]
+Get:9 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libgomp1 amd64 5.4.0-6ubuntu1~16.04.10 [55.1 kB]
+Get:10 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libitm1 amd64 5.4.0-6ubuntu1~16.04.10 [27.4 kB]
+Get:11 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libatomic1 amd64 5.4.0-6ubuntu1~16.04.10 [8,888 B]
+Get:12 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libasan2 amd64 5.4.0-6ubuntu1~16.04.10 [264 kB]
+Get:13 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 liblsan0 amd64 5.4.0-6ubuntu1~16.04.10 [105 kB]
+Get:14 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libtsan0 amd64 5.4.0-6ubuntu1~16.04.10 [244 kB]
+Get:15 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libubsan0 amd64 5.4.0-6ubuntu1~16.04.10 [95.3 kB]
+Get:16 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libcilkrts5 amd64 5.4.0-6ubuntu1~16.04.10 [40.1 kB]
+Get:17 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libmpx0 amd64 5.4.0-6ubuntu1~16.04.10 [9,764 B]
+Get:18 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libquadmath0 amd64 5.4.0-6ubuntu1~16.04.10 [131 kB]
+Get:19 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libgcc-5-dev amd64 5.4.0-6ubuntu1~16.04.10 [2,228 kB]
+Get:20 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 gcc-5 amd64 5.4.0-6ubuntu1~16.04.10 [8,426 kB]
+Get:21 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 gcc amd64 4:5.3.1-1ubuntu1 [5,244 B]
+Get:22 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libc-dev-bin amd64 2.23-0ubuntu10 [68.7 kB]
+Get:23 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 linux-libc-dev amd64 4.4.0-131.157 [866 kB]
+Get:24 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libc6-dev amd64 2.23-0ubuntu10 [2,079 kB]
+Get:25 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libstdc++-5-dev amd64 5.4.0-6ubuntu1~16.04.10 [1,426 kB]
+Get:26 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 g++-5 amd64 5.4.0-6ubuntu1~16.04.10 [8,319 kB]
+Get:27 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 g++ amd64 4:5.3.1-1ubuntu1 [1,504 B]
+Get:28 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libgfortran3 amd64 5.4.0-6ubuntu1~16.04.10 [260 kB]
+Get:29 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libgfortran-5-dev amd64 5.4.0-6ubuntu1~16.04.10 [291 kB]
+Get:30 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 gfortran-5 amd64 5.4.0-6ubuntu1~16.04.10 [8,043 kB]
+Get:31 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 gfortran amd64 4:5.3.1-1ubuntu1 [1,288 B]
+Get:32 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 libcr0 amd64 0.8.5-2.2 [18.8 kB]
+Get:33 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 libcr-dev amd64 0.8.5-2.2 [24.5 kB]
+Get:34 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 libltdl7 amd64 2.4.6-0.1 [38.3 kB]
+Get:35 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 libpciaccess0 amd64 0.13.4-1 [18.1 kB]
+Get:36 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 manpages-dev all 4.04-2 [2,048 kB]
+Get:37 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 libhwloc5 amd64 1.11.2-3 [99.5 kB]
+Get:38 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 hwloc-nox amd64 1.11.2-3 [151 kB]
+Get:39 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 ocl-icd-libopencl1 amd64 2.2.8-1 [29.7 kB]
+Get:40 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 libhwloc-plugins amd64 1.11.2-3 [13.2 kB]
+Get:41 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 libmpich12 amd64 3.2-6build1 [886 kB]
+Get:42 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 libmpich-dev amd64 3.2-6build1 [1,193 kB]
+Get:43 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 mpich amd64 3.2-6build1 [197 kB]
+Fetched 48.7 MB in 0s (53.8 MB/s)
+Selecting previously unselected package libmpc3:amd64.
+(Reading database ... 51263 files and directories currently installed.)
+Preparing to unpack .../libmpc3_1.0.3-1_amd64.deb ...
+Unpacking libmpc3:amd64 (1.0.3-1) ...
+Preparing to unpack .../gcc-5-base_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking gcc-5-base:amd64 (5.4.0-6ubuntu1~16.04.10) over (5.4.0-6ubuntu1~16.04.9) ...
+Setting up gcc-5-base:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+(Reading database ... 51268 files and directories currently installed.)
+Preparing to unpack .../libstdc++6_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libstdc++6:amd64 (5.4.0-6ubuntu1~16.04.10) over (5.4.0-6ubuntu1~16.04.9) ...
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+Setting up libstdc++6:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+Selecting previously unselected package binutils.
+(Reading database ... 51268 files and directories currently installed.)
+Preparing to unpack .../binutils_2.26.1-1ubuntu1~16.04.6_amd64.deb ...
+Unpacking binutils (2.26.1-1ubuntu1~16.04.6) ...
+Selecting previously unselected package libisl15:amd64.
+Preparing to unpack .../libisl15_0.16.1-1_amd64.deb ...
+Unpacking libisl15:amd64 (0.16.1-1) ...
+Selecting previously unselected package cpp-5.
+Preparing to unpack .../cpp-5_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking cpp-5 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package cpp.
+Preparing to unpack .../cpp_4%3a5.3.1-1ubuntu1_amd64.deb ...
+Unpacking cpp (4:5.3.1-1ubuntu1) ...
+Selecting previously unselected package libcc1-0:amd64.
+Preparing to unpack .../libcc1-0_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libcc1-0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libgomp1:amd64.
+Preparing to unpack .../libgomp1_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libgomp1:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libitm1:amd64.
+Preparing to unpack .../libitm1_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libitm1:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libatomic1:amd64.
+Preparing to unpack .../libatomic1_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libatomic1:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libasan2:amd64.
+Preparing to unpack .../libasan2_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libasan2:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package liblsan0:amd64.
+Preparing to unpack .../liblsan0_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking liblsan0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libtsan0:amd64.
+Preparing to unpack .../libtsan0_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libtsan0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libubsan0:amd64.
+Preparing to unpack .../libubsan0_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libubsan0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libcilkrts5:amd64.
+Preparing to unpack .../libcilkrts5_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libcilkrts5:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libmpx0:amd64.
+Preparing to unpack .../libmpx0_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libmpx0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libquadmath0:amd64.
+Preparing to unpack .../libquadmath0_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libquadmath0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libgcc-5-dev:amd64.
+Preparing to unpack .../libgcc-5-dev_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libgcc-5-dev:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package gcc-5.
+Preparing to unpack .../gcc-5_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking gcc-5 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package gcc.
+Preparing to unpack .../gcc_4%3a5.3.1-1ubuntu1_amd64.deb ...
+Unpacking gcc (4:5.3.1-1ubuntu1) ...
+Selecting previously unselected package libc-dev-bin.
+Preparing to unpack .../libc-dev-bin_2.23-0ubuntu10_amd64.deb ...
+Unpacking libc-dev-bin (2.23-0ubuntu10) ...
+Selecting previously unselected package linux-libc-dev:amd64.
+Preparing to unpack .../linux-libc-dev_4.4.0-131.157_amd64.deb ...
+Unpacking linux-libc-dev:amd64 (4.4.0-131.157) ...
+Selecting previously unselected package libc6-dev:amd64.
+Preparing to unpack .../libc6-dev_2.23-0ubuntu10_amd64.deb ...
+Unpacking libc6-dev:amd64 (2.23-0ubuntu10) ...
+Selecting previously unselected package libstdc++-5-dev:amd64.
+Preparing to unpack .../libstdc++-5-dev_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libstdc++-5-dev:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package g++-5.
+Preparing to unpack .../g++-5_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking g++-5 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package g++.
+Preparing to unpack .../g++_4%3a5.3.1-1ubuntu1_amd64.deb ...
+Unpacking g++ (4:5.3.1-1ubuntu1) ...
+Selecting previously unselected package libgfortran3:amd64.
+Preparing to unpack .../libgfortran3_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libgfortran3:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package libgfortran-5-dev:amd64.
+Preparing to unpack .../libgfortran-5-dev_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking libgfortran-5-dev:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package gfortran-5.
+Preparing to unpack .../gfortran-5_5.4.0-6ubuntu1~16.04.10_amd64.deb ...
+Unpacking gfortran-5 (5.4.0-6ubuntu1~16.04.10) ...
+Selecting previously unselected package gfortran.
+Preparing to unpack .../gfortran_4%3a5.3.1-1ubuntu1_amd64.deb ...
+Unpacking gfortran (4:5.3.1-1ubuntu1) ...
+Selecting previously unselected package libcr0.
+Preparing to unpack .../libcr0_0.8.5-2.2_amd64.deb ...
+Unpacking libcr0 (0.8.5-2.2) ...
+Selecting previously unselected package libcr-dev.
+Preparing to unpack .../libcr-dev_0.8.5-2.2_amd64.deb ...
+Unpacking libcr-dev (0.8.5-2.2) ...
+Selecting previously unselected package libltdl7:amd64.
+Preparing to unpack .../libltdl7_2.4.6-0.1_amd64.deb ...
+Unpacking libltdl7:amd64 (2.4.6-0.1) ...
+Selecting previously unselected package libpciaccess0:amd64.
+Preparing to unpack .../libpciaccess0_0.13.4-1_amd64.deb ...
+Unpacking libpciaccess0:amd64 (0.13.4-1) ...
+Selecting previously unselected package manpages-dev.
+Preparing to unpack .../manpages-dev_4.04-2_all.deb ...
+Unpacking manpages-dev (4.04-2) ...
+Selecting previously unselected package libhwloc5:amd64.
+Preparing to unpack .../libhwloc5_1.11.2-3_amd64.deb ...
+Unpacking libhwloc5:amd64 (1.11.2-3) ...
+Selecting previously unselected package hwloc-nox.
+Preparing to unpack .../hwloc-nox_1.11.2-3_amd64.deb ...
+Unpacking hwloc-nox (1.11.2-3) ...
+Selecting previously unselected package ocl-icd-libopencl1:amd64.
+Preparing to unpack .../ocl-icd-libopencl1_2.2.8-1_amd64.deb ...
+Unpacking ocl-icd-libopencl1:amd64 (2.2.8-1) ...
+Selecting previously unselected package libhwloc-plugins.
+Preparing to unpack .../libhwloc-plugins_1.11.2-3_amd64.deb ...
+Unpacking libhwloc-plugins (1.11.2-3) ...
+Selecting previously unselected package libmpich12:amd64.
+Preparing to unpack .../libmpich12_3.2-6build1_amd64.deb ...
+Unpacking libmpich12:amd64 (3.2-6build1) ...
+Selecting previously unselected package libmpich-dev.
+Preparing to unpack .../libmpich-dev_3.2-6build1_amd64.deb ...
+Unpacking libmpich-dev (3.2-6build1) ...
+Selecting previously unselected package mpich.
+Preparing to unpack .../mpich_3.2-6build1_amd64.deb ...
+Unpacking mpich (3.2-6build1) ...
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+Processing triggers for man-db (2.7.5-1) ...
+Setting up libmpc3:amd64 (1.0.3-1) ...
+Setting up binutils (2.26.1-1ubuntu1~16.04.6) ...
+Setting up libisl15:amd64 (0.16.1-1) ...
+Setting up cpp-5 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up cpp (4:5.3.1-1ubuntu1) ...
+Setting up libcc1-0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libgomp1:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libitm1:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libatomic1:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libasan2:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up liblsan0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libtsan0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libubsan0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libcilkrts5:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libmpx0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libquadmath0:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libgcc-5-dev:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up gcc-5 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up gcc (4:5.3.1-1ubuntu1) ...
+Setting up libc-dev-bin (2.23-0ubuntu10) ...
+Setting up linux-libc-dev:amd64 (4.4.0-131.157) ...
+Setting up libc6-dev:amd64 (2.23-0ubuntu10) ...
+Setting up libstdc++-5-dev:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up g++-5 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up g++ (4:5.3.1-1ubuntu1) ...
+update-alternatives: using /usr/bin/g++ to provide /usr/bin/c++ (c++) in auto mode
+Setting up libgfortran3:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up libgfortran-5-dev:amd64 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up gfortran-5 (5.4.0-6ubuntu1~16.04.10) ...
+Setting up gfortran (4:5.3.1-1ubuntu1) ...
+update-alternatives: using /usr/bin/gfortran to provide /usr/bin/f95 (f95) in auto mode
+update-alternatives: using /usr/bin/gfortran to provide /usr/bin/f77 (f77) in auto mode
+Setting up libcr0 (0.8.5-2.2) ...
+Setting up libcr-dev (0.8.5-2.2) ...
+Setting up libltdl7:amd64 (2.4.6-0.1) ...
+Setting up libpciaccess0:amd64 (0.13.4-1) ...
+Setting up manpages-dev (4.04-2) ...
+Setting up libhwloc5:amd64 (1.11.2-3) ...
+Setting up hwloc-nox (1.11.2-3) ...
+Setting up ocl-icd-libopencl1:amd64 (2.2.8-1) ...
+Setting up libhwloc-plugins (1.11.2-3) ...
+Setting up libmpich12:amd64 (3.2-6build1) ...
+Setting up libmpich-dev (3.2-6build1) ...
+update-alternatives: using /usr/include/mpich to provide /usr/include/mpi (mpi) in auto mode
+Setting up mpich (3.2-6build1) ...
+update-alternatives: using /usr/bin/mpirun.mpich to provide /usr/bin/mpirun (mpirun) in auto mode
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Teletype
+dpkg-preconfigure: unable to re-open stdin:
+Testing ssh from master to cfd1
+Testing ssh from master to cfd2
+Testing ssh from cfd1 to master
+Testing ssh from cfd2 to master
+
+Configuring NFS
+
+Installing nfs-kernel-service on master node
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  keyutils libnfsidmap2 libpython-stdlib libpython2.7-minimal
+  libpython2.7-stdlib libtirpc1 nfs-common python python-minimal python2.7
+  python2.7-minimal rpcbind
+Suggested packages:
+  watchdog python-doc python-tk python2.7-doc binfmt-support
+The following NEW packages will be installed:
+  keyutils libnfsidmap2 libpython-stdlib libpython2.7-minimal
+  libpython2.7-stdlib libtirpc1 nfs-common nfs-kernel-server python
+  python-minimal python2.7 python2.7-minimal rpcbind
+0 upgraded, 13 newly installed, 0 to remove and 44 not upgraded.
+Need to get 4,344 kB of archives.
+After this operation, 18.5 MB of additional disk space will be used.
+Get:1 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 libnfsidmap2 amd64 0.25-5 [32.2 kB]
+Get:2 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython2.7-minimal amd64 2.7.12-1ubuntu0~16.04.3 [340 kB]
+Get:3 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python2.7-minimal amd64 2.7.12-1ubuntu0~16.04.3 [1,261 kB]
+Get:4 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python-minimal amd64 2.7.12-1~16.04 [28.1 kB]
+Get:5 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython2.7-stdlib amd64 2.7.12-1ubuntu0~16.04.3 [1,880 kB]
+Get:6 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python2.7 amd64 2.7.12-1ubuntu0~16.04.3 [224 kB]
+Get:7 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython-stdlib amd64 2.7.12-1~16.04 [7,768 B]
+Get:8 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python amd64 2.7.12-1~16.04 [137 kB]
+Get:9 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 libtirpc1 amd64 0.2.5-1 [75.6 kB]
+Get:10 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 keyutils amd64 1.5.9-8ubuntu1 [47.1 kB]
+Get:11 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 rpcbind amd64 0.2.3-0.2 [40.3 kB]
+Get:12 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 nfs-common amd64 1:1.2.8-9ubuntu12.1 [184 kB]
+Get:13 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 nfs-kernel-server amd64 1:1.2.8-9ubuntu12.1 [88.0 kB]
+Fetched 4,344 kB in 0s (14.1 MB/s)
+Selecting previously unselected package libnfsidmap2:amd64.
+(Reading database ... 56153 files and directories currently installed.)
+Preparing to unpack .../libnfsidmap2_0.25-5_amd64.deb ...
+Unpacking libnfsidmap2:amd64 (0.25-5) ...
+Selecting previously unselected package libpython2.7-minimal:amd64.
+Preparing to unpack .../libpython2.7-minimal_2.7.12-1ubuntu0~16.04.3_amd64.deb ...
+Unpacking libpython2.7-minimal:amd64 (2.7.12-1ubuntu0~16.04.3) ...
+Selecting previously unselected package python2.7-minimal.
+Preparing to unpack .../python2.7-minimal_2.7.12-1ubuntu0~16.04.3_amd64.deb ...
+Unpacking python2.7-minimal (2.7.12-1ubuntu0~16.04.3) ...
+Selecting previously unselected package python-minimal.
+Preparing to unpack .../python-minimal_2.7.12-1~16.04_amd64.deb ...
+Unpacking python-minimal (2.7.12-1~16.04) ...
+Selecting previously unselected package libpython2.7-stdlib:amd64.
+Preparing to unpack .../libpython2.7-stdlib_2.7.12-1ubuntu0~16.04.3_amd64.deb ...
+Unpacking libpython2.7-stdlib:amd64 (2.7.12-1ubuntu0~16.04.3) ...
+Selecting previously unselected package python2.7.
+Preparing to unpack .../python2.7_2.7.12-1ubuntu0~16.04.3_amd64.deb ...
+Unpacking python2.7 (2.7.12-1ubuntu0~16.04.3) ...
+Selecting previously unselected package libpython-stdlib:amd64.
+Preparing to unpack .../libpython-stdlib_2.7.12-1~16.04_amd64.deb ...
+Unpacking libpython-stdlib:amd64 (2.7.12-1~16.04) ...
+Processing triggers for man-db (2.7.5-1) ...
+Processing triggers for mime-support (3.59ubuntu1) ...
+Setting up libpython2.7-minimal:amd64 (2.7.12-1ubuntu0~16.04.3) ...
+Setting up python2.7-minimal (2.7.12-1ubuntu0~16.04.3) ...
+Linking and byte-compiling packages for runtime python2.7...
+Setting up python-minimal (2.7.12-1~16.04) ...
+Selecting previously unselected package python.
+(Reading database ... 56909 files and directories currently installed.)
+Preparing to unpack .../python_2.7.12-1~16.04_amd64.deb ...
+Unpacking python (2.7.12-1~16.04) ...
+Selecting previously unselected package libtirpc1:amd64.
+Preparing to unpack .../libtirpc1_0.2.5-1_amd64.deb ...
+Unpacking libtirpc1:amd64 (0.2.5-1) ...
+Selecting previously unselected package keyutils.
+Preparing to unpack .../keyutils_1.5.9-8ubuntu1_amd64.deb ...
+Unpacking keyutils (1.5.9-8ubuntu1) ...
+Selecting previously unselected package rpcbind.
+Preparing to unpack .../rpcbind_0.2.3-0.2_amd64.deb ...
+Unpacking rpcbind (0.2.3-0.2) ...
+Selecting previously unselected package nfs-common.
+Preparing to unpack .../nfs-common_1%3a1.2.8-9ubuntu12.1_amd64.deb ...
+Unpacking nfs-common (1:1.2.8-9ubuntu12.1) ...
+Selecting previously unselected package nfs-kernel-server.
+Preparing to unpack .../nfs-kernel-server_1%3a1.2.8-9ubuntu12.1_amd64.deb ...
+Unpacking nfs-kernel-server (1:1.2.8-9ubuntu12.1) ...
+Processing triggers for man-db (2.7.5-1) ...
+Processing triggers for systemd (229-4ubuntu21.2) ...
+Processing triggers for ureadahead (0.100.0-19) ...
+Setting up libnfsidmap2:amd64 (0.25-5) ...
+Setting up libpython2.7-stdlib:amd64 (2.7.12-1ubuntu0~16.04.3) ...
+Setting up python2.7 (2.7.12-1ubuntu0~16.04.3) ...
+Setting up libpython-stdlib:amd64 (2.7.12-1~16.04) ...
+Setting up python (2.7.12-1~16.04) ...
+Setting up libtirpc1:amd64 (0.2.5-1) ...
+Setting up keyutils (1.5.9-8ubuntu1) ...
+Setting up rpcbind (0.2.3-0.2) ...
+Setting up nfs-common (1:1.2.8-9ubuntu12.1) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+
+Creating config file /etc/idmapd.conf with new version
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+
+Creating config file /etc/default/nfs-common with new version
+Adding system user `statd' (UID 112) ...
+Adding new user `statd' (UID 112) with group `nogroup' ...
+Not creating home directory `/var/lib/nfs'.
+nfs-utils.service is a disabled or a static unit, not starting it.
+Setting up nfs-kernel-server (1:1.2.8-9ubuntu12.1) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+
+Creating config file /etc/exports with new version
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+
+Creating config file /etc/default/nfs-kernel-server with new version
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+Processing triggers for systemd (229-4ubuntu21.2) ...
+Processing triggers for ureadahead (0.100.0-19) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Teletype
+dpkg-preconfigure: unable to re-open stdin:
+
+Creating share directory /home/ubuntu/share
+connecting to sftp
+SSH client to 54.193.114.226 closed.
+Successfully created connection to 54.193.114.226
+
+Creating exports file /etc/exports
+Updating nfs exports
+
+Installing nfs-common on node cfd1
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  keyutils libnfsidmap2 libpython-stdlib libpython2.7-minimal
+  libpython2.7-stdlib libtirpc1 python python-minimal python2.7
+  python2.7-minimal rpcbind
+Suggested packages:
+  watchdog python-doc python-tk python2.7-doc binfmt-support
+The following NEW packages will be installed:
+  keyutils libnfsidmap2 libpython-stdlib libpython2.7-minimal
+  libpython2.7-stdlib libtirpc1 nfs-common python python-minimal python2.7
+  python2.7-minimal rpcbind
+0 upgraded, 12 newly installed, 0 to remove and 44 not upgraded.
+Need to get 4,256 kB of archives.
+After this operation, 18.0 MB of additional disk space will be used.
+Get:1 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 libnfsidmap2 amd64 0.25-5 [32.2 kB]
+Get:2 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython2.7-minimal amd64 2.7.12-1ubuntu0~16.04.3 [340 kB]
+Get:3 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python2.7-minimal amd64 2.7.12-1ubuntu0~16.04.3 [1,261 kB]
+Get:4 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python-minimal amd64 2.7.12-1~16.04 [28.1 kB]
+Get:5 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython2.7-stdlib amd64 2.7.12-1ubuntu0~16.04.3 [1,880 kB]
+Get:6 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python2.7 amd64 2.7.12-1ubuntu0~16.04.3 [224 kB]
+Get:7 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython-stdlib amd64 2.7.12-1~16.04 [7,768 B]
+Get:8 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python amd64 2.7.12-1~16.04 [137 kB]
+Get:9 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 libtirpc1 amd64 0.2.5-1 [75.6 kB]
+Get:10 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 keyutils amd64 1.5.9-8ubuntu1 [47.1 kB]
+Get:11 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 rpcbind amd64 0.2.3-0.2 [40.3 kB]
+Get:12 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 nfs-common amd64 1:1.2.8-9ubuntu12.1 [184 kB]
+Fetched 4,256 kB in 0s (36.9 MB/s)
+Selecting previously unselected package libnfsidmap2:amd64.
+(Reading database ... 56153 files and directories currently installed.)
+Preparing to unpack .../libnfsidmap2_0.25-5_amd64.deb ...
+Unpacking libnfsidmap2:amd64 (0.25-5) ...
+Selecting previously unselected package libpython2.7-minimal:amd64.
+Preparing to unpack .../libpython2.7-minimal_2.7.12-1ubuntu0~16.04.3_amd64.deb ...
+Unpacking libpython2.7-minimal:amd64 (2.7.12-1ubuntu0~16.04.3) ...
+Selecting previously unselected package python2.7-minimal.
+Preparing to unpack .../python2.7-minimal_2.7.12-1ubuntu0~16.04.3_amd64.deb ...
+Unpacking python2.7-minimal (2.7.12-1ubuntu0~16.04.3) ...
+Selecting previously unselected package python-minimal.
+Preparing to unpack .../python-minimal_2.7.12-1~16.04_amd64.deb ...
+Unpacking python-minimal (2.7.12-1~16.04) ...
+Selecting previously unselected package libpython2.7-stdlib:amd64.
+Preparing to unpack .../libpython2.7-stdlib_2.7.12-1ubuntu0~16.04.3_amd64.deb ...
+Unpacking libpython2.7-stdlib:amd64 (2.7.12-1ubuntu0~16.04.3) ...
+Selecting previously unselected package python2.7.
+Preparing to unpack .../python2.7_2.7.12-1ubuntu0~16.04.3_amd64.deb ...
+Unpacking python2.7 (2.7.12-1ubuntu0~16.04.3) ...
+Selecting previously unselected package libpython-stdlib:amd64.
+Preparing to unpack .../libpython-stdlib_2.7.12-1~16.04_amd64.deb ...
+Unpacking libpython-stdlib:amd64 (2.7.12-1~16.04) ...
+Processing triggers for man-db (2.7.5-1) ...
+Processing triggers for mime-support (3.59ubuntu1) ...
+Setting up libpython2.7-minimal:amd64 (2.7.12-1ubuntu0~16.04.3) ...
+Setting up python2.7-minimal (2.7.12-1ubuntu0~16.04.3) ...
+Linking and byte-compiling packages for runtime python2.7...
+Setting up python-minimal (2.7.12-1~16.04) ...
+Selecting previously unselected package python.
+(Reading database ... 56909 files and directories currently installed.)
+Preparing to unpack .../python_2.7.12-1~16.04_amd64.deb ...
+Unpacking python (2.7.12-1~16.04) ...
+Selecting previously unselected package libtirpc1:amd64.
+Preparing to unpack .../libtirpc1_0.2.5-1_amd64.deb ...
+Unpacking libtirpc1:amd64 (0.2.5-1) ...
+Selecting previously unselected package keyutils.
+Preparing to unpack .../keyutils_1.5.9-8ubuntu1_amd64.deb ...
+Unpacking keyutils (1.5.9-8ubuntu1) ...
+Selecting previously unselected package rpcbind.
+Preparing to unpack .../rpcbind_0.2.3-0.2_amd64.deb ...
+Unpacking rpcbind (0.2.3-0.2) ...
+Selecting previously unselected package nfs-common.
+Preparing to unpack .../nfs-common_1%3a1.2.8-9ubuntu12.1_amd64.deb ...
+Unpacking nfs-common (1:1.2.8-9ubuntu12.1) ...
+Processing triggers for man-db (2.7.5-1) ...
+Processing triggers for systemd (229-4ubuntu21.2) ...
+Processing triggers for ureadahead (0.100.0-19) ...
+Setting up libnfsidmap2:amd64 (0.25-5) ...
+Setting up libpython2.7-stdlib:amd64 (2.7.12-1ubuntu0~16.04.3) ...
+Setting up python2.7 (2.7.12-1ubuntu0~16.04.3) ...
+Setting up libpython-stdlib:amd64 (2.7.12-1~16.04) ...
+Setting up python (2.7.12-1~16.04) ...
+Setting up libtirpc1:amd64 (0.2.5-1) ...
+Setting up keyutils (1.5.9-8ubuntu1) ...
+Setting up rpcbind (0.2.3-0.2) ...
+Setting up nfs-common (1:1.2.8-9ubuntu12.1) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+
+Creating config file /etc/idmapd.conf with new version
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+
+Creating config file /etc/default/nfs-common with new version
+Adding system user `statd' (UID 112) ...
+Adding new user `statd' (UID 112) with group `nogroup' ...
+Not creating home directory `/var/lib/nfs'.
+nfs-utils.service is a disabled or a static unit, not starting it.
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+Processing triggers for systemd (229-4ubuntu21.2) ...
+Processing triggers for ureadahead (0.100.0-19) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Teletype
+dpkg-preconfigure: unable to re-open stdin:
+Creating nfs share directory
+connecting to sftp
+SSH client to 54.215.183.54 closed.
+Successfully created connection to 54.215.183.54
+Mounting the directory to NFS
+
+Installing nfs-common on node cfd2
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  keyutils libnfsidmap2 libpython-stdlib libpython2.7-minimal
+  libpython2.7-stdlib libtirpc1 python python-minimal python2.7
+  python2.7-minimal rpcbind
+Suggested packages:
+  watchdog python-doc python-tk python2.7-doc binfmt-support
+The following NEW packages will be installed:
+  keyutils libnfsidmap2 libpython-stdlib libpython2.7-minimal
+  libpython2.7-stdlib libtirpc1 nfs-common python python-minimal python2.7
+  python2.7-minimal rpcbind
+0 upgraded, 12 newly installed, 0 to remove and 44 not upgraded.
+Need to get 4,256 kB of archives.
+After this operation, 18.0 MB of additional disk space will be used.
+Get:1 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 libnfsidmap2 amd64 0.25-5 [32.2 kB]
+Get:2 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython2.7-minimal amd64 2.7.12-1ubuntu0~16.04.3 [340 kB]
+Get:3 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python2.7-minimal amd64 2.7.12-1ubuntu0~16.04.3 [1,261 kB]
+Get:4 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python-minimal amd64 2.7.12-1~16.04 [28.1 kB]
+Get:5 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython2.7-stdlib amd64 2.7.12-1ubuntu0~16.04.3 [1,880 kB]
+Get:6 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python2.7 amd64 2.7.12-1ubuntu0~16.04.3 [224 kB]
+Get:7 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython-stdlib amd64 2.7.12-1~16.04 [7,768 B]
+Get:8 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python amd64 2.7.12-1~16.04 [137 kB]
+Get:9 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 libtirpc1 amd64 0.2.5-1 [75.6 kB]
+Get:10 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 keyutils amd64 1.5.9-8ubuntu1 [47.1 kB]
+Get:11 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 rpcbind amd64 0.2.3-0.2 [40.3 kB]
+Get:12 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 nfs-common amd64 1:1.2.8-9ubuntu12.1 [184 kB]
+Fetched 4,256 kB in 0s (41.5 MB/s)
+Selecting previously unselected package libnfsidmap2:amd64.
+(Reading database ... 56153 files and directories currently installed.)
+Preparing to unpack .../libnfsidmap2_0.25-5_amd64.deb ...
+Unpacking libnfsidmap2:amd64 (0.25-5) ...
+Selecting previously unselected package libpython2.7-minimal:amd64.
+Preparing to unpack .../libpython2.7-minimal_2.7.12-1ubuntu0~16.04.3_amd64.deb ...
+Unpacking libpython2.7-minimal:amd64 (2.7.12-1ubuntu0~16.04.3) ...
+Selecting previously unselected package python2.7-minimal.
+Preparing to unpack .../python2.7-minimal_2.7.12-1ubuntu0~16.04.3_amd64.deb ...
+Unpacking python2.7-minimal (2.7.12-1ubuntu0~16.04.3) ...
+Selecting previously unselected package python-minimal.
+Preparing to unpack .../python-minimal_2.7.12-1~16.04_amd64.deb ...
+Unpacking python-minimal (2.7.12-1~16.04) ...
+Selecting previously unselected package libpython2.7-stdlib:amd64.
+Preparing to unpack .../libpython2.7-stdlib_2.7.12-1ubuntu0~16.04.3_amd64.deb ...
+Unpacking libpython2.7-stdlib:amd64 (2.7.12-1ubuntu0~16.04.3) ...
+Selecting previously unselected package python2.7.
+Preparing to unpack .../python2.7_2.7.12-1ubuntu0~16.04.3_amd64.deb ...
+Unpacking python2.7 (2.7.12-1ubuntu0~16.04.3) ...
+Selecting previously unselected package libpython-stdlib:amd64.
+Preparing to unpack .../libpython-stdlib_2.7.12-1~16.04_amd64.deb ...
+Unpacking libpython-stdlib:amd64 (2.7.12-1~16.04) ...
+Processing triggers for man-db (2.7.5-1) ...
+Processing triggers for mime-support (3.59ubuntu1) ...
+Setting up libpython2.7-minimal:amd64 (2.7.12-1ubuntu0~16.04.3) ...
+Setting up python2.7-minimal (2.7.12-1ubuntu0~16.04.3) ...
+Linking and byte-compiling packages for runtime python2.7...
+Setting up python-minimal (2.7.12-1~16.04) ...
+Selecting previously unselected package python.
+(Reading database ... 56909 files and directories currently installed.)
+Preparing to unpack .../python_2.7.12-1~16.04_amd64.deb ...
+Unpacking python (2.7.12-1~16.04) ...
+Selecting previously unselected package libtirpc1:amd64.
+Preparing to unpack .../libtirpc1_0.2.5-1_amd64.deb ...
+Unpacking libtirpc1:amd64 (0.2.5-1) ...
+Selecting previously unselected package keyutils.
+Preparing to unpack .../keyutils_1.5.9-8ubuntu1_amd64.deb ...
+Unpacking keyutils (1.5.9-8ubuntu1) ...
+Selecting previously unselected package rpcbind.
+Preparing to unpack .../rpcbind_0.2.3-0.2_amd64.deb ...
+Unpacking rpcbind (0.2.3-0.2) ...
+Selecting previously unselected package nfs-common.
+Preparing to unpack .../nfs-common_1%3a1.2.8-9ubuntu12.1_amd64.deb ...
+Unpacking nfs-common (1:1.2.8-9ubuntu12.1) ...
+Processing triggers for man-db (2.7.5-1) ...
+Processing triggers for systemd (229-4ubuntu21.2) ...
+Processing triggers for ureadahead (0.100.0-19) ...
+Setting up libnfsidmap2:amd64 (0.25-5) ...
+Setting up libpython2.7-stdlib:amd64 (2.7.12-1ubuntu0~16.04.3) ...
+Setting up python2.7 (2.7.12-1ubuntu0~16.04.3) ...
+Setting up libpython-stdlib:amd64 (2.7.12-1~16.04) ...
+Setting up python (2.7.12-1~16.04) ...
+Setting up libtirpc1:amd64 (0.2.5-1) ...
+Setting up keyutils (1.5.9-8ubuntu1) ...
+Setting up rpcbind (0.2.3-0.2) ...
+Setting up nfs-common (1:1.2.8-9ubuntu12.1) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+
+Creating config file /etc/idmapd.conf with new version
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+
+Creating config file /etc/default/nfs-common with new version
+Adding system user `statd' (UID 112) ...
+Adding new user `statd' (UID 112) with group `nogroup' ...
+Not creating home directory `/var/lib/nfs'.
+nfs-utils.service is a disabled or a static unit, not starting it.
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+Processing triggers for systemd (229-4ubuntu21.2) ...
+Processing triggers for ureadahead (0.100.0-19) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Teletype
+dpkg-preconfigure: unable to re-open stdin:
+Creating nfs share directory
+connecting to sftp
+SSH client to 13.57.42.238 closed.
+Successfully created connection to 13.57.42.238
+Mounting the directory to NFS
+
+Installing SU2
+
+Installing pip
+sudo apt-get -y install python-pip
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  build-essential dpkg-dev fakeroot libalgorithm-diff-perl
+  libalgorithm-diff-xs-perl libalgorithm-merge-perl libdpkg-perl libexpat1-dev
+  libfakeroot libfile-fcntllock-perl libpython-all-dev libpython-dev
+  libpython2.7 libpython2.7-dev make python-all python-all-dev python-dev
+  python-pip-whl python-pkg-resources python-setuptools python-wheel
+  python2.7-dev
+Suggested packages:
+  debian-keyring make-doc python-setuptools-doc
+The following NEW packages will be installed:
+  build-essential dpkg-dev fakeroot libalgorithm-diff-perl
+  libalgorithm-diff-xs-perl libalgorithm-merge-perl libdpkg-perl libexpat1-dev
+  libfakeroot libfile-fcntllock-perl libpython-all-dev libpython-dev
+  libpython2.7 libpython2.7-dev make python-all python-all-dev python-dev
+  python-pip python-pip-whl python-pkg-resources python-setuptools
+  python-wheel python2.7-dev
+0 upgraded, 24 newly installed, 0 to remove and 44 not upgraded.
+Need to get 32.0 MB of archives.
+After this operation, 53.5 MB of additional disk space will be used.
+Get:1 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 make amd64 4.1-6 [151 kB]
+Get:2 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libdpkg-perl all 1.18.4ubuntu1.4 [195 kB]
+Get:3 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 dpkg-dev all 1.18.4ubuntu1.4 [584 kB]
+Get:4 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 build-essential amd64 12.1ubuntu2 [4,758 B]
+Get:5 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 libfakeroot amd64 1.20.2-1ubuntu1 [25.5 kB]
+Get:6 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 fakeroot amd64 1.20.2-1ubuntu1 [61.8 kB]
+Get:7 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 libalgorithm-diff-perl all 1.19.03-1 [47.6 kB]
+Get:8 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 libalgorithm-diff-xs-perl amd64 0.04-4build1 [11.0 kB]
+Get:9 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 libalgorithm-merge-perl all 0.08-3 [12.0 kB]
+Get:10 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libexpat1-dev amd64 2.1.0-7ubuntu0.16.04.3 [115 kB]
+Get:11 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 libfile-fcntllock-perl amd64 0.22-3 [32.0 kB]
+Get:12 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython2.7 amd64 2.7.12-1ubuntu0~16.04.3 [1,070 kB]
+Get:13 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython2.7-dev amd64 2.7.12-1ubuntu0~16.04.3 [27.8 MB]
+Get:14 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython-dev amd64 2.7.12-1~16.04 [7,840 B]
+Get:15 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython-all-dev amd64 2.7.12-1~16.04 [1,006 B]
+Get:16 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python-all amd64 2.7.12-1~16.04 [996 B]
+Get:17 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python2.7-dev amd64 2.7.12-1ubuntu0~16.04.3 [276 kB]
+Get:18 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python-dev amd64 2.7.12-1~16.04 [1,186 B]
+Get:19 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python-all-dev amd64 2.7.12-1~16.04 [1,016 B]
+Get:20 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 python-pip-whl all 8.1.1-2ubuntu0.4 [1,110 kB]
+Get:21 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 python-pip all 8.1.1-2ubuntu0.4 [144 kB]
+Get:22 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 python-pkg-resources all 20.7.0-1 [108 kB]
+Get:23 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 python-setuptools all 20.7.0-1 [169 kB]
+Get:24 http://us-west-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 python-wheel all 0.29.0-1 [48.0 kB]
+Fetched 32.0 MB in 0s (58.4 MB/s)
+Selecting previously unselected package make.
+(Reading database ... 57128 files and directories currently installed.)
+Preparing to unpack .../archives/make_4.1-6_amd64.deb ...
+Unpacking make (4.1-6) ...
+Selecting previously unselected package libdpkg-perl.
+Preparing to unpack .../libdpkg-perl_1.18.4ubuntu1.4_all.deb ...
+Unpacking libdpkg-perl (1.18.4ubuntu1.4) ...
+Selecting previously unselected package dpkg-dev.
+Preparing to unpack .../dpkg-dev_1.18.4ubuntu1.4_all.deb ...
+Unpacking dpkg-dev (1.18.4ubuntu1.4) ...
+Selecting previously unselected package build-essential.
+Preparing to unpack .../build-essential_12.1ubuntu2_amd64.deb ...
+Unpacking build-essential (12.1ubuntu2) ...
+Selecting previously unselected package libfakeroot:amd64.
+Preparing to unpack .../libfakeroot_1.20.2-1ubuntu1_amd64.deb ...
+Unpacking libfakeroot:amd64 (1.20.2-1ubuntu1) ...
+Selecting previously unselected package fakeroot.
+Preparing to unpack .../fakeroot_1.20.2-1ubuntu1_amd64.deb ...
+Unpacking fakeroot (1.20.2-1ubuntu1) ...
+Selecting previously unselected package libalgorithm-diff-perl.
+Preparing to unpack .../libalgorithm-diff-perl_1.19.03-1_all.deb ...
+Unpacking libalgorithm-diff-perl (1.19.03-1) ...
+Selecting previously unselected package libalgorithm-diff-xs-perl.
+Preparing to unpack .../libalgorithm-diff-xs-perl_0.04-4build1_amd64.deb ...
+Unpacking libalgorithm-diff-xs-perl (0.04-4build1) ...
+Selecting previously unselected package libalgorithm-merge-perl.
+Preparing to unpack .../libalgorithm-merge-perl_0.08-3_all.deb ...
+Unpacking libalgorithm-merge-perl (0.08-3) ...
+Selecting previously unselected package libexpat1-dev:amd64.
+Preparing to unpack .../libexpat1-dev_2.1.0-7ubuntu0.16.04.3_amd64.deb ...
+Unpacking libexpat1-dev:amd64 (2.1.0-7ubuntu0.16.04.3) ...
+Selecting previously unselected package libfile-fcntllock-perl.
+Preparing to unpack .../libfile-fcntllock-perl_0.22-3_amd64.deb ...
+Unpacking libfile-fcntllock-perl (0.22-3) ...
+Selecting previously unselected package libpython2.7:amd64.
+Preparing to unpack .../libpython2.7_2.7.12-1ubuntu0~16.04.3_amd64.deb ...
+Unpacking libpython2.7:amd64 (2.7.12-1ubuntu0~16.04.3) ...
+Selecting previously unselected package libpython2.7-dev:amd64.
+Preparing to unpack .../libpython2.7-dev_2.7.12-1ubuntu0~16.04.3_amd64.deb ...
+Unpacking libpython2.7-dev:amd64 (2.7.12-1ubuntu0~16.04.3) ...
+Selecting previously unselected package libpython-dev:amd64.
+Preparing to unpack .../libpython-dev_2.7.12-1~16.04_amd64.deb ...
+Unpacking libpython-dev:amd64 (2.7.12-1~16.04) ...
+Selecting previously unselected package libpython-all-dev:amd64.
+Preparing to unpack .../libpython-all-dev_2.7.12-1~16.04_amd64.deb ...
+Unpacking libpython-all-dev:amd64 (2.7.12-1~16.04) ...
+Selecting previously unselected package python-all.
+Preparing to unpack .../python-all_2.7.12-1~16.04_amd64.deb ...
+Unpacking python-all (2.7.12-1~16.04) ...
+Selecting previously unselected package python2.7-dev.
+Preparing to unpack .../python2.7-dev_2.7.12-1ubuntu0~16.04.3_amd64.deb ...
+Unpacking python2.7-dev (2.7.12-1ubuntu0~16.04.3) ...
+Selecting previously unselected package python-dev.
+Preparing to unpack .../python-dev_2.7.12-1~16.04_amd64.deb ...
+Unpacking python-dev (2.7.12-1~16.04) ...
+Selecting previously unselected package python-all-dev.
+Preparing to unpack .../python-all-dev_2.7.12-1~16.04_amd64.deb ...
+Unpacking python-all-dev (2.7.12-1~16.04) ...
+Selecting previously unselected package python-pip-whl.
+Preparing to unpack .../python-pip-whl_8.1.1-2ubuntu0.4_all.deb ...
+Unpacking python-pip-whl (8.1.1-2ubuntu0.4) ...
+Selecting previously unselected package python-pip.
+Preparing to unpack .../python-pip_8.1.1-2ubuntu0.4_all.deb ...
+Unpacking python-pip (8.1.1-2ubuntu0.4) ...
+Selecting previously unselected package python-pkg-resources.
+Preparing to unpack .../python-pkg-resources_20.7.0-1_all.deb ...
+Unpacking python-pkg-resources (20.7.0-1) ...
+Selecting previously unselected package python-setuptools.
+Preparing to unpack .../python-setuptools_20.7.0-1_all.deb ...
+Unpacking python-setuptools (20.7.0-1) ...
+Selecting previously unselected package python-wheel.
+Preparing to unpack .../python-wheel_0.29.0-1_all.deb ...
+Unpacking python-wheel (0.29.0-1) ...
+Processing triggers for man-db (2.7.5-1) ...
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+Setting up make (4.1-6) ...
+Setting up libdpkg-perl (1.18.4ubuntu1.4) ...
+Setting up dpkg-dev (1.18.4ubuntu1.4) ...
+Setting up build-essential (12.1ubuntu2) ...
+Setting up libfakeroot:amd64 (1.20.2-1ubuntu1) ...
+Setting up fakeroot (1.20.2-1ubuntu1) ...
+update-alternatives: using /usr/bin/fakeroot-sysv to provide /usr/bin/fakeroot (fakeroot) in auto mode
+Setting up libalgorithm-diff-perl (1.19.03-1) ...
+Setting up libalgorithm-diff-xs-perl (0.04-4build1) ...
+Setting up libalgorithm-merge-perl (0.08-3) ...
+Setting up libexpat1-dev:amd64 (2.1.0-7ubuntu0.16.04.3) ...
+Setting up libfile-fcntllock-perl (0.22-3) ...
+Setting up libpython2.7:amd64 (2.7.12-1ubuntu0~16.04.3) ...
+Setting up libpython2.7-dev:amd64 (2.7.12-1ubuntu0~16.04.3) ...
+Setting up libpython-dev:amd64 (2.7.12-1~16.04) ...
+Setting up libpython-all-dev:amd64 (2.7.12-1~16.04) ...
+Setting up python-all (2.7.12-1~16.04) ...
+Setting up python2.7-dev (2.7.12-1ubuntu0~16.04.3) ...
+Setting up python-dev (2.7.12-1~16.04) ...
+Setting up python-all-dev (2.7.12-1~16.04) ...
+Setting up python-pip-whl (8.1.1-2ubuntu0.4) ...
+Setting up python-pip (8.1.1-2ubuntu0.4) ...
+Setting up python-pkg-resources (20.7.0-1) ...
+Setting up python-setuptools (20.7.0-1) ...
+Setting up python-wheel (0.29.0-1) ...
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Teletype
+dpkg-preconfigure: unable to re-open stdin:
+
+Installing python-config
+pip install python-config
+Collecting python-config
+  Downloading https://files.pythonhosted.org/packages/56/0f/6f928359bab336138537a0c7980f50bc831d0c758b5de351e50169bd9909/python-config-0.1.2.tar.gz
+Building wheels for collected packages: python-config
+  Running setup.py bdist_wheel for python-config: started
+  Running setup.py bdist_wheel for python-config: finished with status 'done'
+  Stored in directory: /home/ubuntu/.cache/pip/wheels/e7/96/5e/db79d6396444a3c76f8b8b72c35a5202027ae096c7aa37311d
+Successfully built python-config
+Installing collected packages: python-config
+Successfully installed python-config
+You are using pip version 8.1.1, however version 18.0 is available.
+You should consider upgrading via the 'pip install --upgrade pip' command.
+
+Retrieving SU2 source code
+git clone https://github.com/su2code/SU2.git -q
+
+Configuring SU2 for build
+sudo sh /home/ubuntu/SU2/configure --prefix=/home/ubuntu/share/SU2 --enable-mpi --with-cc=/usr/bin/mpicc --with-cxx=/usr/bin/mpicxx CXXFLAGS="-O3"
+checking build system type...
+x86_64-unknown-linux-gnu
+
+checking host system type...
+x86_64-unknown-linux-gnu
+
+checking target system type... x86_64-unknown-linux-gnu
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for a thread-safe mkdir -p... /bin/mkdir -p
+checking for gawk...
+gawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables...
+yes
+checking for style of include used by make... GNU
+checking whether the C++ compiler works...
+yes
+checking for C++ compiler default output file name...
+a.out
+
+checking for suffix of executables...
+
+checking whether we are cross compiling...
+no
+
+checking for suffix of object files...
+o
+
+checking whether we are using the GNU C++ compiler...
+yes
+
+checking whether /usr/bin/mpicxx accepts -g...
+yes
+
+checking dependency style of /usr/bin/mpicxx...
+gcc3
+
+checking whether we are using the GNU C compiler...
+yes
+
+checking whether /usr/bin/mpicc accepts -g...
+yes
+
+checking for /usr/bin/mpicc option to accept ISO C89...
+none needed
+
+checking dependency style of /usr/bin/mpicc...
+gcc3
+
+checking whether /usr/bin/mpicc and cc understand -c and -o together...
+yes
+
+checking for ranlib...
+ranlib
+checking whether we are using the GNU C++ compiler...
+(cached) yes
+checking whether /usr/bin/mpicxx accepts -g... (cached)
+yes
+
+checking dependency style of /usr/bin/mpicxx...
+(cached)
+gcc3
+
+checking for python...
+/usr/bin/python
+
+checking for python version...
+2.7
+checking for python platform... linux2
+checking for python script directory... ${prefix}/lib/python2.7/site-packages
+checking for python extension module directory... ${exec_prefix}/lib/python2.7/site-packages
+checking for python2.7-config... /usr/bin/python2.7-config
+checking python include flags... -I/usr/include/python2.7 -I/usr/include/x86_64-linux-gnu/python2.7
+checking how to run the C preprocessor...
+/usr/bin/mpicc -E
+
+checking for grep that handles long lines and -e...
+/bin/grep
+
+checking for egrep... /bin/grep -E
+checking for ANSI C header files...
+yes
+checking for sys/types.h...
+yes
+checking for sys/stat.h...
+yes
+
+checking for stdlib.h...
+yes
+
+checking for string.h...
+yes
+
+checking for memory.h...
+yes
+
+checking for strings.h...
+yes
+
+checking for inttypes.h...
+yes
+
+checking for stdint.h...
+yes
+
+checking for unistd.h...
+yes
+
+checking size of short int...
+2
+
+checking size of int...
+4
+
+checking size of unsigned int...
+4
+
+checking size of long int...
+8
+checking size of float...
+4
+checking size of double...
+8
+
+checking size of void *...
+8
+
+checking X11/Intrinsic.h usability...
+no
+
+checking X11/Intrinsic.h presence... no
+checking for X11/Intrinsic.h... no
+<<< Configuring library with Metis support >>>
+<<< Configuring library with Parmetis support >>>
+<<< Configuring library with CGNS support >>>
+
+checking that generated files are newer than configure...
+done
+
+configure: creating ./config.status
+
+config.status: creating externals/tecio/Makefile
+
+config.status: creating externals/metis/Makefile
+
+config.status: creating externals/parmetis/Makefile
+
+config.status: creating externals/cgns/Makefile
+
+config.status: creating Makefile
+
+config.status: creating externals/Makefile
+
+config.status: creating Common/lib/Makefile
+
+config.status: creating SU2_CFD/obj/Makefile
+
+config.status: creating SU2_DOT/obj/Makefile
+
+config.status: creating SU2_MSH/obj/Makefile
+
+config.status: creating SU2_DEF/obj/Makefile
+
+config.status: creating SU2_SOL/obj/Makefile
+
+config.status: creating SU2_GEO/obj/Makefile
+
+config.status: creating SU2_PY/Makefile
+
+config.status: creating SU2_PY/pySU2/Makefile
+
+config.status: executing depfiles commands
+
+
+
+-------------------------------------------------------------------------
+|    ___ _   _ ___                                                      |
+|   / __| | | |_  )   Release 6.1.0 'Falcon'                            |
+|   \__ \ |_| |/ /                                                      |
+|   |___/\___//___|   Suite                                             |
+|                                                                       |
+-------------------------------------------------------------------------
+| The current SU2 release has been coordinated by the                   |
+| SU2 International Developers Society <www.su2devsociety.org>          |
+| with selected contributions from the open-source community.           |
+-------------------------------------------------------------------------
+| The main research teams contributing to the current release are:      |
+| - Prof. Juan J. Alonso's group at Stanford University.                |
+| - Prof. Piero Colonna's group at Delft University of Techn
+ology.      |
+| - Prof. Nicolas R. Gauger's group at Kaiserslautern U. of Technology. |
+| - Prof. Alberto Guardone's group at Polytechnic University of Milan.  |
+| - Prof. Rafael Palacios' group at Imperial College London.            |
+| - Prof. Vincent Terrapon's group at the University of Liege.          |
+| - Prof. Edwin van der Weide's group at the University of Twente.      |
+| - Lab. of New Concepts in Aeronautics at Tech. Inst. of Aeronautics.  |
+-------------------------------------------------------------------------
+| Copyright 2012-2018, Francisco D. Palacios, Thomas D. Economon,       |
+|                      Tim Albring, and the SU2 contributors.           |
+|                                                                       |
+| SU2 is free software; you can redistribute it and/or                  |
+| modify it under the terms of the GNU Lesser General Public            |
+| License as published by the Free Software Foundation; either          |
+| version 2.1 of the License, or (at your option
+
+Building SU2
+sudo make -j 2
+CDPATH="${ZSH_VERSION+.}:" && cd /home/ubuntu/SU2 && /bin/bash /home/ubuntu/SU2/missing --run aclocal-1.12  -I m4
+
+CDPATH="${ZSH_VERSION+.}:" && cd /home/ubuntu/SU2 && /bin/bash /home/ubuntu/SU2/missing --run autoconf
+ cd /home/ubuntu/SU2 && /bin/bash /home/ubuntu/SU2/missing --run automake-1.12 --foreign
+/bin/bash ./config.status --recheck
+
+running CONFIG_SHELL=/bin/bash /bin/bash /home/ubuntu/SU2/configure --prefix=/home/ubuntu/share/SU2 --enable-mpi --with-cc=/usr/bin/mpicc --with-cxx=/usr/bin/mpicxx CXXFLAGS=-O3 --no-create --no-recursion
+
+checking build system type...
+x86_64-unknown-linux-gnu
+
+checking host system type... x86_64-unknown-linux-gnu
+checking target system type... x86_64-unknown-linux-gnu
+checking for a BSD-compatible install... /usr/bin/install -c
+
+checking whether build environment is sane... yes
+checking for a thread-safe mkdir -p... /bin/mkdir -p
+checking for gawk... gawk
+checking whether make sets $(MAKE)...
+yes
+
+checking whether make supports nested variables... yes
+checking for style of include used by make... GNU
+
+checking whether the C++ compiler works...
+yes
+checking for C++ compiler default output file name...
+a.out
+
+checking for suffix of executables...
+
+
+checking whether we are cross compiling...
+no
+
+checking for suffix of object files...
+o
+checking whether we are using the GNU C++ compiler...
+yes
+checking whether /usr/bin/mpicxx accepts -g...
+yes
+
+checking dependency style of /usr/bin/mpicxx...
+gcc3
+
+checking whether we are using the GNU C compiler...
+yes
+
+checking whether /usr/bin/mpicc accepts -g...
+yes
+
+checking for /usr/bin/mpicc option to accept ISO C89...
+none needed
+checking dependency style of /usr/bin/mpicc...
+gcc3
+checking whether /usr/bin/mpicc and cc understand -c and -o together...
+yes
+checking for ranlib... ranlib
+
+checking whether we are using the GNU C++ compiler... (cached) yes
+checking whether /usr/bin/mpicxx accepts -g... (cached) yes
+checking dependency style of /usr/bin/mpicxx... (cached) gcc3
+checking for python...
+/usr/bin/python
+checking for python version... 2.7
+checking for python platform... linux2
+checking for python script directory... ${prefix}/lib/python2.7/site-packages
+checking for python extension module directory...
+${exec_prefix}/lib/python2.7/site-packages
+checking for python2.7-config...
+/usr/bin/python2.7-config
+
+checking python include flags... -I/usr/include/python2.7 -I/usr/include/x86_64-linux-gnu/python2.7
+checking how to run the C preprocessor...
+/usr/bin/mpicc -E
+
+checking for grep that handles long lines and -e...
+/bin/grep
+
+checking for egrep...
+/bin/grep -E
+
+checking for ANSI C header files...
+yes
+
+checking for sys/types.h...
+yes
+
+checking for sys/stat.h...
+yes
+
+checking for stdlib.h...
+yes
+
+checking for string.h...
+yes
+
+checking for memory.h...
+yes
+
+checking for strings.h...
+yes
+
+checking for inttypes.h...
+yes
+checking for stdint.h...
+yes
+
+checking for unistd.h...
+yes
+checking size of short int...
+2
+checking size of int...
+4
+
+checking size of unsigned int...
+4
+checking size of long int...
+8
+
+checking size of float...
+4
+checking size of double...
+8
+checking size of void *...
+8
+checking X11/Intrinsic.h usability...
+no
+checking X11/Intrinsic.h presence...
+no
+
+checking for X11/Intrinsic.h...
+no
+
+<<< Configuring library with Metis support >>>
+
+<<< Configuring library with Parmetis support >>>
+<<< Configuring library with CGNS support >>>
+checking that generated files are newer than configure... done
+configure: creating ./config.status
+
+
+-------------------------------------------------------------------------
+|    ___ _   _ ___                                                      |
+|   / __| | | |_  )   Release 6.1.0 'Falcon'                            |
+|   \__ \ |_| |/ /                                                      |
+|   |___/\___//___|   Suite                                             |
+|                                                                       |
+-------------------------------------------------------------------------
+| The current SU2 release has been coordinated by the                   |
+| SU2 International Developers Society <www.su2devsociety.org>          |
+| with selected contributions from the open-source community.           |
+-------------------------------------------------------------------------
+| The main re
+search teams contributing to the current release are:      |
+| - Prof. Juan J. Alonso's group at Stanford University.                |
+| - Prof. Piero Colonna's group at Delft University of Technology.      |
+| - Prof. Nicolas R. Gauger's group at Kaiserslautern U. of Technology. |
+| - Prof. Alberto Guardone's group at Polytechnic University of Milan.  |
+| - Prof. Rafael Palacios' group at Imperial College London.            |
+| - Prof. Vincent Terrapon's group at the University of Liege.          |
+| - Prof. Edwin van der Weide's group at the University of Twente.      |
+| - Lab. of New Concepts in Aeronautics at Tech. Inst. of Aeronautics.  |
+-------------------------------------------------------------------------
+| Copyright 2012-2018, Francisco D. Palacios, Thomas D. Economon,       |
+|                      Tim Albring, and the SU2 contributors.           |
+|                                                                       |
+| SU2 is free software; you can redistribute it and/or                  |
+|
+ modify it under the terms of the GNU Lesser General Public            |
+| License as published by the Free Software Foundation; either          |
+| version 2.1 of the License, or (at your option) any later version.    |
+|                                                                       |
+| SU2 is distributed in the hope that it will be useful,                |
+| but WITHOUT ANY WARRANTY; without even the implied warranty of        |
+| MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      |
+| Lesser General Public License for more details.                       |
+|                                                                       |
+| You should have received a copy of the GNU Lesser General Public      |
+| License along with SU2. If not, see <http://www.gnu.org/licenses/>.   |
+-------------------------------------------------------------------------
+
+Build Configuration Summary:
+
+    Source code location: /home/ubuntu/SU2
+    Install location: 	  /home/ubuntu/share/SU2
+    Version:
+           6.1.0
+    C++ Compiler:         /usr/bin/mpicxx
+    C Compiler:           /usr/bin/mpicc
+    Preprocessor flags:   -DHAVE_MPI
+    Compiler flags:       -O3
+    Linker flags:
+    MPI support:          yes
+    Metis support:        yes
+    Parmetis support:     yes
+    TecIO support:        no
+    CGNS support:         yes
+    HDF5 support:         no
+    SZIP support:         no
+    ZLIB support:         no
+    Mutation++ support:   no
+    Jsoncpp support: 	  no
+    LAPACK support:       no
+    Datatype support:
+        double              yes
+        complex             no
+        codi_reverse        no
+        codi_forward        no
+
+    External includes:    -DHAVE_CGNS -I$(top_srcdir)/externals/cgns -I$(top_srcdir)/externals/cgns/adf -DHAVE_PARMETIS -I$(top_srcdir)/externals/parmetis/include -DHAVE_METIS -I$(top_srcdir)/externals/metis/include
+    External libs:        $(top_builddir)/externals/cgns/libcgns.a $(top_builddir)/externals/parmetis/libparmetis.a $(top_builddir)/externals/m
+etis/libmetis.a
+
+    Build SU2_CFD:        yes
+    Build SU2_DOT:        yes
+    Build SU2_MSH:        yes
+    Build SU2_DEF:        yes
+    Build SU2_SOL:        yes
+    Build SU2_GEO:        yes
+    Build Py Wrapper:     no
+
+Please be sure to add the $SU2_HOME and $SU2_RUN environment variables,
+and update your $PATH (and $PYTHONPATH if applicable) with $SU2_RUN.
+
+Based on the input to this configuration, add these lines to your .bashrc file:
+
+export SU2_RUN="/home/ubuntu/share/SU2/bin"
+export SU2_HOME="/home/ubuntu/SU2"
+export PATH=$PATH:$SU2_RUN
+export PYTHONPATH=$PYTHONPATH:$SU2_RUN
+
+
+ /bin/bash ./config.status
+
+config.status: creating externals/tecio/Makefile
+config.status: creating externals/metis/Makefile
+
+config.status: creating externals/parmetis/Makefile
+
+config.status: creating externals/cgns/Makefile
+
+config.status: creating Makefile
+config.status: creating externals/Makefile
+config.status: creating Common/lib/Makefile
+
+config.status: creating SU2_CFD/obj/Makefile
+
+config.status: creating SU2_DOT/obj/Makefile
+
+config.status: creating SU2_MSH/obj/Makefile
+
+config.status: creating SU2_DEF/obj/Makefile
+config.status: creating SU2_SOL/obj/Makefile
+
+config.status: creating SU2_GEO/obj/Makefile
+
+config.status: creating SU2_PY/Makefile
+
+config.status: creating SU2_PY/pySU2/Makefile
+config.status: executing depfiles commands
+
+Making all in externals
+make[1]: Entering directory '/home/ubuntu/externals'
+Making all in metis
+make[2]: Entering directory '/home/ubuntu/externals/metis'
+
+  CC       GKlib/libmetis_a-b64.o
+  CC       GKlib/libmetis_a-blas.o
+
+  CC       GKlib/libmetis_a-csr.o
+
+  CC       GKlib/libmetis_a-error.o
+
+  CC       GKlib/libmetis_a-evaluate.o
+
+  CC       GKlib/libmetis_a-fkvkselect.o
+
+  CC       GKlib/libmetis_a-fs.o
+
+  CC       GKlib/libmetis_a-getopt.o
+  CC       GKlib/libmetis_a-gkregex.o
+
+  CC       GKlib/libmetis_a-graph.o
+
+  CC       GKlib/libmetis_a-htable.o
+
+  CC       GKlib/libmetis_a-io.o
+
+  CC       GKlib/libmetis_a-itemsets.o
+
+  CC       GKlib/libmetis_a-mcore.o
+
+  CC       GKlib/libmetis_a-memory.o
+
+  CC       GKlib/libmetis_a-omp.o
+
+  CC       GKlib/libmetis_a-pdb.o
+
+  CC       GKlib/libmetis_a-pqueue.o
+
+  CC       GKlib/libmetis_a-random.o
+
+  CC       GKlib/libmetis_a-rw.o
+
+  CC       GKlib/libmetis_a-seq.o
+
+  CC       GKlib/libmetis_a-sort.o
+  CC       GKlib/libmetis_a-string.o
+
+  CC       GKlib/libmetis_a-timers.o
+
+  CC       GKlib/libmetis_a-tokenizer.o
+
+  CC       GKlib/libmetis_a-util.o
+
+  CC       libmetis/libmetis_a-auxapi.o
+
+  CC       libmetis/libmetis_a-balance.o
+
+  CC       libmetis/libmetis_a-bucketsort.o
+
+  CC       libmetis/libmetis_a-checkgraph.o
+
+  CC       libmetis/libmetis_a-coarsen.o
+
+  CC       libmetis/libmetis_a-compress.o
+
+  CC       libmetis/libmetis_a-contig.o
+
+  CC       libmetis/libmetis_a-debug.o
+
+  CC       libmetis/libmetis_a-fm.o
+
+  CC       libmetis/libmetis_a-fortran.o
+
+  CC       libmetis/libmetis_a-frename.o
+
+  CC       libmetis/libmetis_a-gklib.o
+
+  CC       libmetis/libmetis_a-graph.o
+
+  CC       libmetis/libmetis_a-initpart.o
+
+  CC       libmetis/libmetis_a-kmetis.o
+
+  CC       libmetis/libmetis_a-kwayfm.o
+
+  CC       libmetis/libmetis_a-kwayrefine.o
+
+  CC       libmetis/libmetis_a-mcutil.o
+
+  CC       libmetis/libmetis_a-mesh.o
+
+  CC       libmetis/libmetis_a-meshpart.o
+
+  CC       libmetis/libmetis_a-minconn.o
+
+  CC       libmetis/libmetis_a-mincover.o
+
+  CC       libmetis/libmetis_a-mmd.o
+
+  CC       libmetis/libmetis_a-ometis.o
+  CC       libmetis/libmetis_a-options.o
+
+  CC       libmetis/libmetis_a-parmetis.o
+  CC       libmetis/libmetis_a-pmetis.o
+
+  CC       libmetis/libmetis_a-refine.o
+
+  CC       libmetis/libmetis_a-separator.o
+
+  CC       libmetis/libmetis_a-sfm.o
+
+  CC       libmetis/libmetis_a-srefine.o
+
+  CC       libmetis/libmetis_a-stat.o
+
+  CC       libmetis/libmetis_a-timing.o
+  CC       libmetis/libmetis_a-util.o
+  CC       libmetis/libmetis_a-wspace.o
+
+  AR       libmetis.a
+
+make[2]: Leaving directory '/home/ubuntu/externals/metis'
+Making all in parmetis
+
+make[2]: Entering directory '/home/ubuntu/externals/parmetis'
+
+  CC       libparmetis/libparmetis_a-akwayfm.o
+
+  CC       libparmetis/libparmetis_a-ametis.o
+
+  CC       libparmetis/libparmetis_a-balancemylink.o
+
+  CC       libparmetis/libparmetis_a-comm.o
+
+  CC       libparmetis/libparmetis_a-csrmatch.o
+  CC       libparmetis/libparmetis_a-ctrl.o
+
+  CC       libparmetis/libparmetis_a-debug.o
+
+  CC       libparmetis/libparmetis_a-diffutil.o
+
+  CC       libparmetis/libparmetis_a-frename.o
+
+  CC       libparmetis/libparmetis_a-gkmetis.o
+
+  CC       libparmetis/libparmetis_a-gkmpi.o
+
+  CC       libparmetis/libparmetis_a-graph.o
+
+  CC       libparmetis/libparmetis_a-initbalance.o
+
+  CC       libparmetis/libparmetis_a-initmsection.o
+
+  CC       libparmetis/libparmetis_a-initpart.o
+
+  CC       libparmetis/libparmetis_a-kmetis.o
+
+  CC       libparmetis/libparmetis_a-kwayrefine.o
+
+  CC       libparmetis/libparmetis_a-match.o
+
+  CC       libparmetis/libparmetis_a-mdiffusion.o
+
+  CC       libparmetis/libparmetis_a-mesh.o
+
+  CC       libparmetis/libparmetis_a-mmetis.o
+  CC       libparmetis/libparmetis_a-move.o
+
+  CC       libparmetis/libparmetis_a-msetup.o
+
+  CC       libparmetis/libparmetis_a-node_refine.o
+
+  CC       libparmetis/libparmetis_a-ometis.o
+
+  CC       libparmetis/libparmetis_a-pspases.o
+
+  CC       libparmetis/libparmetis_a-redomylink.o
+
+  CC       libparmetis/libparmetis_a-remap.o
+
+  CC       libparmetis/libparmetis_a-renumber.o
+
+  CC       libparmetis/libparmetis_a-rmetis.o
+
+  CC       libparmetis/libparmetis_a-selectq.o
+
+  CC       libparmetis/libparmetis_a-serial.o
+
+  CC       libparmetis/libparmetis_a-stat.o
+
+  CC       libparmetis/libparmetis_a-timer.o
+
+  CC       libparmetis/libparmetis_a-util.o
+
+  CC       libparmetis/libparmetis_a-wave.o
+
+  CC       libparmetis/libparmetis_a-weird.o
+
+  CC       libparmetis/libparmetis_a-wspace.o
+
+  CC       libparmetis/libparmetis_a-xyzpart.o
+
+  AR       libparmetis.a
+make[2]: Leaving directory '/home/ubuntu/externals/parmetis'
+Making all in cgns
+make[2]: Entering directory '/home/ubuntu/externals/cgns'
+  CC       libcgns_a-cgns_error.o
+
+  CC       libcgns_a-cgns_internals.o
+  CC       libcgns_a-cgns_io.o
+
+  CC       libcgns_a-cgnslib.o
+
+  CC       adf/libcgns_a-ADF_interface.o
+
+  CC       adf/libcgns_a-ADF_internals.o
+
+  AR       libcgns.a
+make[2]: Leaving directory '/home/ubuntu/externals/cgns'
+make[2]: Entering directory '/home/ubuntu/externals'
+make[2]: Nothing to be done for 'all-am'.
+make[2]: Leaving directory '/home/ubuntu/externals'
+make[1]: Leaving directory '/home/ubuntu/externals'
+Making all in Common/lib
+make[1]: Entering directory '/home/ubuntu/Common/lib'
+
+  CXX      ../src/libSU2_a-config_structure.o
+
+  CXX      ../src/libSU2_a-dual_grid_structure.o
+
+  CXX      ../src/libSU2_a-geometry_structure.o
+
+  CXX      ../src/libSU2_a-grid_adaptation_structure.o
+
+  CXX      ../src/libSU2_a-grid_movement_structure.o
+
+  CXX      ../src/libSU2_a-linear_solvers_structure.o
+
+  CXX      ../src/libSU2_a-primal_grid_structure.o
+
+  CXX      ../src/libSU2_a-vector_structure.o
+
+  CXX      ../src/libSU2_a-matrix_structure.o
+
+  CXX      ../src/libSU2_a-mpi_structure.o
+
+  CXX      ../src/libSU2_a-linear_solvers_structure_b.o
+
+  CXX      ../src/libSU2_a-ad_structure.o
+  CXX      ../src/libSU2_a-gauss_structure.o
+
+  CXX      ../src/libSU2_a-element_structure.o
+
+  CXX      ../src/libSU2_a-element_linear.o
+
+  CXX      ../src/libSU2_a-interpolation_structure.o
+
+  CXX      ../src/libSU2_a-adt_structure.o
+
+  AR       libSU2.a
+
+make[1]: Leaving directory '/home/ubuntu/Common/lib'
+Making all in SU2_PY
+make[1]: Entering directory '/home/ubuntu/SU2_PY'
+make[1]: Nothing to be done for 'all'.
+make[1]: Leaving directory '/home/ubuntu/SU2_PY'
+Making all in SU2_CFD/obj
+make[1]: Entering directory '/home/ubuntu/SU2_CFD/obj'
+
+  CXX      ../src/libSU2Core_a-definition_structure.o
+
+  CXX      ../src/libSU2Core_a-fluid_model.o
+
+  CXX      ../src/libSU2Core_a-fluid_model_pig.o
+
+  CXX      ../src/libSU2Core_a-fluid_model_pvdw.o
+
+  CXX      ../src/libSU2Core_a-fluid_model_ppr.o
+
+  CXX      ../src/libSU2Core_a-fluid_model_inc.o
+
+  CXX      ../src/libSU2Core_a-integration_structure.o
+
+  CXX      ../src/libSU2Core_a-integration_time.o
+
+  CXX      ../src/libSU2Core_a-driver_structure.o
+
+  CXX      ../src/libSU2Core_a-iteration_structure.o
+
+  CXX      ../src/libSU2Core_a-numerics_adjoint_mean.o
+
+  CXX      ../src/libSU2Core_a-numerics_adjoint_turbulent.o
+
+  CXX      ../src/libSU2Core_a-numerics_direct_poisson.o
+
+  CXX      ../src/libSU2Core_a-numerics_direct_heat.o
+
+  CXX      ../src/libSU2Core_a-numerics_direct_mean.o
+
+  CXX      ../src/libSU2Core_a-numerics_direct_mean_inc.o
+
+  CXX      ../src/libSU2Core_a-numerics_direct_transition.o
+
+  CXX      ../src/libSU2Core_a-numerics_direct_turbulent.o
+
+  CXX      ../src/libSU2Core_a-numerics_direct_wave.o
+
+  CXX      ../src/libSU2Core_a-numerics_direct_elasticity_nonlinear.o
+
+  CXX      ../src/libSU2Core_a-numerics_direct_elasticity_linear.o
+
+  CXX      ../src/libSU2Core_a-numerics_direct_elasticity.o
+
+  CXX      ../src/libSU2Core_a-numerics_structure.o
+
+  CXX      ../src/libSU2Core_a-numerics_template.o
+
+  CXX      ../src/libSU2Core_a-output_cgns.o
+
+  CXX      ../src/libSU2Core_a-output_structure.o
+
+  CXX      ../src/libSU2Core_a-output_physics.o
+
+  CXX      ../src/libSU2Core_a-output_tecplot.o
+
+  CXX      ../src/libSU2Core_a-output_fieldview.o
+
+  CXX      ../src/libSU2Core_a-output_su2.o
+
+  CXX      ../src/libSU2Core_a-output_paraview.o
+
+  CXX      ../src/libSU2Core_a-python_wrapper_structure.o
+
+  CXX      ../src/libSU2Core_a-solver_adjoint_mean.o
+
+  CXX      ../src/libSU2Core_a-solver_adjoint_turbulent.o
+
+  CXX      ../src/libSU2Core_a-solver_adjoint_discrete.o
+
+  CXX      ../src/libSU2Core_a-solver_adjoint_elasticity.o
+
+  CXX      ../src/libSU2Core_a-solver_direct_poisson.o
+
+  CXX      ../src/libSU2Core_a-solver_direct_heat.o
+
+  CXX      ../src/libSU2Core_a-solver_direct_mean.o
+
+  CXX      ../src/libSU2Core_a-solver_direct_mean_inc.o
+
+  CXX      ../src/libSU2Core_a-solver_direct_transition.o
+
+  CXX      ../src/libSU2Core_a-solver_direct_turbulent.o
+
+  CXX      ../src/libSU2Core_a-solver_direct_wave.o
+
+  CXX      ../src/libSU2Core_a-solver_direct_elasticity.o
+
+  CXX      ../src/libSU2Core_a-solver_structure.o
+
+  CXX      ../src/libSU2Core_a-solver_template.o
+
+  CXX      ../src/libSU2Core_a-transfer_physics.o
+
+  CXX      ../src/libSU2Core_a-transfer_structure.o
+
+  CXX      ../src/libSU2Core_a-transport_model.o
+
+  CXX      ../src/libSU2Core_a-variable_adjoint_mean.o
+
+  CXX      ../src/libSU2Core_a-variable_adjoint_turbulent.o
+
+  CXX      ../src/libSU2Core_a-variable_adjoint_discrete.o
+
+  CXX      ../src/libSU2Core_a-variable_adjoint_elasticity.o
+
+  CXX      ../src/libSU2Core_a-variable_direct_poisson.o
+
+  CXX      ../src/libSU2Core_a-variable_direct_heat.o
+
+  CXX      ../src/libSU2Core_a-variable_direct_mean.o
+
+  CXX      ../src/libSU2Core_a-variable_direct_mean_inc.o
+
+  CXX      ../src/libSU2Core_a-variable_direct_transition.o
+
+  CXX      ../src/libSU2Core_a-variable_direct_turbulent.o
+
+  CXX      ../src/libSU2Core_a-variable_direct_wave.o
+
+  CXX      ../src/libSU2Core_a-variable_direct_elasticity.o
+
+  CXX      ../src/libSU2Core_a-variable_structure.o
+
+  CXX      ../src/libSU2Core_a-variable_template.o
+
+  CXX      ../src/___bin_SU2_CFD-SU2_CFD.o
+
+  AR       libSU2Core.a
+
+  CXXLD    ../bin/SU2_CFD
+
+make[1]: Leaving directory '/home/ubuntu/SU2_CFD/obj'
+Making all in SU2_DOT/obj
+make[1]: Entering directory '/home/ubuntu/SU2_DOT/obj'
+  CXX      ../src/___bin_SU2_DOT-SU2_DOT.o
+  CXXLD    ../bin/SU2_DOT
+make[1]: Leaving directory '/home/ubuntu/SU2_DOT/obj'
+Making all in SU2_MSH/obj
+make[1]: Entering directory '/home/ubuntu/SU2_MSH/obj'
+  CXX      ../src/___bin_SU2_MSH-SU2_MSH.o
+  CXXLD    ../bin/SU2_MSH
+make[1]: Leaving directory '/home/ubuntu/SU2_MSH/obj'
+
+Making all in SU2_DEF/obj
+make[1]: Entering directory '/home/ubuntu/SU2_DEF/obj'
+  CXX      ../src/___bin_SU2_DEF-SU2_DEF.o
+  CXXLD    ../bin/SU2_DEF
+make[1]: Leaving directory '/home/ubuntu/SU2_DEF/obj'
+Making all in SU2_SOL/obj
+make[1]: Entering directory '/home/ubuntu/SU2_SOL/obj'
+  CXX      ../src/___bin_SU2_SOL-SU2_SOL.o
+  CXXLD    ../bin/SU2_SOL
+make[1]: Leaving directory '/home/ubuntu/SU2_SOL/obj'
+
+Making all in SU2_GEO/obj
+
+make[1]: Entering directory '/home/ubuntu/SU2_GEO/obj'
+
+  CXX      ../src/___bin_SU2_GEO-SU2_GEO.o
+
+/home/ubuntu/SU2/missing: line 51: aclocal-1.12: command not found
+WARNING: 'aclocal-1.12' is missing on your system.  You should only need it if
+         you modified 'acinclude.m4' or 'configure.ac'.  You might want
+         to install the Automake and Perl packages.  Grab them from
+         any GNU archive site.
+/home/ubuntu/SU2/missing: line 51: automake-1.12: command not found
+/home/ubuntu/SU2/missing: line 51: autoconf: command not found
+WARNING: 'automake-1.12' is missing on your system.  You should only need it if
+         you modified 'Makefile.am', 'acinclude.m4' or 'configure.ac'.
+         You might want to install the Automake and Perl packages.
+         Grab them from any GNU archive site.
+WARNING: 'autoconf' is missing on your system.  You should only need it if
+         you modified 'configure.ac'.  You might want to install the
+         Autoconf and GNU m4 packages.  Grab them from any GNU
+         archive site.
+ar: `u' modifier ignored since `D' is the default (see `U')
+ar: `u' modifier ignored since `D' is the default (see `U')
+/home/ubuntu/SU2/externals/cgns/cgns_io.c: In function ‘cgio_check_file’:
+/home/ubuntu/SU2/externals/cgns/cgns_io.c:592:5: warning: ignoring return value of ‘fread’, declared with attribute warn_unused_result [-Wunused-result]
+     fread (buf, 1, sizeof(buf), fp);
+     ^
+/home/ubuntu/SU2/externals/cgns/adf/ADF_interface.c: In function ‘ADF_Database_Valid’:
+/home/ubuntu/SU2/externals/cgns/adf/ADF_interface.c:1022:5: warning: ignoring return value of ‘fread’, declared with attribute warn_unused_result [-Wunused-result]
+     fread (header, sizeof(char), 32, fp);
+     ^
+ar: `u' modifier ignored since `D' is the default (see `U')
+ar: `u' modifier ignored since `D' is the default (see `U')
+ar: `u' modifier ignored since `D' is the default (see `U')
+
+Installing SU2
+sudo make install
+Making install in externals
+make[1]: Entering directory '/home/ubuntu/externals'
+Making install in metis
+
+make[2]: Entering directory '/home/ubuntu/externals/metis'
+
+make[3]: Entering directory '/home/ubuntu/externals/metis'
+make[3]: Nothing to be done for 'install-exec-am'.
+make[3]: Nothing to be done for 'install-data-am'.
+make[3]: Leaving directory '/home/ubuntu/externals/metis'
+make[2]: Leaving directory '/home/ubuntu/externals/metis'
+Making install in parmetis
+
+make[2]: Entering directory '/home/ubuntu/externals/parmetis'
+
+make[3]: Entering directory '/home/ubuntu/externals/parmetis'
+make[3]: Nothing to be done for 'install-exec-am'.
+make[3]: Nothing to be done for 'install-data-am'.
+make[3]: Leaving directory '/home/ubuntu/externals/parmetis'
+
+make[2]: Leaving directory '/home/ubuntu/externals/parmetis'
+
+Making install in cgns
+
+make[2]: Entering directory '/home/ubuntu/externals/cgns'
+make[3]: Entering directory '/home/ubuntu/externals/cgns'
+make[3]: Nothing to be done for 'install-exec-am'.
+make[3]: Nothing to be done for 'install-data-am'.
+make[3]: Leaving directory '/home/ubuntu/externals/cgns'
+make[2]: Leaving directory '/home/ubuntu/externals/cgns'
+make[2]: Entering directory '/home/ubuntu/externals'
+make[3]: Entering directory '/home/ubuntu/externals'
+make[3]: Nothing to be done for 'install-exec-am'.
+make[3]: Nothing to be done for 'install-data-am'.
+make[3]: Leaving directory '/home/ubuntu/externals'
+make[2]: Leaving directory '/home/ubuntu/externals'
+make[1]: Leaving directory '/home/ubuntu/externals'
+Making install in Common/lib
+
+make[1]: Entering directory '/home/ubuntu/Common/lib'
+
+make[2]: Entering directory '/home/ubuntu/Common/lib'
+make[2]: Nothing to be done for 'install-exec-am'.
+make[2]: Nothing to be done for 'install-data-am'.
+make[2]: Leaving directory '/home/ubuntu/Common/lib'
+
+make[1]: Leaving directory '/home/ubuntu/Common/lib'
+
+Making install in SU2_PY
+
+make[1]: Entering directory '/home/ubuntu/SU2_PY'
+
+make[2]: Entering directory '/home/ubuntu/SU2_PY'
+
+ /bin/mkdir -p '/home/ubuntu/share/SU2/bin'
+
+ /usr/bin/install -c /home/ubuntu/SU2/SU2_PY/continuous_adjoint.py /home/ubuntu/SU2/SU2_PY/finite_differences.py /home/ubuntu/SU2/SU2_PY/mesh_deformation.py /home/ubuntu/SU2/SU2_PY/parallel_computation.py /home/ubuntu/SU2/SU2_PY/parallel_computation_fsi.py /home/ubuntu/SU2/SU2_PY/package_tests.py /home/ubuntu/SU2/SU2_PY/patient_designspace.py /home/ubuntu/SU2/SU2_PY/shape_optimization.py /home/ubuntu/SU2/SU2_PY/merge_solution.py /home/ubuntu/SU2/SU2_PY/set_ffd_design_var.py /home/ubuntu/SU2/SU2_PY/compute_polar.py /home/ubuntu/SU2/SU2_PY/compute_multipoint.py /home/ubuntu/SU2/SU2_PY/discrete_adjoint.py /home/ubuntu/SU2/SU2_PY/direct_differentiation.py /home/ubuntu/SU2/SU2_PY/fsi_computation.py /home/ubuntu/SU2/SU2_PY/SU2_CFD.py '/home/ubuntu/share/SU2/bin'
+
+ /bin/mkdir -p '/home/ubuntu/share/SU2/bin'
+ /bin/mkdir -p '/home/ubuntu/share/SU2/bin/SU2/eval'
+ /usr/bin/install -c -m 644  /home/ubuntu/SU2/SU2_PY/SU2/eval/design.py /home/ubuntu/SU2/SU2_PY/SU2/eval/functions.py /home/ubuntu/SU2/SU2_PY/SU2/eval/gradients.py /home/ubuntu/SU2/SU2_PY/SU2/eval/__init__.py '/home/ubuntu/share/SU2/bin/SU2/eval'
+ /bin/mkdir -p '/home/ubuntu/share/SU2/bin/FSI/io'
+ /usr/bin/install -c -m 644  /home/ubuntu/SU2/SU2_PY/FSI/io/__init__.py /home/ubuntu/SU2/SU2_PY/FSI/io/FSI_config.py '/home/ubuntu/share/SU2/bin/FSI/io'
+ /bin/mkdir -p '/home/ubuntu/share/SU2/bin/SU2/mesh'
+ /usr/bin/install -c -m 644  /home/ubuntu/SU2/SU2_PY/SU2/mesh/adapt.py /home/ubuntu/SU2/SU2_PY/SU2/mesh/tools.py /home/ubuntu/SU2/SU2_PY/SU2/mesh/__init__.py '/home/ubuntu/share/SU2/bin/SU2/mesh'
+ /bin/mkdir -p '/home/ubuntu/share/SU2/bin/SU2/util'
+ /usr/bin/install -c -m 644  /home/ubuntu/SU2/SU2_PY/SU2/util/bunch.py /home/ubuntu/SU2/SU2_PY/SU2/util/filter_adjoint.py /home/ubuntu/SU2/SU2_PY/SU2/util/lhc_unif.py /home/u
+buntu/SU2/SU2_PY/SU2/util/misc.py /home/ubuntu/SU2/SU2_PY/SU2/util/mp_eval.py /home/ubuntu/SU2/SU2_PY/SU2/util/ordered_bunch.py /home/ubuntu/SU2/SU2_PY/SU2/util/ordered_dict.py /home/ubuntu/SU2/SU2_PY/SU2/util/plot.py /home/ubuntu/SU2/SU2_PY/SU2/util/polarSweepLib.py /home/ubuntu/SU2/SU2_PY/SU2/util/pyCppTap.py /home/ubuntu/SU2/SU2_PY/SU2/util/switch.py /home/ubuntu/SU2/SU2_PY/SU2/util/which.py /home/ubuntu/SU2/SU2_PY/SU2/util/__init__.py '/home/ubuntu/share/SU2/bin/SU2/util'
+ /bin/mkdir -p '/home/ubuntu/share/SU2/bin/SU2'
+ /usr/bin/install -c -m 644  /home/ubuntu/SU2/SU2_PY/SU2/__init__.py '/home/ubuntu/share/SU2/bin/SU2'
+ /bin/mkdir -p '/home/ubuntu/share/SU2/bin/FSI/util'
+ /usr/bin/install -c -m 644  /home/ubuntu/SU2/SU2_PY/FSI/util/__init__.py /home/ubuntu/SU2/SU2_PY/FSI/util/switch.py '/home/ubuntu/share/SU2/bin/FSI/util'
+ /bin/mkdir -p '/home/ubuntu/share/SU2/bin/SU2/io'
+
+ /usr/bin/install -c -m 644  /home/ubuntu/SU2/SU2_PY/SU2/io/config.py /home/ubuntu/SU2/SU2_PY/SU2/io/config_options.py /home/ubuntu/SU2/SU2_PY/SU2/io/data.py /home/ubuntu/SU2/SU2_PY/SU2/io/filelock.py /home/ubuntu/SU2/SU2_PY/SU2/io/redirect.py /home/ubuntu/SU2/SU2_PY/SU2/io/state.py /home/ubuntu/SU2/SU2_PY/SU2/io/tools.py /home/ubuntu/SU2/SU2_PY/SU2/io/__init__.py '/home/ubuntu/share/SU2/bin/SU2/io'
+
+ /bin/mkdir -p '/home/ubuntu/share/SU2/bin/SU2/opt'
+
+ /usr/bin/install -c -m 644  /home/ubuntu/SU2/SU2_PY/SU2/opt/project.py /home/ubuntu/SU2/SU2_PY/SU2/opt/scipy_tools.py /home/ubuntu/SU2/SU2_PY/SU2/opt/server.py /home/ubuntu/SU2/SU2_PY/SU2/opt/__init__.py '/home/ubuntu/share/SU2/bin/SU2/opt'
+ /bin/mkdir -p '/home/ubuntu/share/SU2/bin/FSI'
+ /usr/bin/install -c -m 644  /home/ubuntu/SU2/SU2_PY/FSI/__init__.py /home/ubuntu/SU2/SU2_PY/FSI/FSIInterface.py /home/ubuntu/SU2/SU2_PY/FSI/PitchPlungeAirfoilStructuralTester.py '/home/ubuntu/share/SU2/bin/FSI'
+ /bin/mkdir -p '/home/ubuntu/share/SU2/bin/SU2/run'
+ /usr/bin/install -c -m 644  /home/ubuntu/SU2/SU2_PY/SU2/run/adaptation.py /home/ubuntu/SU2/SU2_PY/SU2/run/adjoint.py /home/ubuntu/SU2/SU2_PY/SU2/run/deform.py /home/ubuntu/SU2/SU2_PY/SU2/run/direct.py /home/ubuntu/SU2/SU2_PY/SU2/run/interface.py /home/ubuntu/SU2/SU2_PY/SU2/run/merge.py /home/ubuntu/SU2/SU2_PY/SU2/run/geometry.py /home/ubuntu/SU2/SU2_PY/SU2/run/projection.py /home/ubuntu/SU2/SU2_PY/SU2/run/__init__.py '/home/ubuntu/share/SU2/bin/SU2/run'
+make[2]: Le
+aving directory '/home/ubuntu/SU2_PY'
+make[1]: Leaving directory '/home/ubuntu/SU2_PY'
+Making install in SU2_CFD/obj
+
+make[1]: Entering directory '/home/ubuntu/SU2_CFD/obj'
+
+make[2]: Entering directory '/home/ubuntu/SU2_CFD/obj'
+
+ /bin/mkdir -p '/home/ubuntu/share/SU2/bin'
+
+  /usr/bin/install -c ../bin/SU2_CFD '/home/ubuntu/share/SU2/bin'
+
+make[2]: Nothing to be done for 'install-data-am'.
+
+make[2]: Leaving directory '/home/ubuntu/SU2_CFD/obj'
+make[1]: Leaving directory '/home/ubuntu/SU2_CFD/obj'
+Making install in SU2_DOT/obj
+make[1]: Entering directory '/home/ubuntu/SU2_DOT/obj'
+make[2]: Entering directory '/home/ubuntu/SU2_DOT/obj'
+ /bin/mkdir -p '/home/ubuntu/share/SU2/bin'
+
+  /usr/bin/install -c ../bin/SU2_DOT '/home/ubuntu/share/SU2/bin'
+
+make[2]: Nothing to be done for 'install-data-am'.
+make[2]: Leaving directory '/home/ubuntu/SU2_DOT/obj'
+
+make[1]: Leaving directory '/home/ubuntu/SU2_DOT/obj'
+
+Making install in SU2_MSH/obj
+
+make[1]: Entering directory '/home/ubuntu/SU2_MSH/obj'
+
+make[2]: Entering directory '/home/ubuntu/SU2_MSH/obj'
+
+ /bin/mkdir -p '/home/ubuntu/share/SU2/bin'
+  /usr/bin/install -c ../bin/SU2_MSH '/home/ubuntu/share/SU2/bin'
+make[2]: Nothing to be done for 'install-data-am'.
+make[2]: Leaving directory '/home/ubuntu/SU2_MSH/obj'
+make[1]: Leaving directory '/home/ubuntu/SU2_MSH/obj'
+Making install in SU2_DEF/obj
+
+make[1]: Entering directory '/home/ubuntu/SU2_DEF/obj'
+
+make[2]: Entering directory '/home/ubuntu/SU2_DEF/obj'
+
+ /bin/mkdir -p '/home/ubuntu/share/SU2/bin'
+
+  /usr/bin/install -c ../bin/SU2_DEF '/home/ubuntu/share/SU2/bin'
+
+make[2]: Nothing to be done for 'install-data-am'.
+make[2]: Leaving directory '/home/ubuntu/SU2_DEF/obj'
+
+make[1]: Leaving directory '/home/ubuntu/SU2_DEF/obj'
+
+Making install in SU2_SOL/obj
+make[1]: Entering directory '/home/ubuntu/SU2_SOL/obj'
+make[2]: Entering directory '/home/ubuntu/SU2_SOL/obj'
+ /bin/mkdir -p '/home/ubuntu/share/SU2/bin'
+  /usr/bin/install -c ../bin/SU2_SOL '/home/ubuntu/share/SU2/bin'
+make[2]: Nothing to be done for 'install-data-am'.
+make[2]: Leaving directory '/home/ubuntu/SU2_SOL/obj'
+make[1]: Leaving directory '/home/ubuntu/SU2_SOL/obj'
+Making install in SU2_GEO/obj
+make[1]: Entering directory '/home/ubuntu/SU2_GEO/obj'
+make[2]: Entering directory '/home/ubuntu/SU2_GEO/obj'
+ /bin/mkdir -p '/home/ubuntu/share/SU2/bin'
+
+  /usr/bin/install -c ../bin/SU2_GEO '/home/ubuntu/share/SU2/bin'
+
+make[2]: Nothing to be done for 'install-data-am'.
+make[2]: Leaving directory '/home/ubuntu/SU2_GEO/obj'
+
+make[1]: Leaving directory '/home/ubuntu/SU2_GEO/obj'
+
+make[1]: Entering directory '/home/ubuntu'
+
+make[2]: Entering directory '/home/ubuntu'
+make[2]: Nothing to be done for 'install-exec-am'.
+make[2]: Nothing to be done for 'install-data-am'.
+make[2]: Leaving directory '/home/ubuntu'
+
+Adding SU2 commands to bash profile
+echo -e "export SU2_RUN="/home/ubuntu/share/SU2/bin"" | sudo tee -a ~/.bashrc
+echo -e "export SU2_HOME="/home/ubuntu/SU2"" | sudo tee -a ~/.bashrc
+echo -e "export PATH=$PATH:$SU2_RUN" | sudo tee -a ~/.bashrc
+echo -e "export PYTHONPATH=$PYTHONPATH:$SU2_RUN" | sudo tee -a ~/.bashrc
+
+Running SU2 Case
+Preparing to run SU2 case with
+Configuration File: example/inv_NACA0012.cfg
+Mesh File: example/mesh_NACA0012_inv.su2
+Copying case and mesh file to master node
+Executing SU2_CFD run command
+cd ~/share; mpirun -np 6 --hosts cfd0,cfd1,cfd2 /home/ubuntu/share/SU2/bin/SU2_CFD inv_NACA0012.cfg
+
+
+-------------------------------------------------------------------------
+
+
+|    ___ _   _ ___                                                      |
+
+
+|   / __| | | |_  )   Release 6.1.0  "Falcon"                           |
+
+
+|   \__ \ |_| |/ /                                                      |
+
+
+|   |___/\___//___|   Suite (Computational Fluid Dynamics Code)         |
+
+|                                                                       |
+-------------------------------------------------------------------------
+| The current SU2 release has been coordinated by the                   |
+| SU2 International Developers Society <www.su2devsociety.org>          |
+| with selected contributions from the open-source community.           |
+
+-------------------------------------------------------------------------
+
+| The main research teams contributing to the current release are:      |
+
+| - Prof. Juan J. Alonso's group at Stanford University.                |
+| - Prof. Piero Colonna's group at Delft University of Technology.      |
+| - Prof. Nicolas R. Gauger's group at Kaiserslautern U. of Technology. |
+| - Prof. Alberto Guardone's group at Polytechnic University of Milan.  |
+| - Prof. Rafael Palacios' group at Imperial College London.            |
+| - Prof. Vincent Terrapon's group at the University of Liege.          |
+| - Prof. Edwin van der Weide's group at the University of Twente.      |
+
+| - Lab. of New Concepts in Aeronautics at Tech. Inst. of Aeronautics.  |
+-------------------------------------------------------------------------
+| Copyright 2012-2018, Francisco D. Palacios, Thomas D. Economon,       |
+|                      Tim Albring, and the SU2 contributors.           |
+|                                                                       |
+
+
+| SU2 is free software; you can redistribute it and/or                  |
+
+
+| modify it under the terms of the GNU Lesser General Public            |
+
+
+| License as published by the Free Software Foundation; either          |
+| version 2.1 of the License, or (at your option) any later version.    |
+|                                                                       |
+| SU2 is distributed in the hope that it will be useful,                |
+| but WITHOUT ANY WARRANTY; without even the implied warranty of        |
+| MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      |
+
+
+| Lesser General Public License for more details.                       |
+
+|                                                                       |
+| You should have received a copy of the GNU Lesser General Public      |
+| License along with SU2. If not, see <http://www.gnu.org/licenses/>.   |
+-------------------------------------------------------------------------
+
+------------------------ Physical Case Definition -----------------------
+
+Compressible Euler equations.
+Mach number: 0.8.
+Angle of attack (AoA): 1.25 deg, and angle of sideslip (AoS): 0 deg.
+No restart solution, use the values at infinity (freestream).
+Dimensional simulation.
+The reference area is 1
+ m^2.
+
+
+The semi-span will be computed using the max y(3D) value.
+
+The reference length is 1 m.
+Reference origin for moment evaluation is (0.25, 0
+,
+0
+).
+Surface(s) where the force coefficients are evaluated: airfoil.
+
+Surface(s) where the objective function is evaluated: airfoil.
+
+
+Surface(s) plotted in the output file:
+airfoil
+.
+
+
+Surface(s) affected by the design variables:
+airfoil
+.
+
+
+Input mesh file name: mesh_NACA0012_inv.su2
+
+---------------------- Space Numerical Integration ----------------------
+Jameson-Schmidt-Turkel scheme (2nd order in space) for the flow inviscid terms.
+JST viscous coefficients (2nd & 4th): 0.5,
+0.02
+.
+
+
+The method includes a grid stretching correction (p = 0.3).
+Gradient Computation using weighted Least-Squares method.
+
+---------------------- Time Numerical Integration -----------------------
+Local time stepping (steady state simulation).
+Euler implicit method for the flow equations.
+
+FGMRES is used for solving the linear system.
+
+Using a LU-SGS preconditioning.
+
+
+Convergence criteria of the linear solver:
+1e-06
+.
+
+
+Max number of linear iterations:
+5
+.
+W Multigrid Cycle, with 3 multigrid levels.
+Damping factor for the residual restriction: 1.
+Damping factor for the correction prolongation:
+1
+.
+
+No CFL adaptation.
+Multigrid Level:                       0     1     2     3
+
+Courant-Friedrichs-Lewy number:
+     4
+
+MG PreSmooth coefficients:             1     2     3     3
+MG PostSmooth coefficients:
+     0     0     0     0
+MG CorrecSmooth coefficients:          0
+     0
+     0
+     0
+
+
+
+
+------------------------- Convergence Criteria --------------------------
+
+
+Maximum number of iterations:
+250
+.
+Cauchy criteria for Drag using 100 elements and epsilon 1e-06.
+Start convergence criteria at iteration 10.
+
+
+
+-------------------------- Output Information ---------------------------
+Writing a solution file every 250
+ iterations.
+
+Writing the convergence history every 1 iterations.
+The output file format is Tecplot ASCII (.dat).
+Convergence history file name: history.
+
+Forces breakdown file name: forces_breakdown.dat.
+
+
+Surface flow coefficients file name:
+surface_flow
+.
+
+Flow variables file name:
+flow
+.
+
+Restart flow file name:
+restart_flow.dat
+.
+
+------------------- Config File Boundary Information --------------------
+Euler wall boundary marker(s): airfoil.
+
+
+Far-field boundary marker(s):
+farfield
+.
+
+
+
+
+---------------------- Read Grid File Information -----------------------
+
+
+Two dimensional problem.
+
+5233
+ points before parallel partitioning.
+
+Performing linear partitioning of the grid nodes.
+
+10216 interior elements before parallel partitioning.
+Executing the partitioning functions.
+Building the graph adjacency structure.
+Distributing elements across all ranks.
+
+
+2
+ surface markers.
+
+
+200 boundary elements in index 0 (Marker = airfoil).
+50 boundary elements in index
+1 (Marker = farfield).
+Calling ParMETIS... graph partitioning complete (454 edge cuts).
+Distributing ParMETIS coloring.
+
+
+Rebalancing vertices.
+Rebalancing volume element connectivity.
+Rebalancing markers and surface elements.
+5698 vertices including ghost points.
+10671 interior elements including halo cells.
+
+
+10671
+ triangles.
+
+Establishing MPI communication patterns.
+
+
+
+------------------------- Geometry Preprocessing ------------------------
+
+
+Setting point connectivity.
+
+
+Renumbering points (Reverse Cuthill McKee Ordering).
+
+
+Recomputing point connectivity.
+
+
+Setting element connectivity.
+
+
+Checking the numerical grid orientation.
+Identifying edges and vertices.
+Computing centers of gravity.
+Setting the control volume structure.
+Area of the computational grid: 1.27e+03.
+
+Searching for the closest normal neighbors to the surfaces.
+
+
+Storing a mapping from global to local point index.
+
+Compute the surface curvature.
+Max K: 7.84e+03
+. Mean K:
+34.8
+. Standard deviation K:
+494
+.
+
+
+Checking for periodicity.
+
+
+Setting the multigrid structure.
+
+MG level:
+0
+ -> CVs:
+5698
+. Agglomeration rate 1/1.00. CFL
+4.
+MG level: 1
+ -> CVs:
+1743
+. Agglomeration rate 1/
+3.27
+. CFL
+3.32
+.
+
+
+MG level:
+2
+ -> CVs:
+572
+. Agglomeration rate 1/
+3.05
+. CFL
+2.85
+.
+MG level: 3 -> CVs: 218. Agglomeration rate 1/2.62. CFL 2.64.
+
+Computing wall distances.
+Wetted area = 2.04 m.
+Area projection in the x-plane = 0.12 m, y-plane = 1 m.
+Max. coordinate in the x-direction = 1 m, y-direction = 0.06 m.
+Min coordinate in the x-direction = 0 m, y-direction = -0.06 m.
+
+------------------------- Driver information --------------------------
+
+A Fluid driver has been instantiated.
+
+
+
+
+------------------------ Iteration Preprocessing ------------------------
+Zone 1: Euler/Navier-Stokes/RANS fluid iteration.
+
+------------------------- Solver Preprocessing --------------------------
+Inviscid flow: Computing density based on free-stream
+temperature and pressure using the ideal gas law.
+
+
+Force coefficients computed using free-stream values.
+
+
+-- Input conditions:
+
+
+Fluid Model: STANDARD_AIR
+
+
+Specific gas constant:
+287.058 N.m/kg.K.
+
+
+Specific gas constant (non-dim): 287.058
+Specific Heat Ratio: 1.4
+Free-stream static pressure: 101325 Pa.
+Free-stream total pressure: 154454 Pa.
+
+Free-stream temperature:
+273.15
+ K.
+
+
+Free-stream density:
+1.29225
+ kg/m^3.
+
+Free-stream velocity: (264.994, 5.78219) m/s. Magnitude: 265.057 m/s (515.229 KTS).
+
+
+Free-stream total energy per unit mass:
+231152 m^2/s^2.
+
+
+-- Reference values:
+
+
+Reference specific gas constant:
+1
+ N.m/kg.K.
+
+
+Reference pressure:
+1 Pa.
+
+Reference temperature:
+1
+ K.
+Reference density: 1 kg/m^3.
+
+Reference velocity:
+1
+ m/s.
+
+
+Reference energy per unit mass: 1 m^2/s^2.
+-- Resulting non-dimensional state:
+Mach number (non-dim): 0.8
+Specific gas constant (non-dim): 287.058
+Free-stream temperature (non-dim):
+273.15
+
+
+Free-stream pressure (non-dim):
+101325
+
+
+Free-stream density (non-dim):
+1.29225
+Free-stream velocity (non-dim): (264.994, 5.78219). Magnitude: 265.057
+Free-stream total energy per unit mass (non-dim): 231152
+
+
+
+Initialize Jacobian structure (Euler). MG level: 0.
+Initialize Jacobian structure (Euler). MG level: 1.
+Initialize Jacobian structure (Euler). MG level: 2
+.
+
+
+Initialize Jacobian structure (Euler). MG level:
+3
+.
+
+
+
+
+----------------- Integration and Numerics Preprocessing ----------------
+
+Integration Preprocessing.
+Numerics Preprocessing.
+
+
+---------------------- Python Interface Preprocessing ---------------------
+
+
+Setting customized boundary conditions for zone
+0
+
+
+
+
+------------------------------ Begin Solver -----------------------------
+
+
+
+
+------------------------ Evaluate Special Output ------------------------
+Writing the forces breakdown file (forces_breakdown.dat).
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+---------------------- Local Time Stepping Summary ----------------------
+
+
+MG level: 0 -> Min. DT: 6.35236e-07. Max. DT:
+0.00517515. CFL:
+4
+.
+MG level: 1 -> Min. DT: 1.06414e-06. Max. DT: 0.00808926
+. CFL:
+3.31848
+.
+
+
+MG level:
+2
+ -> Min. DT:
+1.41352e-06
+. Max. DT:
+0.0115196
+. CFL:
+2.85154
+.
+
+
+MG level:
+3
+ -> Min. DT:
+2.38902e-06
+. Max. DT:
+0.0172569
+. CFL:
+2.64059
+.
+
+
+-------------------------------------------------------------------------
+
+
+
+
+----------------------- Residual Evolution Summary ----------------------
+
+
+log10[Maximum residual]:
+-0.0202097.
+
+
+Maximum residual point
+97
+, located at (0.00056, -0.00417316).
+-------------------------------------------------------------------------
+
+ Iter
+    Time(s)
+     Res[Rho]
+     Res[RhoE]
+      CL(Total)
+      CD(Total)
+
+
+    0
+   0.666834
+    -1.026860
+      4.463888
+       0.105320       0.106693
+
+    1   0.643110
+    -0.921894      4.590269       0.144841
+       0.060982
+    2
+   0.644830
+    -1.061911      4.427067       0.180284       0.046966
+
+    3
+   0.646530
+    -1.087127
+      4.380531
+       0.207718
+       0.036968
+
+    4
+   0.646469
+    -1.117786      4.344962
+       0.233705       0.030877
+
+    5
+   0.655187
+    -1.153139
+      4.302930
+       0.257908       0.026641
+
+    6   0.655401    -1.180797      4.271063       0.278911       0.023736
+
+    7
+   0.652102
+    -1.213699
+      4.238229
+       0.296605
+       0.022022
+
+
+    8
+   0.653969
+    -1.259777
+      4.183527       0.311030       0.021195
+
+    9
+   0.652113
+    -1.312667
+      4.113878
+       0.322254
+       0.020924
+
+   10   0.650493    -1.354946      4.066204       0.330522       0.020970
+
+   11
+   0.654155
+    -1.388824      4.039460       0.336244       0.021177
+
+   12   0.655909    -1.425226      4.005060       0.339877
+       0.021441
+
+
+   13   0.654556    -1.467404      3.952546       0.341890       0.021694
+
+   14   0.651596    -1.514636      3.887864       0.342721       0.021899
+
+   15
+   0.647073
+    -1.564913
+      3.823672
+       0.342739
+       0.022046
+
+
+   16
+   0.645326
+    -1.618545
+      3.766449
+       0.342237
+       0.022138
+
+   17
+   0.643947
+    -1.673781
+      3.716402       0.341453       0.022182
+
+   18
+   0.641319
+    -1.728496
+      3.668102
+       0.340561       0.022191
+
+   19
+   0.639116    -1.782604
+      3.615440
+       0.339687
+       0.022175
+
+
+   20   0.638515    -1.836866      3.556818       0.338898       0.022144
+
+   21
+   0.637925    -1.891105
+      3.495234       0.338225       0.022105
+
+   22   0.637569
+    -1.944597
+      3.434947
+       0.337672
+       0.022065
+
+
+   23
+   0.638318
+    -1.997385      3.378262       0.337233       0.022029
+
+   24
+   0.639933
+    -2.048398      3.326736       0.336896       0.021998
+
+   25
+   0.643516
+    -2.097640
+      3.278716
+       0.336640
+       0.021971
+
+
+   26   0.646184    -2.145740      3.231718       0.336446       0.021947
+
+   27   0.649464    -2.193705      3.183725       0.336304       0.021927
+
+   28
+   0.649611
+    -2.242040
+      3.134243
+       0.336204
+       0.021908
+
+
+   29
+   0.649162
+    -2.290580
+      3.084073
+       0.336137
+       0.021892
+
+
+   30
+   0.649484
+    -2.338954
+      3.034181       0.336091
+       0.021878
+
+
+   31
+   0.648985
+    -2.386499
+      2.985731       0.336052       0.021866
+
+   32
+   0.648004
+    -2.432173
+      2.940055
+       0.336004
+       0.021856
+
+   33
+   0.647162    -2.475427
+      2.897543       0.335934       0.021846
+
+   34
+   0.646372
+    -2.516236
+      2.857784
+       0.335831
+       0.021838
+
+
+   35   0.646177    -2.555055      2.819852       0.335689       0.021828
+
+   36
+   0.647063
+    -2.592087
+      2.783332
+       0.335504
+       0.021818
+
+
+   37   0.646925    -2.627864      2.747626       0.335276       0.021806
+
+   38
+   0.647281
+    -2.662228
+      2.713189
+       0.335011
+       0.021792
+
+
+   39
+   0.647606    -2.694876
+      2.680512       0.334715
+       0.021777
+
+
+
+
+---------------------- Local Time Stepping Summary ----------------------
+MG level: 0 -> Min. DT: 7.05887e-07. Max. DT: 0.0051753. CFL: 4.
+MG level: 1 -> Min. DT: 1.1381e-06. Max. DT: 0.00808537. CFL: 3.31848.
+
+
+MG level:
+2
+ -> Min. DT:
+1.48477e-06
+. Max. DT:
+0.0115161. CFL: 2.85154.
+MG level: 3 -> Min. DT: 2.41672e-06. Max. DT: 0.0172656
+. CFL:
+2.64059
+.
+
+
+-------------------------------------------------------------------------
+
+----------------------- Residual Evolution Summary ----------------------
+log10[Maximum residual]: -1.65666.
+
+Maximum residual point
+1212
+, located at (
+0.614521
+, -0.133848).
+-------------------------------------------------------------------------
+
+ Iter    Time(s)     Res[Rho]     Res[RhoE]      CL(Total)      CD(Total)
+   40   0.647344    -2.725427
+      2.650024
+       0.334396
+       0.021761
+
+
+   41
+   0.646678
+    -2.753444
+      2.622145       0.334063
+       0.021743
+
+
+   42   0.646008    -2.778574      2.597083       0.333725       0.021725
+
+   43
+   0.645276
+    -2.800682      2.574795       0.333391       0.021707
+
+   44   0.645730    -2.819851      2.555064       0.333065       0.021688
+
+   45
+   0.648046
+    -2.836298      2.537660       0.332753       0.021670
+
+   46
+   0.648783
+    -2.850308
+      2.522364       0.332454       0.021653
+
+   47
+   0.649266
+    -2.862300
+      2.508863
+       0.332171
+       0.021638
+
+
+   48   0.648955    -2.872753      2.496793       0.331901       0.021623
+
+   49   0.648376    -2.882258      2.485649       0.331644       0.021609
+
+   50   0.647818    -2.891409      2.474907       0.331399       0.021596
+
+   51   0.647416    -2.900803      2.464011       0.331163       0.021584
+
+   52
+   0.647635    -2.910956      2.452470       0.330937       0.021573
+
+
+   53
+   0.648738
+    -2.922270
+      2.439873
+       0.330719
+       0.021561
+
+
+   54
+   0.651452
+    -2.935038
+      2.425933
+       0.330509       0.021551
+
+   55
+   0.653638
+    -2.949505
+      2.410372
+       0.330307
+       0.021540
+
+   56
+   0.654561    -2.965518      2.393428       0.330112       0.021530
+
+   57   0.653402    -2.982427      2.376006       0.329926       0.021521
+
+   58
+   0.653001
+    -3.000220
+      2.357849       0.329749       0.021511
+
+
+   59
+   0.652069
+    -3.018781
+      2.338858       0.329582       0.021502
+
+   60
+   0.651060
+    -3.038068
+      2.319081
+       0.329424
+       0.021494
+
+
+   61
+   0.650290
+    -3.057994
+      2.298666       0.329276       0.021485
+
+   62
+   0.650351
+    -3.078434
+      2.277776
+       0.329139       0.021478
+
+
+   63
+   0.650239
+    -3.099248
+      2.256566
+       0.329010
+       0.021470
+
+
+   64
+   0.650521
+    -3.120330
+      2.235141
+       0.328892
+       0.021464
+
+
+   65
+   0.650657
+    -3.141631
+      2.213556
+       0.328781
+       0.021457
+
+
+   66
+   0.650026
+    -3.163160
+      2.191819
+       0.328679
+       0.021451
+
+
+   67   0.650027    -3.184906      2.169956       0.328585       0.021446
+
+   68
+   0.650357    -3.206824      2.148007       0.328497       0.021441
+
+   69
+   0.650641    -3.230376      2.124270       0.328415       0.021436
+
+   70   0.650420    -3.254202      2.101001       0.328339       0.021431
+
+   71
+   0.651344
+    -3.277894
+      2.077807
+       0.328267       0.021427
+
+   72   0.651136    -3.301219      2.054755       0.328200       0.021423
+
+   73
+   0.650849
+    -3.324604
+      2.031411
+       0.328136       0.021419
+
+
+   74
+   0.650558
+    -3.348108      2.007921       0.328076       0.021415
+
+   75
+   0.650563    -3.371781      1.984253       0.328018       0.021412
+
+   76   0.650651    -3.395681      1.960309       0.327963       0.021408
+
+   77
+   0.650524
+    -3.419778
+      1.936132
+       0.327909
+       0.021405
+
+   78
+   0.649860
+    -3.444073
+      1.911709
+       0.327857
+       0.021402
+
+
+   79
+   0.648883
+    -3.468448      1.887183       0.327806       0.021399
+
+
+---------------------- Local Time Stepping Summary ----------------------
+MG level: 0 -> Min. DT: 7.03158e-07. Max. DT: 0.0051753
+. CFL:
+4
+.
+
+MG level: 1 -> Min. DT: 1.14023e-06
+. Max. DT:
+0.00808545
+. CFL:
+3.31848
+.
+
+MG level:
+2 -> Min. DT: 1.48185e-06. Max. DT:
+0.0115162. CFL:
+2.85154
+.
+
+
+MG level:
+3 -> Min. DT:
+2.41925e-06
+. Max. DT:
+0.0172654
+. CFL:
+2.64059
+.
+
+
+-------------------------------------------------------------------------
+
+
+
+----------------------- Residual Evolution Summary ----------------------
+log10[Maximum residual]: -2.29933.
+
+Maximum residual point
+1905
+, located at (
+0.638752
+, 0.285678).
+-------------------------------------------------------------------------
+
+ Iter
+    Time(s)
+     Res[Rho]
+     Res[RhoE]      CL(Total)      CD(Total)
+   80   0.648069    -3.492780      1.862680       0.327756
+       0.021396
+
+   81   0.647638    -3.516953      1.838317       0.327707
+       0.021393
+
+
+   82
+   0.646587
+    -3.540829      1.814252       0.327659       0.021391
+
+   83   0.645889    -3.564322      1.790580       0.327611       0.021388
+
+   84
+   0.645264
+    -3.587329
+      1.767431       0.327564       0.021385
+
+   85
+   0.645020
+    -3.609766
+      1.744918
+       0.327518
+       0.021383
+
+   86
+   0.644611    -3.631555      1.723143       0.327473       0.021380
+
+   87
+   0.644354
+    -3.652633      1.702182       0.327428       0.021378
+
+   88
+   0.643969
+    -3.672954      1.682071       0.327385       0.021375
+
+   89
+   0.643391
+    -3.692496
+      1.662804
+       0.327343       0.021373
+
+
+   90   0.643126    -3.711275      1.644335       0.327302       0.021371
+
+   91   0.642893    -3.729321      1.626600       0.327262       0.021369
+
+   92
+   0.643163
+    -3.746695
+      1.609496
+       0.327225
+       0.021367
+
+   93
+   0.643287    -3.763501      1.592880       0.327189       0.021365
+
+   94
+   0.643026    -3.779871      1.576592       0.327155       0.021363
+
+   95   0.642853    -3.795985      1.560430       0.327123       0.021361
+
+   96   0.643072    -3.812013      1.544222       0.327093       0.021360
+
+   97   0.644468    -3.828168      1.527750       0.327065       0.021358
+
+   98
+   0.645522
+    -3.844665
+      1.510822
+       0.327039
+       0.021357
+
+
+   99
+   0.646245
+    -3.861704
+      1.493261
+       0.327015
+       0.021355
+
+
+  100
+   0.646580
+    -3.879472
+      1.474902
+       0.326993       0.021354
+
+  101   0.646689    -3.898135      1.455605       0.326972       0.021353
+
+  102
+   0.646963
+    -3.917837
+      1.435258
+       0.326954
+       0.021352
+
+
+  103
+   0.647100
+    -3.938688
+      1.413775
+       0.326937
+       0.021351
+
+  104
+   0.647508
+    -3.960741
+      1.391138
+       0.326921
+       0.021350
+
+
+  105
+   0.647867
+    -3.984040
+      1.367316
+       0.326907
+       0.021349
+
+
+  106
+   0.648489
+    -4.008597
+      1.342320
+       0.326895
+       0.021349
+
+
+  107
+   0.648792
+    -4.034381
+      1.316196       0.326884       0.021348
+
+  108
+   0.648973
+    -4.061327
+      1.289021
+       0.326874       0.021347
+
+  109
+   0.649429
+    -4.089345
+      1.260889
+       0.326865
+       0.021347
+
+  110
+   0.649828    -4.118330      1.231897       0.326857       0.021346
+
+  111
+   0.649983
+    -4.148122
+      1.202199       0.326849       0.021346
+
+  112
+   0.649937    -4.178581
+      1.171920
+       0.326843
+       0.021345
+
+
+  113
+   0.650246
+    -4.209548
+      1.141203       0.326838       0.021345
+
+  114   0.650673    -4.240847      1.110213       0.326833       0.021345
+
+  115   0.650654    -4.272296      1.079110       0.326829
+       0.021345
+
+
+  116
+   0.650737
+    -4.303711
+      1.048058
+       0.326825
+       0.021344
+
+
+  117
+   0.651234
+    -4.334930      1.017191       0.326822       0.021344
+
+  118   0.650935    -4.365866      0.986565       0.326819       0.021344
+
+  119   0.650332    -4.396448      0.956231       0.326817       0.021344
+
+
+
+---------------------- Local Time Stepping Summary ----------------------
+
+
+MG level:
+0
+ -> Min. DT:
+7.02557e-07
+. Max. DT:
+0.0051753
+. CFL:
+4
+.
+
+
+MG level: 1 -> Min. DT: 1.14e-06. Max. DT: 0.00808546. CFL: 3.31848.
+MG level: 2 -> Min. DT: 1.48085e-06. Max. DT: 0.0115162. CFL: 2.85154.
+MG level: 3 -> Min. DT:
+2.41933e-06
+. Max. DT:
+0.0172654. CFL: 2.64059.
+-------------------------------------------------------------------------
+
+----------------------- Residual Evolution Summary ----------------------
+
+log10[Maximum residual]: -3.25549.
+Maximum residual point
+1905
+, located at (0.638752, 0.285678
+).
+
+
+-------------------------------------------------------------------------
+
+
+
+ Iter    Time(s)     Res[Rho]     Res[RhoE]      CL(Total)      CD(Total)
+  120   0.649772    -4.426653      0.926199       0.326816       0.021344
+
+  121
+   0.649696
+    -4.456476
+      0.896478
+       0.326814
+       0.021344
+
+
+  122
+   0.649398
+    -4.485937
+      0.867059
+       0.326813
+       0.021344
+
+
+  123
+   0.649908    -4.515112      0.837877       0.326813       0.021344
+
+  124
+   0.650389
+    -4.544070
+      0.808873
+       0.326812       0.021343
+
+  125
+   0.650184
+    -4.572893
+      0.779976
+       0.326812
+       0.021343
+
+
+  126
+   0.650046
+    -4.601670
+      0.751114
+       0.326813
+       0.021343
+
+
+  127   0.649788    -4.630458      0.722261       0.326813       0.021343
+
+  128
+   0.649780
+    -4.659306
+      0.693388       0.326814       0.021344
+
+  129
+   0.649723
+    -4.688188
+      0.664548
+       0.326815
+       0.021344
+
+
+  130   0.649299    -4.717064      0.635784       0.326816       0.021344
+
+  131   0.648949    -4.745852      0.607184       0.326818       0.021344
+
+  132
+   0.648527
+    -4.774439      0.578865       0.326820       0.021344
+
+  133   0.648477    -4.802662      0.550994       0.326822       0.021344
+
+  134   0.648770    -4.830293      0.523802       0.326824       0.021344
+
+  135
+   0.648591
+    -4.857053      0.497566       0.326826       0.021344
+
+  136   0.648177    -4.882660      0.472542       0.326828       0.021344
+
+  137
+   0.647884
+    -4.906819
+      0.449000
+       0.326831
+       0.021344
+
+
+  138
+   0.647494    -4.929269      0.427176       0.326834       0.021344
+
+  139
+   0.647095
+    -4.949764
+      0.407270
+       0.326836
+       0.021345
+
+
+  140   0.646678    -4.968107      0.389440
+       0.326839
+       0.021345
+
+
+  141   0.646286    -4.984198      0.373785       0.326842       0.021345
+
+  142
+   0.645955
+    -4.998037
+      0.360291
+       0.326845       0.021345
+
+
+  143
+   0.645684    -5.009697      0.348869       0.326848       0.021345
+
+  144   0.645775    -5.019342      0.339347       0.326851       0.021345
+
+  145   0.645403    -5.027230      0.331455       0.326854
+       0.021345
+
+  146
+   0.645201    -5.033669
+      0.324892
+       0.326857
+       0.021346
+
+  147   0.645607    -5.038994      0.319339       0.326860       0.021346
+
+  148
+   0.646419
+    -5.043537
+      0.314484
+       0.326863
+       0.021346
+
+  149
+   0.646484
+    -5.047585
+      0.310065
+       0.326866
+       0.021346
+
+
+  150   0.646155    -5.051404      0.305834
+       0.326869       0.021346
+
+  151
+   0.645788
+    -5.055214
+      0.301585
+       0.326872       0.021346
+
+  152   0.645612    -5.059196      0.297149       0.326875       0.021347
+
+  153
+   0.645678
+    -5.063493
+      0.292395
+       0.326877
+       0.021347
+
+
+  154
+   0.645445
+    -5.068213
+      0.287223
+       0.326880
+       0.021347
+
+
+  155   0.645275
+    -5.073436
+      0.281561
+       0.326883
+       0.021347
+
+
+  156   0.644938    -5.079212      0.275363       0.326885       0.021347
+
+  157
+   0.644620
+    -5.085575
+      0.268598       0.326888       0.021347
+
+  158   0.644383    -5.092540      0.261254       0.326890       0.021347
+
+
+  159   0.644023    -5.100109      0.253327       0.326892       0.021348
+
+
+---------------------- Local Time Stepping Summary ----------------------
+
+MG level: 0 -> Min. DT: 7.02514e-07. Max. DT: 0.0051753. CFL: 4.
+MG level: 1 -> Min. DT: 1.1398e-06
+. Max. DT: 0.00808545. CFL: 3.31848.
+MG level: 2 -> Min. DT: 1.4807e-06. Max. DT:
+0.0115162. CFL: 2.85154.
+MG level: 3 -> Min. DT: 2.41922e-06. Max. DT:
+0.0172654
+. CFL:
+2.64059
+.
+
+
+-------------------------------------------------------------------------
+
+
+
+----------------------- Residual Evolution Summary ----------------------
+
+
+log10[Maximum residual]:
+-3.8029
+.
+Maximum residual point
+1905
+, located at (
+0.638752
+,
+0.285678
+).
+
+
+-------------------------------------------------------------------------
+
+ Iter    Time(s)
+     Res[Rho]
+     Res[RhoE]
+      CL(Total)
+      CD(Total)
+
+
+  160
+   0.643648    -5.108278      0.244824       0.326895       0.021348
+
+  161
+   0.643524
+    -5.117033
+      0.235756
+       0.326897
+       0.021348
+
+
+  162   0.643401    -5.126359      0.226138       0.326899       0.021348
+
+  163
+   0.643358
+    -5.136238
+      0.215987
+       0.326901       0.021348
+
+  164
+   0.643065
+    -5.146652
+      0.205318       0.326903       0.021348
+
+  165   0.642909    -5.157584      0.194147       0.326905       0.021348
+
+  166
+   0.642845
+    -5.169018
+      0.182489       0.326907       0.021348
+
+  167   0.642677    -5.180940      0.170353       0.326909       0.021348
+
+  168   0.642425    -5.193342      0.157749       0.326910       0.021348
+
+  169
+   0.642256    -5.206213      0.144684       0.326912       0.021349
+
+  170   0.642337
+    -5.219550
+      0.131160
+       0.326914
+       0.021349
+
+
+  171
+   0.642474
+    -5.233349
+      0.117182       0.326915       0.021349
+
+  172   0.642354    -5.247607      0.102748       0.326916       0.021349
+
+  173
+   0.642355    -5.262327      0.087858       0.326918       0.021349
+
+  174
+   0.642253
+    -5.277508      0.072511       0.326919       0.021349
+
+  175
+   0.641948
+    -5.293152
+      0.056706
+       0.326920
+       0.021349
+
+
+  176   0.641640    -5.309261      0.040439       0.326922       0.021349
+
+  177
+   0.641400
+    -5.325836
+      0.023712
+       0.326923       0.021349
+
+  178
+   0.641402
+    -5.342878
+      0.006522
+       0.326924
+       0.021349
+
+
+  179   0.641325    -5.360386     -0.011130       0.326925       0.021349
+
+  180
+   0.641057
+    -5.378361
+     -0.029242
+       0.326926
+       0.021349
+
+
+  181
+   0.640754
+    -5.396800
+     -0.047812
+       0.326927       0.021349
+
+
+  182   0.640871    -5.415700     -0.066837       0.326927       0.021349
+
+  183
+   0.640793
+    -5.435058
+     -0.086312
+       0.326928
+       0.021349
+
+
+  184
+   0.640651
+    -5.454868
+     -0.106234
+       0.326929
+       0.021349
+
+
+  185
+   0.640449    -5.475127     -0.126596       0.326930       0.021350
+
+  186
+   0.640167
+    -5.495829
+     -0.147393
+       0.326930
+       0.021350
+
+
+  187   0.639880    -5.516969     -0.168620       0.326931       0.021350
+
+  188   0.639690    -5.538541     -0.190271       0.326931       0.021350
+
+  189   0.639449    -5.560540     -0.212341       0.326932       0.021350
+
+  190   0.639187    -5.582963     -0.234827       0.326933       0.021350
+
+
+  191
+   0.638930
+    -5.605807
+     -0.257726       0.326933       0.021350
+
+  192
+   0.638749
+    -5.629069
+     -0.281034
+       0.326933
+       0.021350
+
+
+  193
+   0.638615    -5.652749     -0.304753       0.326934       0.021350
+
+  194
+   0.638473
+    -5.676847
+     -0.328880
+       0.326934
+       0.021350
+
+
+  195
+   0.638361    -5.701365     -0.353420       0.326935       0.021350
+
+  196
+   0.638203
+    -5.726306
+     -0.378373       0.326935       0.021350
+
+  197
+   0.638055
+    -5.751674
+     -0.403745
+       0.326935
+       0.021350
+
+
+  198
+   0.637853
+    -5.777475
+     -0.429538
+       0.326935
+       0.021350
+
+
+  199
+   0.637620
+    -5.803715
+     -0.455760
+       0.326936
+       0.021350
+
+
+
+
+---------------------- Local Time Stepping Summary ----------------------
+
+MG level: 0 -> Min. DT: 7.02522e-07. Max. DT: 0.0051753. CFL: 4
+.
+
+
+MG level: 1 -> Min. DT: 1.13977e-06. Max. DT: 0.00808545. CFL: 3.31848.
+MG level: 2
+ -> Min. DT: 1.4807e-06. Max. DT: 0.0115162. CFL: 2.85154.
+
+MG level:
+3
+ -> Min. DT:
+2.4192e-06
+. Max. DT:
+0.0172654
+. CFL:
+2.64059
+.
+
+
+-------------------------------------------------------------------------
+
+
+----------------------- Residual Evolution Summary ----------------------
+
+
+log10[Maximum residual]:
+-4.51061
+.
+
+
+Maximum residual point
+1905
+, located at (0.638752,
+0.285678
+).
+
+-------------------------------------------------------------------------
+
+ Iter    Time(s)     Res[Rho]     Res[RhoE]      CL(Total)      CD(Total)
+
+  200   0.637407
+    -5.830399
+     -0.482413
+       0.326936       0.021350
+
+  201
+   0.637263    -5.857533     -0.509503       0.326936       0.021350
+
+  202
+   0.637204    -5.885124     -0.537032       0.326936       0.021350
+
+  203   0.637071    -5.913174     -0.565002       0.326936       0.021350
+
+  204
+   0.637053
+    -5.941684
+     -0.593412
+       0.326936
+       0.021350
+
+
+  205   0.636933
+    -5.970652
+     -0.622254       0.326937       0.021350
+
+  206
+   0.636863
+    -6.000071
+     -0.651516
+       0.326937
+       0.021350
+
+  207
+   0.636714
+    -6.029927
+     -0.681182
+       0.326937
+       0.021350
+
+
+  208   0.636541    -6.060196     -0.711221       0.326937       0.021350
+
+  209
+   0.636473    -6.090846     -0.741595       0.326937       0.021350
+
+  210
+   0.636443
+    -6.121830
+     -0.772251
+       0.326937
+       0.021350
+
+
+  211   0.636345    -6.153086     -0.803118       0.326937       0.021350
+
+  212
+   0.636293    -6.184530     -0.834107       0.326937       0.021350
+
+  213
+   0.636201
+    -6.216058
+     -0.865105
+       0.326937
+       0.021350
+
+
+  214
+   0.636143
+    -6.247537     -0.895973
+       0.326937
+       0.021350
+
+
+  215
+   0.636223
+    -6.278806
+     -0.926546
+       0.326937
+       0.021350
+
+
+  216
+   0.636217
+    -6.309671
+     -0.956630
+       0.326937
+       0.021350
+
+  217
+   0.636283
+    -6.339907
+     -0.986002
+       0.326937
+       0.021350
+
+
+  218
+   0.636295
+    -6.369262
+     -1.014419
+       0.326937
+       0.021350
+
+
+  219   0.636207    -6.397461     -1.041622       0.326937       0.021350
+
+  220   0.636223    -6.424219     -1.067351       0.326937       0.021350
+
+  221
+   0.636210    -6.449258
+     -1.091360       0.326937
+       0.021350
+
+
+  222
+   0.636250
+    -6.472329     -1.113435       0.326937       0.021350
+
+  223
+   0.636125
+    -6.493229
+     -1.133415       0.326937       0.021350
+
+  224
+   0.636181
+    -6.511828     -1.151207
+       0.326937
+       0.021350
+
+
+  225
+   0.636423    -6.528078
+     -1.166793
+       0.326936       0.021350
+
+  226
+   0.636672
+    -6.542019
+     -1.180236
+       0.326936
+       0.021350
+
+
+  227
+   0.636617
+    -6.553777
+     -1.191673
+       0.326936
+       0.021350
+
+  228
+   0.636740
+    -6.563548
+     -1.201295
+       0.326936
+       0.021350
+
+  229
+   0.636735    -6.571578
+     -1.209338
+       0.326936       0.021350
+
+  230
+   0.636701
+    -6.578141     -1.216056       0.326936       0.021350
+
+  231   0.636671    -6.583522     -1.221708       0.326936       0.021350
+
+  232   0.636663    -6.587994     -1.226544       0.326936       0.021350
+
+
+  233
+   0.636795    -6.591811
+     -1.230794
+       0.326936       0.021350
+
+  234   0.636988    -6.595199     -1.234662       0.326936       0.021350
+
+  235
+   0.637441
+    -6.598353
+     -1.238326       0.326936       0.021350
+
+  236   0.637415    -6.601437     -1.241936       0.326936       0.021350
+
+  237   0.637390    -6.604586     -1.245614       0.326936       0.021350
+
+  238
+   0.637281
+    -6.607910
+     -1.249462       0.326936       0.021350
+
+
+  239
+   0.637096    -6.611495     -1.253560       0.326935       0.021350
+
+
+---------------------- Local Time Stepping Summary ----------------------
+MG level: 0 -> Min. DT: 7.02523e-07. Max. DT:
+0.0051753
+. CFL:
+4
+.
+
+
+MG level:
+1
+ -> Min. DT:
+1.13978e-06
+. Max. DT:
+0.00808545
+. CFL:
+3.31848.
+MG level: 2
+ -> Min. DT:
+1.4807e-06
+. Max. DT:
+0.0115162
+. CFL: 2.85154.
+MG level: 3 -> Min. DT: 2.4192e-06. Max. DT: 0.0172654
+. CFL: 2.64059.
+
+-------------------------------------------------------------------------
+
+
+
+----------------------- Residual Evolution Summary ----------------------
+log10[Maximum residual]: -5.41181.
+
+
+Maximum residual point
+1905
+, located at (
+0.638752
+,
+0.285678).
+-------------------------------------------------------------------------
+
+
+ Iter
+    Time(s)     Res[Rho]     Res[RhoE]      CL(Total)      CD(Total)
+  240   0.636978    -6.615408     -1.257970
+       0.326935
+       0.021350
+
+
+  241
+   0.636876    -6.619700     -1.262741       0.326935
+       0.021350
+
+
+  242   0.636773    -6.624409     -1.267908       0.326935       0.021350
+
+  243
+   0.637159    -6.629563     -1.273499       0.326935       0.021350
+
+  244
+   0.637983    -6.635179     -1.279532       0.326935       0.021350
+
+  245   0.638449    -6.641271     -1.286019       0.326935       0.021350
+
+  246   0.638415    -6.647846     -1.292968       0.326935       0.021350
+
+  247
+   0.638419
+    -6.654906
+     -1.300383
+       0.326935
+       0.021350
+
+
+  248
+   0.638333
+    -6.662451
+     -1.308264
+       0.326935
+       0.021350
+
+
+
+------------------------ Evaluate Special Output ------------------------
+Writing the forces breakdown file (forces_breakdown.dat).
+
+-------------------------------------------------------------------------
+
+
+
+  249   0.638295
+    -6.670480
+     -1.316610       0.326935       0.021350
+
+-------------------------- File Output Summary --------------------------
+Writing comma-separated values (CSV) surface files.
+Loading solution output data locally on each rank.
+Sorting output data across all ranks.
+Writing binary SU2 native restart file.
+-------------------------------------------------------------------------
+
+
+------------------------- Solver Postprocessing -------------------------
+
+Deleted CNumerics container.
+
+Deleted CIntegration container.
+
+Deleted CSolver container.
+Deleted CIteration container.
+Deleted CInterpolator container.
+Deleted CTransfer container.
+Deleted CGeometry container.
+Deleted CFreeFormDefBox class.
+Deleted CSurfaceMovement class.
+Deleted CVolumetricMovement class.
+
+
+Deleted CConfig container.
+
+
+Deleted COutput class.
+
+
+-------------------------------------------------------------------------
+
+------------------------- Exit Success (SU2_CFD) ------------------------
+
+
+Creating results directory /Users/jdaniel/Desktop/SU2_AWS/results_2018_08_04_23_04_05
+Copying results from cluster to local host
+
+Finished run
+
+Cleaning Up
+Terminating instances
+Removing security group cfd-ssh
+Security Group Deleted
+Removing security group cfd-mpi
+Security Group Deleted
+Results saved to /Users/jdaniel/Desktop/SU2_AWS/results_2018_08_04_23_04_05
+Finished
+
+Process finished with exit code 0

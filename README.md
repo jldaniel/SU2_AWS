@@ -26,3 +26,12 @@ The golden rule of automation is to first be able to go through the process manu
  For the automated process python was chosen as the weapon of choice for readability of the solution and to utilize [boto3](https://boto3.readthedocs.io/en/latest/) the python AWS SDK. The python package [su2_aws](su2_aws) was created to allow for flexibility in development and testings with a main script and command line interface utilizing the package in the [su2_aws.py](su2_aws.py) file. 
  
  The current implementation has been tested and proven to work using the provided SU2 example configuration and mesh file which is available for convenience in the [example](example) directory. Because this project just serves as an example of how this process could be automated it is _very_ verbose in it's operations and only contains minimal error handling which would be needed for use in a production environment.
+ 
+ ##### Package Architecture
+ 
+ The [su2_aws](su2_aws) package contains three main pieces
+ 
+ 1. The [SSHClient](su2_aws/sshclient.py) which wraps the [paramiko](http://www.paramiko.org/) SSH package for connecting to the EC2 instances, executing remote commands, and transfering files.
+ 2. The [Node](su2_aws/node.py) which represents a single instance in the cluster and contains an [SSHClient](su2_aws/sshclient.py) and instance metadata.
+ 3. The [Cluster](su2_aws/cluster.py) that interacts with the cluster as a whole and contains the implementation to setup the cluster, run the CFD case, and then cleanup.
+   
